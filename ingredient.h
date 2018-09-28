@@ -1,11 +1,10 @@
-#include <string>
+#include "QString"
+#include <map>
 
 #ifndef INGREDIENT_H
 #define INGREDIENT_H
 
-using std::string;
-
-enum class WeightType {
+enum WeightType {
     undefiniert,
     g,
     ml,
@@ -18,19 +17,27 @@ class Ingredient
 {
 public:
     Ingredient();
+    ~Ingredient();
 
-    string getName() const;
-    void setName(const string &value);
+
+    QString getName() const;
+    void setName(const QString &value);
 
     WeightType getWeightType() const;
     void setWeightType(const WeightType &value);
 
+    std::map<WeightType, QString> getWeightTypes() const;
+
     float getAmount() const;
     void setAmount(float value);
 
+    bool operator==(const Ingredient& rIngredient) const;
+    bool operator!=(const Ingredient& rIngredient) const;
+
 private:
-    string name;
-    WeightType weightType = WeightType::undefiniert;
+    QString name;
+    std::map<WeightType, QString> weightTypes;
+    WeightType weightType;
     float amount;
 };
 

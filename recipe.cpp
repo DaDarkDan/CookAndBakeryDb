@@ -1,5 +1,7 @@
 #include "recipe.h"
 #include "ingredient.h"
+#include <string>
+#include <sstream>
 
 Recipe::Recipe() {
     creationDate = time(nullptr);
@@ -7,19 +9,57 @@ Recipe::Recipe() {
 
 Recipe::~Recipe(){}
 
-string Recipe::getNotes() const {
+bool Recipe::operator==(const Recipe &rRecipe) const{
+    if (name == rRecipe.getName()){
+        return true;
+    }
+    return false;
+}
+
+bool Recipe::operator!=(const Recipe &rRecipe) const{
+    if (name == rRecipe.getName()){
+        return false;
+    }
+    return true;
+}
+
+// setter & getter
+
+QString Recipe::getNotes() const {
     return notes;
 }
 
-void Recipe::setNotes(const string &value){
+QString Recipe::getCreationDateAsQString() const
+{
+    std::stringstream ss;
+    ss << creationDate;
+    return QString::fromStdString(ss.str());
+}
+
+void Recipe::setNotes(const QString &value){
     notes = value;
 }
 
-string Recipe::getName() const{
+bool Recipe::getFavourite() const{
+    return favourite;
+}
+
+void Recipe::setFavourite(bool value){
+    favourite = value;
+}
+
+QString Recipe::getFavouriteAsQString() const{
+    if (favourite){
+        return "true";
+    }
+    return "false";
+}
+
+QString Recipe::getName() const{
     return name;
 }
 
-void Recipe::setName(const string &value){
+void Recipe::setName(const QString &value){
     name = value;
 }
 
@@ -31,18 +71,18 @@ void Recipe::setIngredients(const vector<Ingredient> &value){
     ingredients = value;
 }
 
-Category Recipe::getCategory() const{
+QString Recipe::getCategory() const{
     return category;
 }
 
-void Recipe::setCategory(const Category &value){
+void Recipe::setCategory(const QString &value){
     category = value;
 }
 
-vector<string> Recipe::getKeywords() const{
+vector<QString> Recipe::getKeywords() const{
     return keywords;
 }
 
-void Recipe::setKeywords(const vector<string> &value){
+void Recipe::setKeywords(const vector<QString> &value){
     keywords = value;
 }

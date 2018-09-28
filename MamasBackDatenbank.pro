@@ -29,13 +29,15 @@ SOURCES += \
         mainwindow.cpp \
     recipe.cpp \
     ingredient.cpp \
-    recipemanager.cpp
+    recipemanager.cpp \
+    iomanager.cpp
 
 HEADERS += \
         mainwindow.h \
     recipe.h \
     ingredient.h \
-    recipemanager.h
+    recipemanager.h \
+    iomanager.h
 
 FORMS += \
         mainwindow.ui

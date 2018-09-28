@@ -1,16 +1,17 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include "QString"
 
 #ifndef RECIPE_H
 #define RECIPE_H
 
-using std::string;
 using std::vector;
 
 class Ingredient;
 
-enum class Category {
+/*
+  Kategorien
     undefiniert,
     Torte,
     Kuchen,
@@ -18,35 +19,45 @@ enum class Category {
     Muffin,
     Dessert,
     Smoothie
-};
-
+*/
 class Recipe {
     public:
         Recipe();
 
         ~Recipe();
 
-        string getName() const;
-        void setName(const string &value);
+        QString getName() const;
+        void setName(const QString &value);
 
         vector<Ingredient> getIngredients() const;
         void setIngredients(const vector<Ingredient> &value);
 
-        Category getCategory() const;
-        void setCategory(const Category &value);
+        QString getCategory() const;
+        void setCategory(const QString &value);
 
-        vector<string> getKeywords() const;
-        void setKeywords(const vector<string> &value);
+        vector<QString> getKeywords() const;
+        void setKeywords(const vector<QString> &value);
 
-        string getNotes() const;
-        void setNotes(const string &value);
-    private:
-        string name;
+        QString getNotes() const;
+        void setNotes(const QString &value);
+
+        bool getFavourite() const;
+        void setFavourite(bool value);
+        QString getFavouriteAsQString() const;
+
+        bool operator==(const Recipe& rRecipe) const;
+        bool operator!=(const Recipe& rRecipe) const;
+
+        QString getCreationDateAsQString() const;
+
+private:
+        QString name;
         time_t creationDate;
         vector<Ingredient> ingredients;
-        Category category = Category::undefiniert;
-        vector<string> keywords;
-        string notes;
+        QString category;
+        vector<QString> keywords;
+        QString notes;
+        bool favourite;
 };
 
 #endif // RECIPE_H
