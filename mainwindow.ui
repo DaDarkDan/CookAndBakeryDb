@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1224</width>
-    <height>658</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -272,6 +272,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QFrame" name="createInputFrame">
+          <property name="minimumSize">
+           <size>
+            <width>800</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -281,6 +287,12 @@
           <layout class="QFormLayout" name="formLayout_2">
            <item row="0" column="0">
             <widget class="QLabel" name="createNameTitleLabel">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>100000</width>
@@ -316,6 +328,12 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="createCategoryTItleLabel">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>100000</width>
@@ -338,7 +356,7 @@
              <property name="minimumSize">
               <size>
                <width>150</width>
-               <height>0</height>
+               <height>20</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -368,17 +386,23 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="6" column="0">
             <widget class="QFrame" name="createIngredientFrame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
-               <width>200</width>
-               <height>100</height>
+               <width>180</width>
+               <height>170</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>10000</width>
+               <width>250</width>
                <height>16777215</height>
               </size>
              </property>
@@ -388,46 +412,153 @@
              <property name="frameShadow">
               <enum>QFrame::Raised</enum>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
+             <layout class="QFormLayout" name="formLayout_3">
+              <item row="0" column="0">
                <widget class="QLabel" name="createIngredientNameLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Zutatenname</string>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QTextEdit" name="textEdit_2"/>
+              <item row="1" column="0">
+               <widget class="QTextEdit" name="createIngredientNameTxtEdit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>150</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
               </item>
-              <item>
+              <item row="2" column="0">
                <widget class="QLabel" name="createIngredientAmountLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Menge</string>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QTextEdit" name="textEdit_3"/>
+              <item row="3" column="0">
+               <widget class="QTextEdit" name="createIngredientAmountTxtEdit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>150</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
               </item>
-              <item>
+              <item row="4" column="0">
                <widget class="QLabel" name="createIngredientUnitLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Einheit</string>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QComboBox" name="comboBox"/>
+              <item row="5" column="0">
+               <widget class="QComboBox" name="createAddIngredientWeightTypeComboBox">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1">
+               <widget class="QPushButton" name="createAddIngredientBtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>1600000</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Hinzufügen</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </widget>
            </item>
-           <item row="5" column="1">
-            <widget class="QFrame" name="frame_2">
+           <item row="6" column="1">
+            <widget class="QFrame" name="createAddedIngredientsFrame">
              <property name="minimumSize">
               <size>
-               <width>150</width>
-               <height>150</height>
+               <width>400</width>
+               <height>170</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -445,26 +576,130 @@
              <layout class="QVBoxLayout" name="verticalLayout_4">
               <item>
                <widget class="QLabel" name="createAddedIngredientsLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Hinzugefügte Zutaten</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QListView" name="listView_2">
+               <widget class="QScrollArea" name="createAddedIngredientsScrollView">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="createAddedIngredientsScrollViewContents">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>451</width>
+                   <height>144</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="9" column="0">
+            <widget class="QFrame" name="frame">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QFormLayout" name="formLayout_4">
+              <item row="1" column="0">
+               <widget class="QLabel" name="createKeywordsTitleLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Schlagwörter</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QTextEdit" name="textEdit">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>25</height>
+                 </size>
+                </property>
                </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QPushButton" name="createAddKeywordBtn">
+                <property name="text">
+                 <string>Hinzufügen</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </widget>
            </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="createKeywordsTitleLabel">
+           <item row="10" column="0">
+            <widget class="QLabel" name="createNotesTitleLabel">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>200</width>
@@ -472,80 +707,32 @@
               </size>
              </property>
              <property name="text">
-              <string>Schlagwörter</string>
+              <string>Notizen</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="0">
-            <widget class="QTextEdit" name="textEdit">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+           <item row="11" column="0">
+            <widget class="QTextEdit" name="createNotesTxtEdit">
              <property name="minimumSize">
               <size>
-               <width>150</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
                <width>200</width>
-               <height>25</height>
+               <height>50</height>
               </size>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="QScrollArea" name="scrollArea_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
              </property>
              <property name="maximumSize">
               <size>
-               <width>100000</width>
+               <width>10000</width>
                <height>16777215</height>
               </size>
              </property>
-             <property name="widgetResizable">
-              <bool>true</bool>
-             </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents_3">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>328</width>
-                <height>69</height>
-               </rect>
-              </property>
-             </widget>
             </widget>
            </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="createRatingTitleLabel">
-             <property name="maximumSize">
-              <size>
-               <width>200</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Bewertung</string>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="0">
-            <widget class="QFrame" name="frame_3">
+           <item row="11" column="1">
+            <widget class="QFrame" name="createRatingFrame">
              <property name="minimumSize">
               <size>
                <width>150</width>
-               <height>25</height>
+               <height>50</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -563,35 +750,43 @@
              <property name="frameShadow">
               <enum>QFrame::Raised</enum>
              </property>
-            </widget>
-           </item>
-           <item row="10" column="0">
-            <widget class="QLabel" name="createNotesTitleLabel">
-             <property name="maximumSize">
-              <size>
-               <width>200</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Notizen</string>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="0">
-            <widget class="QTextEdit" name="createNotesTxtEdit">
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>10000</width>
-               <height>16777215</height>
-              </size>
-             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QLabel" name="createRatingTitleLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Bewertung</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="createRatingStarFrame">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item row="12" column="0">
@@ -635,11 +830,65 @@
              </property>
             </widget>
            </item>
+           <item row="9" column="1">
+            <widget class="QFrame" name="createAddedKeywordsFrame">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QLabel" name="createAddedKeywordsTitleLabel">
+                <property name="text">
+                 <string>Hinzugefügte Schlagwörter</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QScrollArea" name="createAddedKeywordsScrollBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="createAddedKeywordsScrollBoxContents">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>451</width>
+                   <height>59</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
         <item>
          <widget class="QFrame" name="imgInputFrame">
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -651,7 +900,7 @@
             <widget class="QLabel" name="imgInputLabel">
              <property name="minimumSize">
               <size>
-               <width>500</width>
+               <width>300</width>
                <height>0</height>
               </size>
              </property>
@@ -676,6 +925,19 @@
        <attribute name="title">
         <string>Meine Datenbank</string>
        </attribute>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>80</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>

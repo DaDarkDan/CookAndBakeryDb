@@ -2,12 +2,16 @@
 #include "ingredient.h"
 #include <string>
 #include <sstream>
+#include <fstream>
+#include <iomanip>
 
 Recipe::Recipe() {
-    creationDate = time(nullptr);
 }
 
-Recipe::~Recipe(){}
+Recipe::~Recipe(){
+    delete timeFormat;
+    timeFormat = nullptr;
+}
 
 bool Recipe::operator==(const Recipe &rRecipe) const{
     if (name == rRecipe.getName()){
@@ -15,6 +19,11 @@ bool Recipe::operator==(const Recipe &rRecipe) const{
     }
     return false;
 }
+
+QStringList Recipe::categoryList = QStringList() << "ohne Kategorie" << "Torte"
+                                                 << "Kuchen" << "Keks"
+                                                 << "Muffin" << "Dessert"
+                                                 << "Smoothie";
 
 bool Recipe::operator!=(const Recipe &rRecipe) const{
     if (name == rRecipe.getName()){
@@ -29,11 +38,19 @@ QString Recipe::getNotes() const {
     return notes;
 }
 
-QString Recipe::getCreationDateAsQString() const
-{
-    std::stringstream ss;
-    ss << creationDate;
-    return QString::fromStdString(ss.str());
+QString Recipe::getCreationDate() const {
+    return creationDate;
+}
+
+void Recipe::setCreationDate(const QString& value){
+    if (value == "now"){
+        time_t currentTime = std::time(nullptr);
+        std::ostringstream oss;
+        oss << std::put_time(localtime(&currentTime), timeFormat);
+        creationDate = QString::fromStdString(oss.str());
+    } else {
+        creationDate = value;
+    }
 }
 
 void Recipe::setNotes(const QString &value){
@@ -47,6 +64,15 @@ bool Recipe::getFavourite() const{
 void Recipe::setFavourite(bool value){
     favourite = value;
 }
+
+void Recipe::setFavourite(const QString& value){
+    if (value == "true"){
+        favourite = true;
+    } else if(value == "false"){
+        favourite = false;
+    }
+}
+
 
 QString Recipe::getFavouriteAsQString() const{
     if (favourite){
@@ -71,6 +97,11 @@ void Recipe::setIngredients(const vector<Ingredient> &value){
     ingredients = value;
 }
 
+void Recipe::addIngredient(const Ingredient& ing){
+    ingredients.push_back(ing);
+}
+
+
 QString Recipe::getCategory() const{
     return category;
 }
@@ -85,4 +116,8 @@ vector<QString> Recipe::getKeywords() const{
 
 void Recipe::setKeywords(const vector<QString> &value){
     keywords = value;
+}
+
+void Recipe::addKeyword(const QString& keyword){
+    keywords.push_back(keyword);
 }

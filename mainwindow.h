@@ -1,9 +1,12 @@
+#include "iomanager.h"
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
 
 class Recipe;
+class RecipeManager;
 
 namespace Ui {
 class MainWindow;
@@ -20,10 +23,16 @@ public:
 private slots:
     void on_createSaveBtn_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_createAddIngredientBtn_clicked();
+
+    void onIngredientDeleteButton_clicked();
+
 private:
     Ui::MainWindow *ui;
-
-    Recipe* recipe;
+    vector<QLayout*> addedIngredientList;
+    vector<QLayout*> addedKeywordList;
 };
 
 #endif // MAINWINDOW_H

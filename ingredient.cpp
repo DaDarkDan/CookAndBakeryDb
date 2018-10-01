@@ -1,15 +1,17 @@
 #include "ingredient.h"
 
 Ingredient::Ingredient(){
-    weightTypes.insert(std::pair<WeightType, QString>(WeightType::undefiniert, "unbestimmt"));
-    weightTypes.insert(std::pair<WeightType, QString>(WeightType::g, "g"));
-    weightTypes.insert(std::pair<WeightType, QString>(WeightType::ml, "ml"));
-    weightTypes.insert(std::pair<WeightType, QString>(WeightType::Stueck, "Stück"));
-    weightTypes.insert(std::pair<WeightType, QString>(WeightType::EL, "EL"));
-    weightTypes.insert(std::pair<WeightType, QString>(WeightType::TL, "TL"));
 }
+
+Ingredient::Ingredient(QString name, QString wt) : name(name), weightType(wt){
+}
+
+Ingredient::Ingredient(QString name, QString wt, float amount) : name(name), weightType(wt), amount(amount){
+}
+
 Ingredient::~Ingredient(){}
 
+QStringList Ingredient::weightTypeList = QStringList() << "Gramm" << "Milliliter" << "Stück" << "EL" << "TL";
 
 bool Ingredient::operator==(const Ingredient &rIngredient) const{
     if (name == rIngredient.getName()){
@@ -35,16 +37,12 @@ void Ingredient::setName(const QString &value){
     name = value;
 }
 
-WeightType Ingredient::getWeightType() const{
+QString Ingredient::getWeightType() const{
     return weightType;
 }
 
-void Ingredient::setWeightType(const WeightType &value){
+void Ingredient::setWeightType(const QString &value){
     weightType = value;
-}
-
-std::map<WeightType, QString> Ingredient::getWeightTypes() const {
-    return weightTypes;
 }
 
 float Ingredient::getAmount() const{

@@ -18,19 +18,18 @@ public:
 
     ~IOManager();
 
-    void loadRecipes();
-    void saveRecipe(Recipe recipe);
+    vector<Recipe> loadRecipes() const;
+    void saveRecipe(Recipe recipe) const;
 
-    void loadIngredients();
-    void saveIngredient(Ingredient ingredient);
+    vector<Ingredient> loadIngredients() const;
+    void saveIngredients(vector<Ingredient> ingredients) const;
+
+    void setDirectoryPath(const QString &value);
+    QString getDirectoryPath() const;
 
 private:
-    QXmlStreamWriter* xmlWriter;
-    QXmlStreamReader* xmlReader;
     QString directoryPath;
-
-    vector<Recipe> recipeList;
-    vector<Ingredient> ingredientList;
+    const QString ingFileName = "ingredients.xml";
 };
 
 #endif // IOMANAGER_H

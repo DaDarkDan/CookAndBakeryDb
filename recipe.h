@@ -1,7 +1,7 @@
-#include <string>
 #include <vector>
 #include <ctime>
 #include "QString"
+#include "QStringList"
 
 #ifndef RECIPE_H
 #define RECIPE_H
@@ -10,16 +10,6 @@ using std::vector;
 
 class Ingredient;
 
-/*
-  Kategorien
-    undefiniert,
-    Torte,
-    Kuchen,
-    Keks,
-    Muffin,
-    Dessert,
-    Smoothie
-*/
 class Recipe {
     public:
         Recipe();
@@ -31,12 +21,14 @@ class Recipe {
 
         vector<Ingredient> getIngredients() const;
         void setIngredients(const vector<Ingredient> &value);
+        void addIngredient(const Ingredient& ing);
 
         QString getCategory() const;
         void setCategory(const QString &value);
 
         vector<QString> getKeywords() const;
         void setKeywords(const vector<QString> &value);
+        void addKeyword(const QString& keyword);
 
         QString getNotes() const;
         void setNotes(const QString &value);
@@ -44,15 +36,19 @@ class Recipe {
         bool getFavourite() const;
         void setFavourite(bool value);
         QString getFavouriteAsQString() const;
+        void setFavourite(const QString& value);
 
         bool operator==(const Recipe& rRecipe) const;
         bool operator!=(const Recipe& rRecipe) const;
 
-        QString getCreationDateAsQString() const;
+        QString getCreationDate() const;
+        void setCreationDate(const QString& value = "now");
 
+        static QStringList categoryList;
 private:
         QString name;
-        time_t creationDate;
+        QString creationDate;
+        const char* timeFormat = "%Y%m%d-%H:%M:%S";
         vector<Ingredient> ingredients;
         QString category;
         vector<QString> keywords;

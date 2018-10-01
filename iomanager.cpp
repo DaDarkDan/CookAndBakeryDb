@@ -1,17 +1,16 @@
 #include "iomanager.h"
-#include "QFile"
-#include "QDir"
 #include "recipe.h"
 #include "ingredient.h"
+
+#include "QFile"
 #include "QXmlStreamWriter"
 #include "QXmlStreamReader"
-#include <string>
 #include "QDirIterator"
 #include <iostream>
 
+
 IOManager::IOManager(){
-    QDir* dir = new QDir();
-    directoryPath = dir->currentPath();
+    directoryPath = "D:/Daniel/Dokumente/QtProjects/recipefolder"; //TODO delete
 
     loadRecipes();
     loadIngredients();
@@ -19,73 +18,171 @@ IOManager::IOManager(){
 
 IOManager::~IOManager(){}
 
-void IOManager::loadRecipes(){
-    QDirIterator it("/etc", QDirIterator::NoIteratorFlags);
+vector<Recipe> IOManager::loadRecipes() const{
+    Recipe* recipe = new Recipe();
+    vector<Recipe> recipeList;
+
+    QStringList filter("*.xml"); //only parse xml files
+    QDirIterator it(directoryPath, filter);
+
     //start file parsing
     while(it.hasNext()){
-        it.next();
         QFile file(it.next());
         if (!file.open(QFile::ReadOnly | QFile::Text)){
             std::cerr << "Error: Cannot read file " << qPrintable(it.next())
                       << ": " << qPrintable(file.errorString()) << std::endl;
         }
-        xmlReader->setDevice(&file);
-        xmlReader->readNext();
-        //start reading xml document
-        while(!xmlReader->atEnd()){
-            if(xmlReader->isStartElement()){
-                if
-            }
+        QXmlStreamReader xmlReader(&file);
+        xmlReader.setDevice(&file);
+        xmlReader.readNext();
+
+        //start parsing xml file
+        while(!xmlReader.isStartElement()){
+            xmlReader.readNext();
         }
+        if(xmlReader.name() == "Recipe"){
+            xmlReader.readNext();
+            xmlReader.readNext();
+        } else {
+            //TODO throw error
+        }
+        //name
+        recipe->setName(xmlReader.readElementText());
+        xmlReader.readNext();
+        xmlReader.readNext();
+        //date
+        recipe->setCreationDate(xmlReader.readElementText());
+        xmlReader.readNext();
+        xmlReader.readNext();
+        //category
+        recipe->setCategory(xmlReader.readElementText());
+        xmlReader.readNext();
+        xmlReader.readNext();
+        //favourite
+        recipe->setFavourite(xmlReader.readElementText());
+        xmlReader.readNext();
+        xmlReader.readNext();
+        //notes
+        recipe->setNotes(xmlReader.readElementText());
+        xmlReader.readNext();
+        xmlReader.readNext();
+
+        //ingredients
+        xmlReader.readNext(); //StartElement
+        xmlReader.readNext();
+        Ingredient* ingredient = new Ingredient();
+        while(xmlReader.name() == "IngredientName"){
+            ingredient->setName(xmlReader.readElementText());
+            xmlReader.readNext();
+            xmlReader.readNext();
+            ingredient->setAmount(std::stof(xmlReader.readElementText().toStdString()));
+            xmlReader.readNext();
+            xmlReader.readNext();
+            ingredient->setWeightType(xmlReader.readElementText());
+            xmlReader.readNext();
+            xmlReader.readNext();
+            recipe->addIngredient(*ingredient);
+        }
+        //keywords
+        xmlReader.readNext(); //StartElement
+        xmlReader.readNext();
+        xmlReader.readNext();
+        xmlReader.readNext();
+        while (xmlReader.name() == "keyword"){
+            recipe->addKeyword(xmlReader.readElementText());
+            xmlReader.readNext();
+            xmlReader.readNext();
+        }
+        recipeList.push_back(*recipe);
     }
+    return recipeList;
 }
 
-void IOManager::saveRecipe(Recipe recipe){
+void IOManager::saveRecipe(Recipe recipe) const{
     //setup
     QString fileName = recipe.getName() + ".xml";
 
-    QFile file(directoryPath + fileName);
-    file.open(QIODevice::WriteOnly);
+    QFile file(directoryPath + "/" + fileName);
+    if (file.open(QIODevice::WriteOnly)) {
+        QXmlStreamWriter xmlWriter(&file);
 
-    xmlWriter = new QXmlStreamWriter(&file);
+        xmlWriter.setAutoFormatting(true);
+        xmlWriter.writeStartDocument();
 
-    xmlWriter->setAutoFormatting(true);
-    xmlWriter->writeStartDocument();
+        //write to xml
+        xmlWriter.writeStartElement("Recipe");
 
-    //write to xml
-    xmlWriter->writeStartElement("Recipe");
+        xmlWriter.writeTextElement("Name", recipe.getName());
+        xmlWriter.writeTextElement("Date", recipe.getCreationDate());
+        xmlWriter.writeTextElement("Category", recipe.getCategory());
+        xmlWriter.writeTextElement("Favourite", recipe.getFavouriteAsQString());
+        xmlWriter.writeTextElement("Notes", recipe.getNotes());
 
-    xmlWriter->writeTextElement("name", recipe.getName());
-    xmlWriter->writeTextElement("date", recipe.getCreationDateAsQString());
-    xmlWriter->writeTextElement("category", recipe.getCategory());
-    xmlWriter->writeTextElement("favourite", recipe.getFavouriteAsQString());
-    xmlWriter->writeTextElement("notes", recipe.getNotes());
+        //save ingredient list
+        xmlWriter.writeStartElement("Ingredient");
+        for (auto ingredient : recipe.getIngredients()){
+            xmlWriter.writeTextElement("IngredientName", ingredient.getName());
+            QString amount = QString::fromStdString(std::to_string(ingredient.getAmount()));
+            xmlWriter.writeTextElement("IngredientAmount", amount);
+            QString weightType = ingredient.getWeightType();
+            xmlWriter.writeTextElement("IngredientWeightType", weightType);
+        }
+        xmlWriter.writeEndElement();
 
-    //save ingredient list
-    xmlWriter->writeStartElement("Ingredient");
-    for (auto ingredient : recipe.getIngredients()){
-        xmlWriter->writeTextElement("ingredientName", ingredient.getName());
-        QString amount = QString::fromStdString(std::to_string(ingredient.getAmount()));
-        xmlWriter->writeTextElement("ingredientAmount", amount);
-        QString weightType = ingredient.getWeightTypes().at(ingredient.getWeightType());
-        xmlWriter->writeTextElement("ingredientWeightType", weightType);
+        //save keyword list
+        xmlWriter.writeStartElement("Keywords");
+        for (auto keyword : recipe.getKeywords()){
+            xmlWriter.writeTextElement("keyword", keyword);
+        }
+        xmlWriter.writeEndElement();
+
+        xmlWriter.writeEndElement();
+        xmlWriter.writeEndDocument();
     }
-    xmlWriter->writeEndElement();
-
-    //save keyword list
-    xmlWriter->writeStartElement("Keyword");
-    for (auto keyword : recipe.getKeywords()){
-        xmlWriter->writeTextElement("ingredientName", keyword);
-    }
-    xmlWriter->writeEndElement();
-
     file.close();
 }
 
-void IOManager::loadIngredients(){
+vector<Ingredient> IOManager::loadIngredients() const {
+    QStringList filter(ingFileName);
+    QDirIterator it(directoryPath, filter);
 
+    vector<Ingredient> ingredientList;
+
+    if (it.hasNext()){
+        QFile file(it.next());
+        if (!file.open(QFile::ReadOnly | QFile::Text)){
+            std::cerr << "Error: Cannot read file " << qPrintable(it.next())
+                      << ": " << qPrintable(file.errorString()) << std::endl;
+        }
+    }
+
+    return ingredientList;
 }
 
-void IOManager::saveIngredient(Ingredient ingredient){
+void IOManager::saveIngredients(vector<Ingredient> ingredients) const{
+    QFile file(directoryPath + "/" + ingFileName);
+    if (file.open(QIODevice::WriteOnly)){
+        QXmlStreamWriter xmlWriter(&file);
 
+        xmlWriter.setAutoFormatting(true);
+        xmlWriter.writeStartDocument();
+
+        for (auto ing : ingredients){
+            xmlWriter.writeStartElement("Ingredient");
+            xmlWriter.writeTextElement("Name", ing.getName());
+            xmlWriter.writeTextElement("Amount", QString::fromStdString(std::to_string(ing.getAmount())));
+            xmlWriter.writeTextElement("WeightType", ing.getWeightType());
+            xmlWriter.writeEndElement();
+        }
+        xmlWriter.writeEndDocument();
+        file.close();
+    }
+}
+
+void IOManager::setDirectoryPath(const QString &value){
+    directoryPath = value;
+}
+
+QString IOManager::getDirectoryPath() const{
+    return directoryPath;
 }
