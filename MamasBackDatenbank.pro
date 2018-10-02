@@ -30,14 +30,20 @@ SOURCES += \
     recipe.cpp \
     ingredient.cpp \
     recipemanager.cpp \
-    iomanager.cpp
+    iomanager.cpp \
+    stardelegate.cpp \
+    starrating.cpp \
+    stareditor.cpp
 
 HEADERS += \
         mainwindow.h \
     recipe.h \
     ingredient.h \
     recipemanager.h \
-    iomanager.h
+    iomanager.h \
+    stardelegate.h \
+    starrating.h \
+    stareditor.h
 
 FORMS += \
         mainwindow.ui
@@ -46,3 +52,9 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    background.qrc
+
+DISTFILES +=
+

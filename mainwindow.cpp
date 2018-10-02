@@ -1,15 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include "QFileDialog"
+#include "QStandardPaths"
+#include "QTableWidget"
+
 #include "recipe.h"
 #include "recipemanager.h"
 #include "ingredient.h"
-#include "QFileDialog"
+#include "stareditor.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    rm = new RecipeManager();
     //setup create page
     QComboBox* categoryComboBox = findChild<QComboBox*>("createCategoryComboBox");
     categoryComboBox->addItems(Recipe::categoryList);
@@ -24,6 +31,21 @@ MainWindow::MainWindow(QWidget *parent) :
     layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
     ui->createAddedKeywordsScrollBoxContents->setLayout(layout);
+
+    //set up text edits
+    QList<QTextEdit*> textEditList = findChildren<QTextEdit*>();
+    for (auto t : textEditList){
+        t->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
+
+    //set up star layout
+    StarEditor* starEditor = new StarEditor();
+    QHBoxLayout* frameLayout = new QHBoxLayout();
+    frameLayout->addWidget(starEditor);
+    frameLayout->setContentsMargins(0,0,0,0);
+
+    ui->createRatingStarFrame->setLayout(frameLayout);
+
 }
 
 MainWindow::~MainWindow(){
@@ -31,31 +53,70 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::on_createSaveBtn_clicked(){
+    if (ui->createNameTxtEdit->toPlainText() == ""){
+        //TODO show error
+        return;
+    }
+
     Recipe* recipe = new Recipe();
     //name
-    QTextEdit* nameTxtEdit = findChild<QTextEdit*>("createNameTxtEdit");
-    recipe->setName(nameTxtEdit->toPlainText());
+    recipe->setName(ui->createNameTxtEdit->toPlainText());
+    ui->createNameTxtEdit->clear();
     //category
-    QComboBox* categoryComboBox = findChild<QComboBox*>("createCategoryComboBox");
-    recipe->setCategory(categoryComboBox->currentText());
+    recipe->setCategory(ui->createCategoryComboBox->currentText());
     //ingredients
-
+    vector<Ingredient> addedIngredientList;
+    for (auto frame : addedIngredientFrameList){
+        auto children = frame->children();
+        if (children.size() == 5) {
+            Ingredient ing;
+            ing.setName(qobject_cast<QTextEdit*>(children.at(0))->toPlainText());
+            ing.setAmount(qobject_cast<QTextEdit*>(children.at(1))->toPlainText().toFloat());
+            ing.setWeightType(qobject_cast<QComboBox*>(children.at(2))->currentText());
+            addedIngredientList.push_back(ing);
+        }
+    }
+    recipe->setIngredients(addedIngredientList);
+    for (auto i : addedIngredientFrameList){
+        while(QWidget* w = i->findChild<QWidget*>()){
+            delete w;
+        }
+        delete i;
+    }
+    addedIngredientFrameList.clear();
     //keywords
-
+    for (auto frame : addedKeywordFrameList){
+        auto children = frame->children();
+        if (children.size() == 3) {
+            recipe->addKeyword(qobject_cast<QTextEdit*>(children.at(0))->toPlainText());
+        }
+    }
+    for (auto i : addedKeywordFrameList){
+        while(QWidget* w = i->findChild<QWidget*>()){
+            delete w;
+        }
+        delete i;
+    }
+    addedKeywordFrameList.clear();
     //rating
-
+    StarEditor* starEditor = ui->createRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
+    recipe->setRating(starEditor->starRating().getMyStarCount());
     //notes
-
-
-    if (nameTxtEdit->toPlainText() == "" || RecipeManager::isNewRecipe(*recipe)){
-        RecipeManager::getIoManager()->saveRecipe(*recipe);
+    recipe->setNotes(ui->createNotesTxtEdit->toPlainText());
+    ui->createNotesTxtEdit->clear();
+    //image
+    recipe->setPixmap(*ui->createImgInputLabel->pixmap());
+    ui->createImgInputLabel->clear();
+    if (rm->isNewRecipe(*recipe)){
+        rm->getIoManager()->saveRecipe(*recipe);
+        statusBar()->showMessage("Rezept <" + recipe->getName() + "> wurde erfolgreich gespeichert");
     } else {
         //TODO show error message
     }
 }
 
 void MainWindow::on_pushButton_clicked() {
-    RecipeManager::getIoManager()->setDirectoryPath(QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks));
+    rm->getIoManager()->setDirectoryPath(QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks));
 }
 
 void MainWindow::on_createAddIngredientBtn_clicked(){
@@ -63,19 +124,20 @@ void MainWindow::on_createAddIngredientBtn_clicked(){
     QTextEdit* amountTxtEdit = ui->createIngredientAmountTxtEdit;
     QComboBox* weightTypeComboBox = ui->createAddIngredientWeightTypeComboBox;
 
+    //check if amount is decimal number
+    bool isFloat;
+    amountTxtEdit->toPlainText().toFloat(&isFloat);
+
+    if (!isFloat){
+        //TODO show error
+        return;
+    }
+
     if (nameTxtEdit->toPlainText() != "" && amountTxtEdit->toPlainText() != ""){
-        //copy values to new widgets
-        QTextEdit* name = new QTextEdit(nameTxtEdit->toPlainText());
-        name->setMaximumHeight(25);
-        name->setMinimumHeight(25);
-        name->setMaximumWidth(150);
-        name->setMinimumWidth(100);
+        //create contents
+        QTextEdit* name = createTextEdit(nameTxtEdit->toPlainText(), 25, 25, 100, 150);
         nameTxtEdit->clear();
-        QTextEdit* amount = new QTextEdit(amountTxtEdit->toPlainText());
-        amount->setMaximumHeight(25);
-        amount->setMinimumHeight(25);
-        amount->setMaximumWidth(100);
-        amount->setMinimumWidth(50);
+        QTextEdit* amount = createTextEdit(amountTxtEdit->toPlainText(), 25, 25, 50, 100);
         amountTxtEdit->clear();
         QComboBox* weightType = new QComboBox();
         weightType->addItems(Ingredient::weightTypeList);
@@ -84,33 +146,50 @@ void MainWindow::on_createAddIngredientBtn_clicked(){
         weightType->setMinimumHeight(25);
         weightType->setMaximumWidth(70);
         weightType->setMinimumWidth(70);
+        QPushButton* deleteButton = createDeleteButton();
+        QFrame* frame = createFrame();
+        name->setParent(frame);
+        amount->setParent(frame);
+        weightType->setParent(frame);
+        deleteButton->setParent(frame);
 
-        QPushButton* deleteButton = new QPushButton("Entfernen");
-        deleteButton->setMaximumHeight(25);
-        deleteButton->setMinimumHeight(25);
-        deleteButton->setMaximumWidth(80);
-        deleteButton->setMinimumWidth(80);
-        connect(deleteButton, SIGNAL(clicked()), this, SLOT(onIngredientDeleteButton_clicked()));
-        //Set up frame
-        QFrame* frame = new QFrame();
-        frame->setMaximumHeight(40);
-        QSizePolicy* sp = new QSizePolicy();
-        sp->setVerticalPolicy(QSizePolicy::Maximum);
-        frame->setSizePolicy(*sp);
-        frame->setStyleSheet(" .QFrame {background-color : red}");
-
+        //set up layout
         QHBoxLayout* frameLayout = new QHBoxLayout(frame);
+        frameLayout->setMargin(2);
         frameLayout->addWidget(name);
         frameLayout->addWidget(amount);
         frameLayout->addWidget(weightType);
         frameLayout->addWidget(deleteButton);
 
         ui->createAddedIngredientsScrollViewContents->layout()->addWidget(frame);
-        addedIngredientList.push_back(frameLayout);
+        addedIngredientFrameList.push_back(frame);
     }
 }
 
-void MainWindow::onIngredientDeleteButton_clicked() {
+void MainWindow::on_createAddKeywordBtn_clicked() {
+    QTextEdit* keywordTxtEdit = ui->createAddedKeywordsTxtEdit;
+
+    if (keywordTxtEdit->toPlainText() != ""){
+        //create contents
+        QTextEdit* txtEdit = createTextEdit(keywordTxtEdit->toPlainText(), 25, 25, 100, 100);
+        keywordTxtEdit->clear();
+        QPushButton* deleteButton = createDeleteButton();
+        QFrame* frame = createFrame();
+        txtEdit->setParent(frame);
+        deleteButton->setParent(frame);
+
+        //set up layout
+        QHBoxLayout* frameLayout = new QHBoxLayout(frame);
+        frameLayout->setMargin(2);
+        frameLayout->addWidget(txtEdit);
+        frameLayout->addWidget(deleteButton);
+
+        ui->createAddedKeywordsScrollBoxContents->layout()->addWidget(frame);
+        addedKeywordFrameList.push_back(frame);
+    }
+}
+
+void MainWindow::onAddedFrameDeleteButton_clicked() {
     QPushButton* button = qobject_cast<QPushButton*>(sender());
 
     QFrame* parentFrame = qobject_cast<QFrame*>(button->parent());
@@ -119,4 +198,48 @@ void MainWindow::onIngredientDeleteButton_clicked() {
         delete child;
     }
     delete parentFrame;
+}
+
+QFrame* MainWindow::createFrame() const{
+    QFrame* frame = new QFrame();
+    frame->setMaximumHeight(40);
+    QSizePolicy* sp = new QSizePolicy();
+    sp->setVerticalPolicy(QSizePolicy::Maximum);
+    frame->setSizePolicy(*sp);
+    frame->setStyleSheet(" .QFrame {background-color : red}");
+    return frame;
+}
+
+QTextEdit* MainWindow::createTextEdit(const QString &value, int minH, int maxH, int minW, int maxW) const{
+    QTextEdit* textEdit = new QTextEdit(value);
+    textEdit->setMinimumHeight(minH);
+    textEdit->setMaximumHeight(maxH);
+    textEdit->setMinimumWidth(minW);
+    textEdit->setMaximumWidth(maxW);
+    return textEdit;
+}
+
+QPushButton* MainWindow::createDeleteButton() const{
+    QPushButton* deleteButton = new QPushButton("X");
+    deleteButton->setStyleSheet("font: bold;color: red");
+    deleteButton->setMaximumHeight(15);
+    deleteButton->setMinimumHeight(15);
+    deleteButton->setMaximumWidth(30);
+    deleteButton->setMinimumWidth(30);
+    connect(deleteButton, SIGNAL(clicked()), this, SLOT(onAddedFrameDeleteButton_clicked()));
+    return deleteButton;
+}
+
+
+void MainWindow::on_uploadImgBtn_clicked() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), QStandardPaths::writableLocation(QStandardPaths::PicturesLocation), tr("Formate(*.png *.jpg *.bmp *.pdf)"));
+    QImage image(fileName);
+
+    ui->createImgInputLabel->setScaledContents(true);
+
+    if (fileName.endsWith(".pdf") || fileName.endsWith(".PDF")){
+
+    } else {
+        ui->createImgInputLabel->setPixmap(QPixmap::fromImage(image));
+    }
 }

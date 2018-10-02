@@ -1,5 +1,4 @@
 #include <vector>
-#include <string>
 
 #ifndef RECIPEMANAGER_H
 #define RECIPEMANAGER_H
@@ -13,25 +12,26 @@ class IOManager;
 class RecipeManager
 {
 public:
-    void sortRecipes();
-
-    static bool saveRecipe(Recipe recipe);
-    static bool saveIngredient(Ingredient ingredient);
-    static IOManager* getIoManager();
-
-    static vector<Ingredient> getIngredientList();
-    static vector<Recipe> getRecipeList();
-
-    static bool isNewRecipe(Recipe recipe);
-
-private:
     RecipeManager();
 
-    static IOManager* ioManager;
-    static vector<Ingredient> ingredientList;
-    static vector<Recipe> recipeList;
+    void sortRecipes();
 
-    static bool isNewIngredient(Ingredient ingredient);
+    bool saveRecipe(Recipe recipe);
+    bool saveIngredient(Ingredient ingredient);
+    IOManager* getIoManager();
+
+    vector<Ingredient> getIngredientList();
+    vector<Recipe> getRecipeList();
+
+    bool isNewRecipe(Recipe recipe);
+
+private:
+
+    IOManager* ioManager;
+    vector<Ingredient> ingredientList;
+    vector<Recipe> recipeList;
+
+    bool isNewIngredient(Ingredient ingredient);
 };
 
 #endif // RECIPEMANAGER_H

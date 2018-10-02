@@ -1,5 +1,6 @@
-#include "QString"
 #include <vector>
+
+#include "QString"
 
 #ifndef IOMANAGER_H
 #define IOMANAGER_H
@@ -29,7 +30,7 @@ public:
 
 private:
     QString directoryPath;
-    const QString ingFileName = "ingredients.xml";
+    const QString ingFileName;
 };
 
 #endif // IOMANAGER_H

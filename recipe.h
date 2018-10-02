@@ -1,7 +1,9 @@
 #include <vector>
 #include <ctime>
+
 #include "QString"
 #include "QStringList"
+#include "QPixmap"
 
 #ifndef RECIPE_H
 #define RECIPE_H
@@ -9,6 +11,7 @@
 using std::vector;
 
 class Ingredient;
+class QImage;
 
 class Recipe {
     public:
@@ -45,6 +48,13 @@ class Recipe {
         void setCreationDate(const QString& value = "now");
 
         static QStringList categoryList;
+
+        QPixmap getPixmap() const;
+        void setPixmap(QPixmap value);
+
+        int getRating() const;
+        void setRating(int value);
+
 private:
         QString name;
         QString creationDate;
@@ -54,6 +64,8 @@ private:
         vector<QString> keywords;
         QString notes;
         bool favourite;
+        QPixmap pixmap;
+        int rating;
 };
 
 #endif // RECIPE_H

@@ -2,14 +2,13 @@
 #include "ingredient.h"
 #include "recipe.h"
 #include "iomanager.h"
+
 #include "QDir"
 #include "QXmlStreamWriter"
 
-RecipeManager::RecipeManager(){}
-
-IOManager* RecipeManager::ioManager = new IOManager();
-vector<Ingredient> RecipeManager::ingredientList;
-vector<Recipe> RecipeManager::recipeList;
+RecipeManager::RecipeManager(){
+    ioManager = new IOManager();
+}
 
 void RecipeManager::sortRecipes(){
 

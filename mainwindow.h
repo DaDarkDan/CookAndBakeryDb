@@ -5,7 +5,9 @@
 
 #include <QMainWindow>
 
-class Recipe;
+class QFrame;
+class QTextEdit;
+class QPushButton;
 class RecipeManager;
 
 namespace Ui {
@@ -26,13 +28,21 @@ private slots:
     void on_pushButton_clicked();
 
     void on_createAddIngredientBtn_clicked();
+    void onAddedFrameDeleteButton_clicked();
 
-    void onIngredientDeleteButton_clicked();
+    void on_createAddKeywordBtn_clicked();
+
+    void on_uploadImgBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
-    vector<QLayout*> addedIngredientList;
-    vector<QLayout*> addedKeywordList;
+    RecipeManager* rm;
+    vector<QWidget*> addedIngredientFrameList;
+    vector<QWidget*> addedKeywordFrameList;
+
+    QFrame* createFrame() const;
+    QTextEdit* createTextEdit(const QString &value, int minH, int maxH, int minW, int maxW) const;
+    QPushButton* createDeleteButton() const;
 };
 
 #endif // MAINWINDOW_H

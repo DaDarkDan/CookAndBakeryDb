@@ -1,8 +1,7 @@
 #include "recipe.h"
 #include "ingredient.h"
-#include <string>
+
 #include <sstream>
-#include <fstream>
 #include <iomanip>
 
 Recipe::Recipe() {
@@ -120,4 +119,22 @@ void Recipe::setKeywords(const vector<QString> &value){
 
 void Recipe::addKeyword(const QString& keyword){
     keywords.push_back(keyword);
+}
+
+QPixmap Recipe::getPixmap() const{
+    return pixmap;
+}
+
+void Recipe::setPixmap(QPixmap value){
+    pixmap = value;
+}
+
+int Recipe::getRating() const
+{
+    return rating;
+}
+
+void Recipe::setRating(int value)
+{
+    rating = value;
 }

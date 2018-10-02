@@ -6,6 +6,10 @@
 #include "QXmlStreamWriter"
 #include "QXmlStreamReader"
 #include "QDirIterator"
+#include "QBuffer"
+#include "QPixmap"
+#include "QTextCodec"
+
 #include <iostream>
 
 
@@ -93,6 +97,13 @@ vector<Recipe> IOManager::loadRecipes() const{
             xmlReader.readNext();
             xmlReader.readNext();
         }
+        recipe->setRating(xmlReader.readElementText().toInt());
+        //picture
+        QString imgFullPath = directoryPath + "/" + recipe->getName() +"_image.png";
+        QPixmap* pixmap = new QPixmap();
+        pixmap->load(imgFullPath);
+        recipe->setPixmap(*pixmap);
+
         recipeList.push_back(*recipe);
     }
     return recipeList;
@@ -136,10 +147,21 @@ void IOManager::saveRecipe(Recipe recipe) const{
         }
         xmlWriter.writeEndElement();
 
+        //rating
+        xmlWriter.writeTextElement("rating", QString::number(recipe.getRating()));
+
+        //finish
         xmlWriter.writeEndElement();
         xmlWriter.writeEndDocument();
+
     }
     file.close();
+    //save image
+    fileName = recipe.getName() + "_image.png";
+    QFile imgFile(directoryPath + "/" + fileName);
+    imgFile.open(QIODevice::WriteOnly);
+    recipe.getPixmap().save(&imgFile, "PNG");
+    imgFile.close();
 }
 
 vector<Ingredient> IOManager::loadIngredients() const {
