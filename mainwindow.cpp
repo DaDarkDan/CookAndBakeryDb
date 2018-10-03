@@ -17,34 +17,64 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     rm = new RecipeManager();
-    //setup create page
-    QComboBox* categoryComboBox = findChild<QComboBox*>("createCategoryComboBox");
-    categoryComboBox->addItems(Recipe::categoryList);
 
-    QComboBox* weightTypeComboBox = findChild<QComboBox*>("createAddIngredientWeightTypeComboBox");
-    weightTypeComboBox->addItems(Ingredient::weightTypeList);
+    setupSearchPage();
+    setupCreatePage();
+    setupHomePage();
+}
 
-    //set up scroll boxes
+void MainWindow::setupSearchPage() {
+    //combo boxes
+    ui->searchCategoryComboBox->addItem("egal");
+    ui->searchCategoryComboBox->addItems(Recipe::categoryList);
+
+    ui->searchFavouriteComboBox->addItem("egal");
+    ui->searchFavouriteComboBox->addItem("Ja");
+    ui->searchFavouriteComboBox->addItem("Nein");
+
+    //scroll views
+    setupSearchIngredientScrollView();
+    setupSearchKeywordScrollView();
+}
+
+void MainWindow::setupSearchIngredientScrollView(){
+    QVBoxLayout* layout = new QVBoxLayout();
+    for (auto i : rm->getIngredientList()){
+        layout->addWidget(new QPushButton(i.getName()));
+    }
+    ui->searchIngredientScrollArea->setLayout(layout);
+}
+
+void MainWindow::setupSearchKeywordScrollView(){
+    QVBoxLayout* layout = new QVBoxLayout();
+    for (auto i : rm->getKeywordList()){
+        layout->addWidget(new QPushButton(i));
+    }
+    ui->searchIngredientScrollArea->setLayout(layout);
+}
+
+void MainWindow::setupCreatePage() {
+    //combo boxes
+    ui->createCategoryComboBox->addItems(Recipe::categoryList);
+    ui->createAddIngredientWeightTypeComboBox->addItems(Ingredient::weightTypeList);
+
+    //scroll views
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
     ui->createAddedIngredientsScrollViewContents->setLayout(layout);
     layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
-    ui->createAddedKeywordsScrollBoxContents->setLayout(layout);
+    ui->createAddedKeywordsScrollViewContents->setLayout(layout);
 
-    //set up text edits
-    QList<QTextEdit*> textEditList = findChildren<QTextEdit*>();
-    for (auto t : textEditList){
-        t->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    }
-
-    //set up star layout
+    //star layout
     StarEditor* starEditor = new StarEditor();
     QHBoxLayout* frameLayout = new QHBoxLayout();
     frameLayout->addWidget(starEditor);
     frameLayout->setContentsMargins(0,0,0,0);
-
     ui->createRatingStarFrame->setLayout(frameLayout);
+}
+
+void MainWindow::setupHomePage() {
 
 }
 
@@ -105,10 +135,15 @@ void MainWindow::on_createSaveBtn_clicked(){
     recipe->setNotes(ui->createNotesTxtEdit->toPlainText());
     ui->createNotesTxtEdit->clear();
     //image
-    recipe->setPixmap(*ui->createImgInputLabel->pixmap());
-    ui->createImgInputLabel->clear();
-    if (rm->isNewRecipe(*recipe)){
-        rm->getIoManager()->saveRecipe(*recipe);
+    if (ui->createImgInputLabel->pixmap()){
+        recipe->setPixmap(*ui->createImgInputLabel->pixmap());
+        ui->createImgInputLabel->clear();
+    }
+    //favourite
+    recipe->setFavourite(ui->createFavouriteCheckBox->isChecked());
+    ui->createFavouriteCheckBox->setCheckState(Qt::Unchecked);
+
+    if (rm->saveRecipe(*recipe)){
         statusBar()->showMessage("Rezept <" + recipe->getName() + "> wurde erfolgreich gespeichert");
     } else {
         //TODO show error message
@@ -184,7 +219,7 @@ void MainWindow::on_createAddKeywordBtn_clicked() {
         frameLayout->addWidget(txtEdit);
         frameLayout->addWidget(deleteButton);
 
-        ui->createAddedKeywordsScrollBoxContents->layout()->addWidget(frame);
+        ui->createAddedKeywordsScrollViewContents->layout()->addWidget(frame);
         addedKeywordFrameList.push_back(frame);
     }
 }
@@ -194,6 +229,18 @@ void MainWindow::onAddedFrameDeleteButton_clicked() {
 
     QFrame* parentFrame = qobject_cast<QFrame*>(button->parent());
 
+    for (unsigned int i = 0; i < addedIngredientFrameList.size();i++){
+        if (addedIngredientFrameList.at(i) == parentFrame){
+            addedIngredientFrameList.erase(addedIngredientFrameList.begin()+i);
+            break;
+        }
+    }
+    for (unsigned int i = 0; i < addedKeywordFrameList.size();i++){
+        if (addedKeywordFrameList.at(i) == parentFrame){
+            addedKeywordFrameList.erase(addedKeywordFrameList.begin()+i);
+            break;
+        }
+    }
     for (auto child : parentFrame->children()){
         delete child;
     }

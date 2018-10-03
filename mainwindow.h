@@ -43,6 +43,13 @@ private:
     QFrame* createFrame() const;
     QTextEdit* createTextEdit(const QString &value, int minH, int maxH, int minW, int maxW) const;
     QPushButton* createDeleteButton() const;
+
+    void setupSearchPage();
+    void setupCreatePage();
+    void setupHomePage();
+
+    void setupSearchIngredientScrollView();
+    void setupSearchKeywordScrollView();
 };
 
 #endif // MAINWINDOW_H

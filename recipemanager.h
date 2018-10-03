@@ -1,4 +1,5 @@
 #include <vector>
+#include "QString"
 
 #ifndef RECIPEMANAGER_H
 #define RECIPEMANAGER_H
@@ -17,21 +18,21 @@ public:
     void sortRecipes();
 
     bool saveRecipe(Recipe recipe);
-    bool saveIngredient(Ingredient ingredient);
     IOManager* getIoManager();
 
     vector<Ingredient> getIngredientList();
     vector<Recipe> getRecipeList();
-
-    bool isNewRecipe(Recipe recipe);
+    vector<QString> getKeywordList() const;
 
 private:
-
     IOManager* ioManager;
     vector<Ingredient> ingredientList;
     vector<Recipe> recipeList;
+    vector<QString> keywordList;
 
     bool isNewIngredient(Ingredient ingredient);
+    bool isNewRecipe(Recipe recipe);
+    bool isNewKeyword(QString keyword);
 };
 
 #endif // RECIPEMANAGER_H

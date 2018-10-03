@@ -22,15 +22,11 @@ public:
     vector<Recipe> loadRecipes() const;
     void saveRecipe(Recipe recipe) const;
 
-    vector<Ingredient> loadIngredients() const;
-    void saveIngredients(vector<Ingredient> ingredients) const;
-
     void setDirectoryPath(const QString &value);
     QString getDirectoryPath() const;
 
 private:
     QString directoryPath;
-    const QString ingFileName;
 };
 
 #endif // IOMANAGER_H

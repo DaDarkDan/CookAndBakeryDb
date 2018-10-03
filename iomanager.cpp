@@ -15,6 +15,7 @@
 
 IOManager::IOManager(){
     directoryPath = "D:/Daniel/Dokumente/QtProjects/recipefolder"; //TODO delete
+    ingFileName = "Ingredients.xml";
 
     loadRecipes();
     loadIngredients();
@@ -157,47 +158,12 @@ void IOManager::saveRecipe(Recipe recipe) const{
     }
     file.close();
     //save image
-    fileName = recipe.getName() + "_image.png";
-    QFile imgFile(directoryPath + "/" + fileName);
-    imgFile.open(QIODevice::WriteOnly);
-    recipe.getPixmap().save(&imgFile, "PNG");
-    imgFile.close();
-}
-
-vector<Ingredient> IOManager::loadIngredients() const {
-    QStringList filter(ingFileName);
-    QDirIterator it(directoryPath, filter);
-
-    vector<Ingredient> ingredientList;
-
-    if (it.hasNext()){
-        QFile file(it.next());
-        if (!file.open(QFile::ReadOnly | QFile::Text)){
-            std::cerr << "Error: Cannot read file " << qPrintable(it.next())
-                      << ": " << qPrintable(file.errorString()) << std::endl;
-        }
-    }
-
-    return ingredientList;
-}
-
-void IOManager::saveIngredients(vector<Ingredient> ingredients) const{
-    QFile file(directoryPath + "/" + ingFileName);
-    if (file.open(QIODevice::WriteOnly)){
-        QXmlStreamWriter xmlWriter(&file);
-
-        xmlWriter.setAutoFormatting(true);
-        xmlWriter.writeStartDocument();
-
-        for (auto ing : ingredients){
-            xmlWriter.writeStartElement("Ingredient");
-            xmlWriter.writeTextElement("Name", ing.getName());
-            xmlWriter.writeTextElement("Amount", QString::fromStdString(std::to_string(ing.getAmount())));
-            xmlWriter.writeTextElement("WeightType", ing.getWeightType());
-            xmlWriter.writeEndElement();
-        }
-        xmlWriter.writeEndDocument();
-        file.close();
+    if (!recipe.getPixmap().isNull()){
+        fileName = recipe.getName() + "_image.png";
+        QFile imgFile(directoryPath + "/" + fileName);
+        imgFile.open(QIODevice::WriteOnly);
+        recipe.getPixmap().save(&imgFile, "PNG");
+        imgFile.close();
     }
 }
 
