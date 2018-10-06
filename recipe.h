@@ -19,6 +19,8 @@ class Recipe {
 
         ~Recipe();
 
+        friend class RecipeCompare;
+
         QString getName() const;
         void setName(const QString &value);
 
@@ -54,6 +56,8 @@ class Recipe {
 
         int getRating() const;
         void setRating(int value);
+
+        vector<QString> getIngredientStrings() const;
 
 private:
         QString name;

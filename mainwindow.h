@@ -23,16 +23,19 @@ public:
     ~MainWindow();
 
 private slots:
+
+    void on_pushButton_clicked(); //TODO remove
+
+    //create
     void on_createSaveBtn_clicked();
-
-    void on_pushButton_clicked();
-
     void on_createAddIngredientBtn_clicked();
     void onAddedFrameDeleteButton_clicked();
-
     void on_createAddKeywordBtn_clicked();
-
     void on_uploadImgBtn_clicked();
+
+    //search
+    void on_searchAddIngredient_clicked();
+    void on_searchRecipenameTxtEdit_textChanged();
 
 private:
     Ui::MainWindow *ui;

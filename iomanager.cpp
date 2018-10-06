@@ -15,16 +15,11 @@
 
 IOManager::IOManager(){
     directoryPath = "D:/Daniel/Dokumente/QtProjects/recipefolder"; //TODO delete
-    ingFileName = "Ingredients.xml";
-
-    loadRecipes();
-    loadIngredients();
 }
 
 IOManager::~IOManager(){}
 
 vector<Recipe> IOManager::loadRecipes() const{
-    Recipe* recipe = new Recipe();
     vector<Recipe> recipeList;
 
     QStringList filter("*.xml"); //only parse xml files
@@ -52,6 +47,7 @@ vector<Recipe> IOManager::loadRecipes() const{
             //TODO throw error
         }
         //name
+        Recipe* recipe = new Recipe();
         recipe->setName(xmlReader.readElementText());
         xmlReader.readNext();
         xmlReader.readNext();

@@ -256,7 +256,7 @@ QComboBox::drop-down {
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QTextEdit" name="textEdit">
+               <widget class="QTextEdit" name="searchRecipenameTxtEdit">
                 <property name="minimumSize">
                  <size>
                   <width>205</width>
@@ -422,7 +422,7 @@ QComboBox::drop-down {
                 <property name="widgetResizable">
                  <bool>true</bool>
                 </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents">
+                <widget class="QWidget" name="searchIngredientScrollAreaContents">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
@@ -445,7 +445,7 @@ QComboBox::drop-down {
                 <property name="widgetResizable">
                  <bool>true</bool>
                 </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                <widget class="QWidget" name="searchAddedIngredientScrollAreaContents">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
@@ -562,7 +562,7 @@ QComboBox::drop-down {
                 <property name="widgetResizable">
                  <bool>true</bool>
                 </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_3">
+                <widget class="QWidget" name="searchKeywordScrollAreaContents">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
@@ -585,7 +585,7 @@ QComboBox::drop-down {
                 <property name="widgetResizable">
                  <bool>true</bool>
                 </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_4">
+                <widget class="QWidget" name="searchAddedKeywordScrollAreaContents">
                  <property name="geometry">
                   <rect>
                    <x>0</x>

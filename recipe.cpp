@@ -138,3 +138,11 @@ void Recipe::setRating(int value)
 {
     rating = value;
 }
+
+vector<QString> Recipe::getIngredientStrings() const {
+    vector<QString> results;
+    for (auto i : ingredients){
+        results.push_back(i.getName());
+    }
+    return results;
+}

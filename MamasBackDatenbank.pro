@@ -33,7 +33,8 @@ SOURCES += \
     iomanager.cpp \
     stardelegate.cpp \
     starrating.cpp \
-    stareditor.cpp
+    stareditor.cpp \
+    recipecompare.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     iomanager.h \
     stardelegate.h \
     starrating.h \
-    stareditor.h
+    stareditor.h \
+    recipecompare.h
 
 FORMS += \
         mainwindow.ui

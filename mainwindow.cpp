@@ -40,17 +40,26 @@ void MainWindow::setupSearchPage() {
 void MainWindow::setupSearchIngredientScrollView(){
     QVBoxLayout* layout = new QVBoxLayout();
     for (auto i : rm->getIngredientList()){
-        layout->addWidget(new QPushButton(i.getName()));
+        QPushButton* button = new QPushButton(i);
+        button->setMinimumHeight(20);
+        connect(button, SIGNAL(clicked()), this, SLOT(on_searchAddIngredient_clicked()));
+        layout->addWidget(button);
     }
-    ui->searchIngredientScrollArea->setLayout(layout);
+    ui->searchIngredientScrollAreaContents->setLayout(layout);
+}
+
+void MainWindow::on_searchAddIngredient_clicked(){
+    ui->searchIngredientScrollAreaContents->layout()->removeWidget(qobject_cast<QPushButton*>(sender()));
 }
 
 void MainWindow::setupSearchKeywordScrollView(){
     QVBoxLayout* layout = new QVBoxLayout();
     for (auto i : rm->getKeywordList()){
-        layout->addWidget(new QPushButton(i));
+        QPushButton* button = new QPushButton(i);
+        button->setMinimumHeight(20);
+        layout->addWidget(button);
     }
-    ui->searchIngredientScrollArea->setLayout(layout);
+    ui->searchKeywordScrollAreaContents->setLayout(layout);
 }
 
 void MainWindow::setupCreatePage() {
@@ -289,4 +298,8 @@ void MainWindow::on_uploadImgBtn_clicked() {
     } else {
         ui->createImgInputLabel->setPixmap(QPixmap::fromImage(image));
     }
+}
+
+void MainWindow::on_searchRecipenameTxtEdit_textChanged() {
+    //TODO
 }

@@ -1,6 +1,8 @@
 #include <vector>
 #include "QString"
 
+#include "recipecompare.h"
+
 #ifndef RECIPEMANAGER_H
 #define RECIPEMANAGER_H
 
@@ -15,24 +17,30 @@ class RecipeManager
 public:
     RecipeManager();
 
-    void sortRecipes();
+    void sortRecipes(RecipeCompare rc);
+
+    vector<Recipe> findRecipes(const QString& name = "", const QString& category = "",
+                               const QString& favourite = "", const vector<QString> ingList = vector<QString>(),
+                               const vector<QString> keywList = vector<QString>(), int rating = 0) const;
 
     bool saveRecipe(Recipe recipe);
     IOManager* getIoManager();
 
-    vector<Ingredient> getIngredientList();
-    vector<Recipe> getRecipeList();
+    vector<QString> getIngredientList() const;
+    vector<Recipe> getRecipeList() const;
     vector<QString> getKeywordList() const;
 
 private:
     IOManager* ioManager;
-    vector<Ingredient> ingredientList;
+    vector<QString> ingredientList;
     vector<Recipe> recipeList;
     vector<QString> keywordList;
 
     bool isNewIngredient(Ingredient ingredient);
     bool isNewRecipe(Recipe recipe);
     bool isNewKeyword(QString keyword);
+
+    void addAllUniqueIngredientsAndKeywords();
 };
 
 #endif // RECIPEMANAGER_H
