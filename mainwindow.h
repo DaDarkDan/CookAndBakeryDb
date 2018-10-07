@@ -1,4 +1,5 @@
 #include "iomanager.h"
+#include "QVBoxLayout"
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -35,7 +36,17 @@ private slots:
 
     //search
     void on_searchAddIngredient_clicked();
+    void on_searchDeleteIngredient_clicked();
     void on_searchRecipenameTxtEdit_textChanged();
+
+    void on_searchAddKeyword_clicked();
+    void on_searchDeleteKeyword_clicked();
+
+    void on_searchIngredientTextEdit_textChanged();
+
+    void on_searchKeywordTextEdit_textChanged();
+
+    void on_searchResetButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -51,8 +62,19 @@ private:
     void setupCreatePage();
     void setupHomePage();
 
-    void setupSearchIngredientScrollView();
+    //search
+    void setupSearchIngredientScrollViews();
     void setupSearchKeywordScrollView();
+    void searchFoundRecipesScrollViewContents();
+    void fillFoundRecipeScrollView();
+    QFrame* getRecipeAsFrame(const Recipe& recipe);
+
+    void addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button);
+
+    void on_searchIngredientKeyword_textChanged(QObject* sender, QLayout* layout);
+
+    QHBoxLayout* createStarEditorFrameLayout() const;
+
 };
 
 #endif // MAINWINDOW_H

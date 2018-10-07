@@ -146,3 +146,11 @@ vector<QString> Recipe::getIngredientStrings() const {
     }
     return results;
 }
+
+int Recipe::getNumberOfIngredients() const{
+    return ingredients.size();
+}
+
+int Recipe::getNumberOfKeywords() const{
+    return keywords.size();
+}

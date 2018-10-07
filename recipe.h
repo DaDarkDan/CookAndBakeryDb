@@ -59,13 +59,19 @@ class Recipe {
 
         vector<QString> getIngredientStrings() const;
 
+        int getNumberOfIngredients() const;
+
+        int getNumberOfKeywords() const;
+
 private:
         QString name;
         QString creationDate;
         const char* timeFormat = "%Y%m%d-%H:%M:%S";
         vector<Ingredient> ingredients;
+        int numberOfIngredients;
         QString category;
         vector<QString> keywords;
+        int numberOfKeywords;
         QString notes;
         bool favourite;
         QPixmap pixmap;
