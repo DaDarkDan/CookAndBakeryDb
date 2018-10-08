@@ -48,6 +48,12 @@ private slots:
 
     void on_searchResetButton_clicked();
 
+    void deleteLayoutAndWidgetsScrollView(QLayout* layout);
+
+    void on_searchCategoryComboBox_currentIndexChanged(int index);
+
+    void on_searchFavouriteComboBox_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     RecipeManager* rm;
@@ -65,8 +71,7 @@ private:
     //search
     void setupSearchIngredientScrollViews();
     void setupSearchKeywordScrollView();
-    void searchFoundRecipesScrollViewContents();
-    void fillFoundRecipeScrollView();
+    void fillFoundRecipesScrollViewContents();
     QFrame* getRecipeAsFrame(const Recipe& recipe);
 
     void addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button);

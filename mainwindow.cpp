@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::setupSearchPage() {
+    setupSearchIngredientScrollViews();
+    setupSearchKeywordScrollView();
     //combo boxes
     ui->searchCategoryComboBox->addItem("egal");
     ui->searchCategoryComboBox->addItems(Recipe::categoryList);
@@ -33,10 +35,7 @@ void MainWindow::setupSearchPage() {
     ui->searchFavouriteComboBox->addItem("Ja");
     ui->searchFavouriteComboBox->addItem("Nein");
 
-    //scroll views
-    setupSearchIngredientScrollViews();
-    setupSearchKeywordScrollView();
-    searchFoundRecipesScrollViewContents();
+    fillFoundRecipesScrollViewContents();
 
     //star layout
     ui->createRatingStarFrame->setLayout(createStarEditorFrameLayout());
@@ -72,25 +71,27 @@ void MainWindow::setupHomePage() {
 
 }
 
-void MainWindow::searchFoundRecipesScrollViewContents(){
+void MainWindow::fillFoundRecipesScrollViewContents(){
+    //clean up old search results
+    if (ui->searchFoundRecipesScrollViewContents->layout() != nullptr){
+        deleteLayoutAndWidgetsScrollView(ui->searchFoundRecipesScrollViewContents->layout());
+    }
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
     ui->searchFoundRecipesScrollViewContents->setLayout(layout);
-    fillFoundRecipeScrollView();
-}
 
-void MainWindow::fillFoundRecipeScrollView() {
-    vector<Recipe> foundRecipes;
-
-    for (auto r : rm->getRecipeList()){
-        //name
-        if (r.getName().contains(ui->searchRecipenameTxtEdit->toPlainText())){
-            foundRecipes.push_back(r);
-        }
-        //category
-       // if (searchCategoryComboBox)
+    //apply search parameters
+    vector<QString> ingList, keywList;
+    for (int i = 0; i < ui->searchAddedIngredientScrollAreaContents->layout()->count(); i++){
+        ingList.push_back(qobject_cast<QPushButton*>(ui->searchAddedIngredientScrollAreaContents->layout()->itemAt(i)->widget())->text());
     }
+    for (int i = 0; i < ui->searchAddedKeywordScrollAreaContents->layout()->count(); i++){
+        keywList.push_back(qobject_cast<QPushButton*>(ui->searchAddedKeywordScrollAreaContents->layout()->itemAt(i)->widget())->text());
+    }
+    vector<Recipe> foundRecipes = rm->findRecipes(ui->searchRecipenameTxtEdit->toPlainText(), ui->searchCategoryComboBox->currentText(),
+                                                  ui->searchFavouriteComboBox->currentText(), ingList, keywList); //TODO add rating
 
+    //fill with search results
     for (auto r : foundRecipes){
         ui->searchFoundRecipesScrollViewContents->layout()->addWidget(getRecipeAsFrame(r));
     }
@@ -132,6 +133,10 @@ QFrame* MainWindow::getRecipeAsFrame(const Recipe& recipe) {
 }
 
 void MainWindow::setupSearchIngredientScrollViews(){
+    //reset scroll views if set
+    deleteLayoutAndWidgetsScrollView(ui->searchAddedIngredientScrollAreaContents->layout());
+    deleteLayoutAndWidgetsScrollView(ui->searchIngredientScrollAreaContents->layout());
+
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
     for (auto i : rm->getIngredientList()){
@@ -148,6 +153,10 @@ void MainWindow::setupSearchIngredientScrollViews(){
 }
 
 void MainWindow::setupSearchKeywordScrollView(){
+    //reset scroll views if set
+    deleteLayoutAndWidgetsScrollView(ui->searchAddedKeywordScrollAreaContents->layout());
+    deleteLayoutAndWidgetsScrollView(ui->searchKeywordScrollAreaContents->layout());
+
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
     for (auto i : rm->getKeywordList()){
@@ -171,6 +180,8 @@ void MainWindow::on_searchAddIngredient_clicked(){
     connect(button, SIGNAL(clicked()), this, SLOT(on_searchDeleteIngredient_clicked()));
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui->searchAddedIngredientScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
+    //update search results
+    fillFoundRecipesScrollViewContents();
 }
 
 void MainWindow::on_searchDeleteIngredient_clicked(){
@@ -182,6 +193,8 @@ void MainWindow::on_searchDeleteIngredient_clicked(){
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui->searchIngredientScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
     on_searchIngredientKeyword_textChanged(ui->searchIngredientTextEdit, ui->searchIngredientScrollAreaContents->layout());
+    //update search results
+    fillFoundRecipesScrollViewContents();
 }
 
 void MainWindow::on_searchAddKeyword_clicked() {
@@ -192,6 +205,8 @@ void MainWindow::on_searchAddKeyword_clicked() {
     connect(button, SIGNAL(clicked()), this, SLOT(on_searchDeleteKeyword_clicked()));
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui->searchAddedKeywordScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
+    //update search results
+    fillFoundRecipesScrollViewContents();
 }
 
 void MainWindow::on_searchDeleteKeyword_clicked() {
@@ -203,6 +218,8 @@ void MainWindow::on_searchDeleteKeyword_clicked() {
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui->searchKeywordScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
     on_searchIngredientKeyword_textChanged(ui->searchKeywordTextEdit, ui->searchKeywordScrollAreaContents->layout());
+    //update search results
+    fillFoundRecipesScrollViewContents();
 }
 
 void MainWindow::addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button){
@@ -437,7 +454,8 @@ void MainWindow::on_uploadImgBtn_clicked() {
 }
 
 void MainWindow::on_searchRecipenameTxtEdit_textChanged() {
-    //TODO
+    //update search results
+    fillFoundRecipesScrollViewContents();
 }
 
 void MainWindow::on_searchIngredientTextEdit_textChanged() {
@@ -463,5 +481,35 @@ void MainWindow::on_searchIngredientKeyword_textChanged(QObject* sender, QLayout
 }
 
 void MainWindow::on_searchResetButton_clicked() {
+    ui->searchRecipenameTxtEdit->setText("");
+    ui->searchCategoryComboBox->setCurrentIndex(0);
+    ui->searchFavouriteComboBox->setCurrentIndex(0);
+    ui->searchIngredientTextEdit->setText("");
+    ui->searchKeywordTextEdit->setText("");
+    setupSearchIngredientScrollViews();
+    setupSearchKeywordScrollView();
 
+    //update search results
+    fillFoundRecipesScrollViewContents();
+}
+
+void MainWindow::deleteLayoutAndWidgetsScrollView(QLayout* layout) {
+    if (layout != nullptr){
+        QLayoutItem* item;
+        while ((item = layout->takeAt(0)) != nullptr){
+            delete item->widget();
+            delete item;
+        }
+        delete layout;
+    }
+}
+
+void MainWindow::on_searchCategoryComboBox_currentIndexChanged(int index) {
+    //update search results
+    fillFoundRecipesScrollViewContents();
+}
+
+void MainWindow::on_searchFavouriteComboBox_currentIndexChanged(int index) {
+    //update search results
+    fillFoundRecipesScrollViewContents();
 }

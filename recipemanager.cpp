@@ -27,27 +27,31 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
     }
 
     vector<Recipe> foundRecipes;
-    bool fav = favourite == "true" ? true : false;
     for (auto r : recipeList){
-        if (r.getName().contains(name) || r.getCategory().contains(category) || r.getRating() == rating){
-            foundRecipes.push_back(r);
+        //TODO add rating
+        if (!r.getName().toUpper().contains(name.toUpper()) || r.getRating() != rating){
             continue;
-        } else if(favourite != "egal" && r.getFavourite() == fav){
+        } else if(r.getCategory().toUpper() != category.toUpper() && category != "egal") {
+            continue;
+        } else if(r.getFavouriteAsQString().toUpper() != favourite.toUpper() && favourite != "egal"){
             foundRecipes.push_back(r);
             continue;
         }
-        //add recipe if all ingredients found
-        auto ingPos = std::search(r.getIngredientStrings().begin(), r.getIngredientStrings().end(),
-                                  ingList.begin(), ingList.end());
-        if (ingPos != r.getIngredientStrings().end()){
-            foundRecipes.push_back(r);
+        //check if all ingredients found in recipe, if not continue
+        //TODO ÜBERARBEITEN: sucht nur sublist in derselben Reihenfolge!!!
+        auto recipeIngs = r.getIngredientStrings();
+        vector<QString>::iterator ingPos = std::search(recipeIngs.begin(), recipeIngs.end(),
+                                                       ingList.begin(), ingList.end());
+        if (ingPos == recipeIngs.end()){
+            continue;
         }
-        //add recipe if all keywords found
+        //check if all keywords found in recipe, if not continue
         auto keywPos = std::search(r.getKeywords().begin(), r.getKeywords().end(),
                                    keywList.begin(), keywList.end());
-        if (keywPos != r.getIngredientStrings().end()){
-            foundRecipes.push_back(r);
+        if (keywPos == r.getKeywords().end()){
+            continue;
         }
+        foundRecipes.push_back(r);
     }
     return foundRecipes;
 }
