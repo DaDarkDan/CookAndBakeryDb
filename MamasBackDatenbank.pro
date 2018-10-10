@@ -34,7 +34,10 @@ SOURCES += \
     stardelegate.cpp \
     starrating.cpp \
     stareditor.cpp \
-    recipecompare.cpp
+    recipecompare.cpp \
+    createpage.cpp \
+    searchpage.cpp \
+    homepage.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -45,7 +48,10 @@ HEADERS += \
     stardelegate.h \
     starrating.h \
     stareditor.h \
-    recipecompare.h
+    recipecompare.h \
+    createpage.h \
+    searchpage.h \
+    homepage.h
 
 FORMS += \
         mainwindow.ui

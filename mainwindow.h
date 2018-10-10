@@ -10,6 +10,9 @@ class QFrame;
 class QTextEdit;
 class QPushButton;
 class RecipeManager;
+class CreatePage;
+class SearchPage;
+class HomePage;
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +26,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    static QHBoxLayout* createStarEditorFrameLayout();
+    static QTextEdit* createCustomTextEdit(const QString &value, int minH, int maxH, int minW, int maxW);
+    static QFrame* createCustomFrame();
+
+    QPushButton* createCustomDeleteButton();
+
 private slots:
 
     void on_pushButton_clicked(); //TODO remove
@@ -30,7 +39,7 @@ private slots:
     //create
     void on_createSaveBtn_clicked();
     void on_createAddIngredientBtn_clicked();
-    void onAddedFrameDeleteButton_clicked();
+    void on_addedFrameDeleteButton_clicked();
     void on_createAddKeywordBtn_clicked();
     void on_uploadImgBtn_clicked();
 
@@ -48,38 +57,31 @@ private slots:
 
     void on_searchResetButton_clicked();
 
-    void deleteLayoutAndWidgetsScrollView(QLayout* layout);
-
     void on_searchCategoryComboBox_currentIndexChanged(int index);
 
     void on_searchFavouriteComboBox_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;
+
+    CreatePage* cp;
+    SearchPage* sp;
+    HomePage* hp;
+
     RecipeManager* rm;
     vector<QWidget*> addedIngredientFrameList;
     vector<QWidget*> addedKeywordFrameList;
-
-    QFrame* createFrame() const;
-    QTextEdit* createTextEdit(const QString &value, int minH, int maxH, int minW, int maxW) const;
-    QPushButton* createDeleteButton() const;
 
     void setupSearchPage();
     void setupCreatePage();
     void setupHomePage();
 
     //search
-    void setupSearchIngredientScrollViews();
-    void setupSearchKeywordScrollView();
-    void fillFoundRecipesScrollViewContents();
     QFrame* getRecipeAsFrame(const Recipe& recipe);
 
     void addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button);
 
     void on_searchIngredientKeyword_textChanged(QObject* sender, QLayout* layout);
-
-    QHBoxLayout* createStarEditorFrameLayout() const;
-
 };
 
 #endif // MAINWINDOW_H
