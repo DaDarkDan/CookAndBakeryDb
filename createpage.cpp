@@ -15,10 +15,24 @@
 #include "QLayout"
 #include "QString"
 #include "QPushButton"
+#include "QCheckBox"
 
-void CreatePage::setup(QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
-                       QWidget* createAddedIngredientsScrollViewContents, QWidget* createAddedKeywordsScrollViewContents,
-                       QFrame* searchRatingStarFrame){
+CreatePage::CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
+                           QWidget* createAddedIngredientsScrollViewContents, QWidget* createAddedKeywordsScrollViewContents,
+                       QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox){
+    this->mw = mw;
+    this->createCategoryComboBox = createCategoryComboBox;
+    this->createAddIngredientWeightTypeComboBox = createAddIngredientWeightTypeComboBox;
+    this->createAddedIngredientsScrollViewContents = createAddedIngredientsScrollViewContents;
+    this->createAddedKeywordsScrollViewContents = createAddedKeywordsScrollViewContents;
+    this->createRatingStarFrame = createRatingStarFrame;
+    this->createFavouriteCheckBox = createFavouriteCheckBox;
+}
+
+void CreatePage::setup(){
+    //favourite checkbox
+    createFavouriteCheckBox->setStyleSheet("margin-bottom: 20px");
+
     //combo boxes
     createCategoryComboBox->addItems(Recipe::categoryList);
     createAddIngredientWeightTypeComboBox->addItems(Ingredient::weightTypeList);
@@ -32,11 +46,11 @@ void CreatePage::setup(QComboBox* createCategoryComboBox, QComboBox* createAddIn
     createAddedKeywordsScrollViewContents->setLayout(layout);
 
     //star layout
-    searchRatingStarFrame->setLayout(MainWindow::createStarEditorFrameLayout());
+    createRatingStarFrame->setLayout(mw->createStarEditorFrameLayout());
 }
 
-QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, QComboBox* createCategoryComboBox, vector<QWidget*> addedIngredientFrameList,
-                                          vector<QWidget*> addedKeywordFrameList, QFrame* createRatingStarFrame, QTextEdit* createNotesTxtEdit,
+QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vector<QWidget*> addedIngredientFrameList,
+                                          vector<QWidget*> addedKeywordFrameList, QTextEdit* createNotesTxtEdit,
                                           QLabel* createImgInputLabel, QCheckBox* createFavouriteCheckBox) {
     if (createNameTxtEdit->toPlainText() == ""){
         return "Bitte gib einen Rezeptnamen an!";
@@ -99,14 +113,13 @@ QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, QComb
     recipe->setFavourite(createFavouriteCheckBox->isChecked());
     createFavouriteCheckBox->setCheckState(Qt::Unchecked);
 
-    if (rm->saveRecipe(*recipe)){
+    if (mw->getRm()->saveRecipe(*recipe)){
         return "Rezept '" + recipe->getName() + " wurde erfolgreich gespeichert!";
     }
     return "Rezept konnte nicht gespeichert werden. Gibt es dieses schon?";
 }
 
-QString CreatePage::on_createAddIngredientBtn_clicked(MainWindow* mainWindow, QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit, QComboBox* createAddIngredientWeightTypeComboBox,
-                                                   QWidget* createAddedIngredientsScrollViewContents, vector<QWidget*> addedIngredientFrameList) {
+QString CreatePage::on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit, vector<QWidget*> addedIngredientFrameList) {
     //check if amount is decimal number
     bool isFloat;
     createIngredientAmountTxtEdit->toPlainText().toFloat(&isFloat);
@@ -117,9 +130,9 @@ QString CreatePage::on_createAddIngredientBtn_clicked(MainWindow* mainWindow, QT
 
     if (createIngredientNameTxtEdit->toPlainText() != "" && createIngredientAmountTxtEdit->toPlainText() != ""){
         //create contents
-        QTextEdit* name = MainWindow::createCustomTextEdit(createIngredientNameTxtEdit->toPlainText(), 25, 25, 100, 150);
+        QTextEdit* name = mw->createCustomTextEdit(createIngredientNameTxtEdit->toPlainText(), 25, 25, 100, 150);
         createIngredientNameTxtEdit->clear();
-        QTextEdit* amount = MainWindow::createCustomTextEdit(createIngredientAmountTxtEdit->toPlainText(), 25, 25, 50, 100);
+        QTextEdit* amount = mw->createCustomTextEdit(createIngredientAmountTxtEdit->toPlainText(), 25, 25, 50, 100);
         createIngredientAmountTxtEdit->clear();
         QComboBox* weightType = new QComboBox();
         weightType->addItems(Ingredient::weightTypeList);
@@ -128,8 +141,8 @@ QString CreatePage::on_createAddIngredientBtn_clicked(MainWindow* mainWindow, QT
         weightType->setMinimumHeight(25);
         weightType->setMaximumWidth(70);
         weightType->setMinimumWidth(70);
-        QPushButton* deleteButton = mainWindow->createCustomDeleteButton();
-        QFrame* frame = MainWindow::createCustomFrame();
+        QPushButton* deleteButton = mw->createCustomDeleteButton();
+        QFrame* frame = mw->createCustomFrame();
         name->setParent(frame);
         amount->setParent(frame);
         weightType->setParent(frame);
@@ -151,14 +164,14 @@ QString CreatePage::on_createAddIngredientBtn_clicked(MainWindow* mainWindow, QT
     return "Zutat konnte aufgrund eines Fehlers nicht hinzugefügt werden!";
 }
 
-QString CreatePage::on_createAddKeywordBtn_clicked(MainWindow* mainWindow, QTextEdit* createAddedKeywordsTxtEdit, QWidget* createAddedKeywordsScrollViewContents, vector<QWidget*> addedKeywordFrameList) {
+QString CreatePage::on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit, vector<QWidget*> addedKeywordFrameList) {
 
     if (createAddedKeywordsTxtEdit->toPlainText() != ""){
         //create contents
-        QTextEdit* txtEdit = MainWindow::createCustomTextEdit(createAddedKeywordsTxtEdit->toPlainText(), 25, 25, 100, 100);
+        QTextEdit* txtEdit = mw->createCustomTextEdit(createAddedKeywordsTxtEdit->toPlainText(), 25, 25, 100, 100);
         createAddedKeywordsTxtEdit->clear();
-        QPushButton* deleteButton = mainWindow->createCustomDeleteButton();
-        QFrame* frame = MainWindow::createCustomFrame();
+        QPushButton* deleteButton = mw->createCustomDeleteButton();
+        QFrame* frame = mw->createCustomFrame();
         txtEdit->setParent(frame);
         deleteButton->setParent(frame);
 

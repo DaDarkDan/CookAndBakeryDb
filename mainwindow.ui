@@ -137,7 +137,7 @@ QComboBox::drop-down {
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <attribute name="title">
@@ -763,8 +763,30 @@ QComboBox::drop-down {
                <number>10</number>
               </property>
               <property name="bottomMargin">
-               <number>40</number>
+               <number>20</number>
               </property>
+              <item row="5" column="0">
+               <widget class="QLabel" name="createRatingTitleLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>100</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="text">
+                 <string>Bewertung</string>
+                </property>
+               </widget>
+              </item>
               <item row="3" column="0">
                <widget class="QLabel" name="createCategoryTItleLabel">
                 <property name="minimumSize">
@@ -850,7 +872,35 @@ QComboBox::drop-down {
                 </property>
                </widget>
               </item>
-              <item row="3" column="1">
+              <item row="6" column="0">
+               <widget class="QFrame" name="createRatingStarFrame">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>205</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>205</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
                <widget class="QCheckBox" name="createFavouriteCheckBox">
                 <property name="minimumSize">
                  <size>
@@ -998,7 +1048,7 @@ QComboBox::drop-down {
                <number>10</number>
               </property>
               <property name="bottomMargin">
-               <number>5</number>
+               <number>10</number>
               </property>
               <item row="0" column="0">
                <widget class="QLabel" name="createIngredientNameLabel">
@@ -1200,7 +1250,7 @@ QComboBox::drop-down {
                <number>10</number>
               </property>
               <property name="bottomMargin">
-               <number>5</number>
+               <number>10</number>
               </property>
               <item row="1" column="0">
                <widget class="QLabel" name="createKeywordsTitleLabel">
@@ -1334,7 +1384,7 @@ QComboBox::drop-down {
                    <x>0</x>
                    <y>0</y>
                    <width>468</width>
-                   <height>132</height>
+                   <height>134</height>
                   </rect>
                  </property>
                 </widget>
@@ -1480,80 +1530,6 @@ QComboBox::drop-down {
                 </property>
                 <property name="text">
                  <string>Rezept speichern</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QFrame" name="createRatingFrame">
-             <property name="minimumSize">
-              <size>
-               <width>280</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>280</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::Box</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QLabel" name="createRatingTitleLabel">
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>100</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="text">
-                 <string>Bewertung</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="createRatingStarFrame">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>205</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>205</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Box</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
                 </property>
                </widget>
               </item>

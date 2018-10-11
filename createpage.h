@@ -17,30 +17,37 @@ class RecipeManager;
 class QString;
 class QPushButton;
 class MainWindow;
+class QCheckBox;
 
 class CreatePage
 {
 public:
-    CreatePage(RecipeManager* rm) : rm(rm){}
-
-    void setup(QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
+    CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
                QWidget* createAddedIngredientsScrollViewContents, QWidget* createAddedKeywordsScrollViewContents,
-               QFrame* searchRatingStarFrame);
+               QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox);
 
-    QString on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, QComboBox* createCategoryComboBox, vector<QWidget*> addedIngredientFrameList,
-                                  vector<QWidget*> addedKeywordFrameList, QFrame* createRatingStarFrame, QTextEdit* createNotesTxtEdit,
+    void setup();
+
+    QString on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vector<QWidget*> addedIngredientFrameList,
+                                  vector<QWidget*> addedKeywordFrameList, QTextEdit* createNotesTxtEdit,
                                   QLabel* createImgInputLabel, QCheckBox* createFavouriteCheckBox);
-    QString on_createAddIngredientBtn_clicked(MainWindow* mainWindow, QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit, QComboBox* createAddIngredientWeightTypeComboBox,
-                                           QWidget* createAddedIngredientsScrollViewContents, vector<QWidget*> addedIngredientFrameList);
-    QString on_createAddKeywordBtn_clicked(MainWindow* mainWindow, QTextEdit* createAddedKeywordsTxtEdit, QWidget* createAddedKeywordsScrollViewContents, vector<QWidget*> addedKeywordFrameList);
+    QString on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
+                                           vector<QWidget*> addedIngredientFrameList);
+    QString on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit, vector<QWidget*> addedKeywordFrameList);
 
     void on_addedFrameDeleteButton_clicked(QPushButton* button, vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList);
 
     void on_uploadImgBtn_clicked();
 
 private:
-    RecipeManager* rm;
+    MainWindow* mw;
 
+    QComboBox* createCategoryComboBox;
+    QComboBox* createAddIngredientWeightTypeComboBox;
+    QWidget* createAddedIngredientsScrollViewContents;
+    QWidget* createAddedKeywordsScrollViewContents;
+    QFrame* createRatingStarFrame;
+    QCheckBox* createFavouriteCheckBox;
 };
 
 #endif // CREATEPAGE_H

@@ -26,11 +26,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    static QHBoxLayout* createStarEditorFrameLayout();
-    static QTextEdit* createCustomTextEdit(const QString &value, int minH, int maxH, int minW, int maxW);
-    static QFrame* createCustomFrame();
-
+    QHBoxLayout* createStarEditorFrameLayout();
+    QTextEdit* createCustomTextEdit(const QString &value, int minH, int maxH, int minW, int maxW);
+    QFrame* createCustomFrame();
     QPushButton* createCustomDeleteButton();
+
+    RecipeManager* getRm() const;
 
 private slots:
 
@@ -76,12 +77,6 @@ private:
     void setupCreatePage();
     void setupHomePage();
 
-    //search
-    QFrame* getRecipeAsFrame(const Recipe& recipe);
-
-    void addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button);
-
-    void on_searchIngredientKeyword_textChanged(QObject* sender, QLayout* layout);
 };
 
 #endif // MAINWINDOW_H
