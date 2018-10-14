@@ -45,6 +45,8 @@ void CreatePage::setup(){
 
     //star layout
     createRatingStarFrame->setLayout(mw->createStarEditorFrameLayout());
+    starEditor = createRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
+    createRatingStarFrame->setDisabled(true);
 }
 
 QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vector<QWidget*> addedIngredientFrameList,
@@ -75,13 +77,13 @@ QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vecto
         }
     }
     recipe->setIngredients(addedIngredientList);
-    for (auto i : addedIngredientFrameList){
-        while(QWidget* w = i->findChild<QWidget*>()){
-            delete w;
-        }
-        delete i;
-    }
     addedIngredientFrameList.clear();
+    auto layout = createAddedIngredientsScrollViewContents->layout();
+    QLayoutItem* item;
+    while((item = layout->takeAt(0)) != nullptr){
+        delete item->widget();
+        delete item;
+    }
     //keywords
     for (auto frame : addedKeywordFrameList){
         auto children = frame->children();
@@ -89,20 +91,19 @@ QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vecto
             recipe->addKeyword(qobject_cast<QTextEdit*>(children.at(0))->toPlainText());
         }
     }
-    for (auto i : addedKeywordFrameList){
-        while(QWidget* w = i->findChild<QWidget*>()){
-            delete w;
-        }
-        delete i;
-    }
     addedKeywordFrameList.clear();
+    layout = createAddedKeywordsScrollViewContents->layout();
+    while((item = layout->takeAt(0)) != nullptr){
+        delete item->widget();
+        delete item;
+    }
     //rating
-    StarEditor* starEditor = createRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
     if (createRatingCheckBox->isChecked()){
         recipe->setRating(starEditor->starRating().getMyStarCount());
     } else {
         recipe->setRating(0);
     }
+    createRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
     //notes
     recipe->setNotes(createNotesTxtEdit->toPlainText());
     createNotesTxtEdit->clear();
@@ -215,4 +216,14 @@ void CreatePage::on_addedFrameDeleteButton_clicked(QPushButton* button, vector<Q
 
 void CreatePage::on_uploadImgBtn_clicked() {
 
+}
+
+void CreatePage::on_createRatingCheckBox_stateChanged(int arg1){
+    if (arg1 == 0){
+        createRatingStarFrame->setEnabled(false);
+        starEditor->setEditable(false);
+    } else if (arg1 == 2){
+        createRatingStarFrame->setEnabled(true);
+        starEditor->setEditable(true);
+    }
 }

@@ -68,6 +68,8 @@ private slots:
 
     void on_tabWidget_currentChanged(int index);
 
+    void on_createRatingCheckBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 

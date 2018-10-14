@@ -269,11 +269,9 @@ void SearchPage::on_searchIngredientKeyword_textChanged(QTextEdit* txtEdit, QLay
 
 void SearchPage::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
     if (arg1 == 0){
-        searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
         searchRatingStarFrame->setEnabled(false);
         starEditor->setEditable(false);
     } else if (arg1 == 2){
-        searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Checked);
         searchRatingStarFrame->setEnabled(true);
         starEditor->setEditable(true);
     }

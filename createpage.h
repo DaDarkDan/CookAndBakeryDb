@@ -18,6 +18,7 @@ class QString;
 class QPushButton;
 class MainWindow;
 class QCheckBox;
+class StarEditor;
 
 class CreatePage
 {
@@ -39,8 +40,12 @@ public:
 
     void on_uploadImgBtn_clicked();
 
+    void on_createRatingCheckBox_stateChanged(int arg1);
+
 private:
     MainWindow* mw;
+
+    StarEditor* starEditor = nullptr;
 
     QComboBox* createCategoryComboBox;
     QComboBox* createAddIngredientWeightTypeComboBox;

@@ -203,3 +203,7 @@ void MainWindow::on_tabWidget_currentChanged(int index){
         sp->on_searchTabOpened();
     }
 }
+
+void MainWindow::on_createRatingCheckBox_stateChanged(int arg1){
+    cp->on_createRatingCheckBox_stateChanged(arg1);
+}
