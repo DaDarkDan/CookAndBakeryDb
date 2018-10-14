@@ -36,9 +36,6 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
     this->searchFoundRecipesScrollViewContents = searchFoundRecipesScrollViewContents;
     this->searchIncludeRatingCheckBox = searchIncludeRatingCheckBox;
     this->searchResultImgLabel = searchResultImgLabel;
-    searchResultImgLabel->setMinimumSize(400, 800);
-    searchResultImgLabel->setMaximumSize(400, 800);
-    searchResultImgLabel->setScaledContents(true);
 }
 
 void SearchPage::setup() {
@@ -55,9 +52,14 @@ void SearchPage::setup() {
 
     //star layout
     searchRatingStarFrame->setLayout(mw->createStarEditorFrameLayout());
+    starEditor = searchRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
+    connect(starEditor, &StarEditor::editingFinished, this, &SearchPage::ratingEditingFinished);
+    searchRatingStarFrame->setDisabled(true);
 
     //result image
     searchResultImgLabel->setScaledContents(true);
+    searchResultImgLabel->setMinimumSize(400, 600);
+    searchResultImgLabel->setMaximumSize(400, 600);
 
     updateFoundRecipes();
 }
@@ -133,12 +135,13 @@ void SearchPage::on_searchFavouriteComboBox_currentIndexChanged(int /*index*/){
 }
 
 void SearchPage::on_searchResetButton_clicked() {
-    searchRecipenameTxtEdit->setText("");
+    searchRecipenameTxtEdit->clear();
     searchCategoryComboBox->setCurrentIndex(0);
     searchFavouriteComboBox->setCurrentIndex(0);
-    searchIngredientTextEdit->setText("");
-    searchKeywordTextEdit->setText("");
+    searchIngredientTextEdit->clear();
+    searchKeywordTextEdit->clear();
     searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
+    searchResultImgLabel->clear();
     setupSearchIngredientScrollViews();
     setupSearchKeywordScrollView();
 
@@ -215,10 +218,6 @@ void SearchPage::updateFoundRecipes() {
         keywList.push_back(qobject_cast<QPushButton*>(searchAddedKeywordScrollAreaContents->layout()->itemAt(i)->widget())->text());
     }
     vector<Recipe> foundRecipes;
-    StarEditor* starEditor = nullptr;
-    if (searchRatingStarFrame->layout()){
-        starEditor = searchRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
-    }
     if (searchIncludeRatingCheckBox->isChecked() && starEditor){
         foundRecipes = mw->getRm()->findRecipes(searchRecipenameTxtEdit->toPlainText(), searchCategoryComboBox->currentText(),
                                                       searchFavouriteComboBox->currentText(), ingList, keywList, starEditor->starRating().getMyStarCount());
@@ -271,10 +270,12 @@ void SearchPage::on_searchIngredientKeyword_textChanged(QTextEdit* txtEdit, QLay
 void SearchPage::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
     if (arg1 == 0){
         searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
-        searchRatingStarFrame->setDisabled(true);
+        searchRatingStarFrame->setEnabled(false);
+        starEditor->setEditable(false);
     } else if (arg1 == 2){
         searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Checked);
-        searchRatingStarFrame->setDisabled(false);
+        searchRatingStarFrame->setEnabled(true);
+        starEditor->setEditable(true);
     }
     //update search results
     updateFoundRecipes();
@@ -282,4 +283,12 @@ void SearchPage::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
 
 void SearchPage::displaySearchResultImage(QPixmap pixmap){
     searchResultImgLabel->setPixmap(pixmap);
+}
+
+void SearchPage::ratingEditingFinished(){
+    updateFoundRecipes();
+}
+
+void SearchPage::on_searchTabOpened(){
+    updateFoundRecipes();
 }

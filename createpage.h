@@ -24,7 +24,7 @@ class CreatePage
 public:
     CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
                QWidget* createAddedIngredientsScrollViewContents, QWidget* createAddedKeywordsScrollViewContents,
-               QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox);
+               QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox);
 
     void setup();
 
@@ -48,6 +48,7 @@ private:
     QWidget* createAddedKeywordsScrollViewContents;
     QFrame* createRatingStarFrame;
     QCheckBox* createFavouriteCheckBox;
+    QCheckBox* createRatingCheckBox;
 };
 
 #endif // CREATEPAGE_H

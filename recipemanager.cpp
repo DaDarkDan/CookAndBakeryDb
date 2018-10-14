@@ -42,19 +42,25 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
             continue;
         }
         //check if all ingredients found in recipe, if not continue
+        bool notFound = false;
         auto recipeIngs = r.getIngredientStrings();
         for (auto ing : ingList){
             if (std::find(recipeIngs.begin(), recipeIngs.end(), ing) == recipeIngs.end()){
-                continue;
+                notFound = true;
+                break;
             }
         }
         //check if all keywords found in recipe, if not continue
-        for (auto ing : keywList){
-            if (std::find(r.getKeywords().begin(), r.getKeywords().end(), ing) == r.getKeywords().end()){
-                continue;
+        auto recipeKeyw = r.getKeywords();
+        for (auto keyw : keywList){
+            if (std::find(recipeKeyw.begin(), recipeKeyw.end(), keyw) == recipeKeyw.end()){
+                notFound = true;
+                break;
             }
         }
-        foundRecipes.push_back(r);
+        if (!notFound){
+            foundRecipes.push_back(r);
+        }
     }
     return foundRecipes;
 }
@@ -76,6 +82,7 @@ bool RecipeManager::saveRecipe(Recipe recipe){
         std::sort(ingredientList.begin(), ingredientList.end());
         std::sort(keywordList.begin(), keywordList.end());
         ioManager->saveRecipe(recipe);
+        recipeList = ioManager->loadRecipes();
         return true;
     }
     return false;

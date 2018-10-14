@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     cp = new CreatePage(this, ui->createCategoryComboBox, ui->createAddIngredientWeightTypeComboBox,
                         ui->createAddedIngredientsScrollViewContents, ui->createAddedKeywordsScrollViewContents,
-                        ui->createRatingStarFrame, ui->createFavouriteCheckBox);
+                        ui->createRatingStarFrame, ui->createFavouriteCheckBox, ui->createRatingCheckBox);
 
     ClickableLabel* cl = new ClickableLabel("", this);
     ui->searchTab->layout()->addWidget(cl);
@@ -195,5 +195,11 @@ void MainWindow::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
 void MainWindow::openFileWithStdProgramm(QString path){
     if (path != ""){
         QDesktopServices::openUrl(path);
+    }
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index){
+    if (index == 0){
+        sp->on_searchTabOpened();
     }
 }

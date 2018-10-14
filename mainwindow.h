@@ -66,6 +66,8 @@ private slots:
 
     void openFileWithStdProgramm(QString path);
 
+    void on_tabWidget_currentChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 

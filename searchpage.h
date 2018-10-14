@@ -14,6 +14,7 @@ class QTextEdit;
 class QCheckBox;
 class QLabel;
 class ClickableLabel;
+class StarEditor;
 
 class SearchPage : public QObject
 {
@@ -44,16 +45,19 @@ public:
 
     void on_searchIncludeRatingCheckBox_stateChanged(int arg1);
 
+    void updateFoundRecipes();
+
+    void on_searchTabOpened();
+
 private slots:
     void displaySearchResultImage(QPixmap pixmap);
-
+    void ratingEditingFinished();
 private:
     MainWindow* mw;
 
     void setupSearchIngredientScrollViews();
     void setupSearchKeywordScrollView();
     void deleteLayoutAndWidgetsScrollView(QLayout* layout);
-    void updateFoundRecipes();
     QFrame* getRecipeAsFrame(const Recipe& recipe, int index);
 
     void addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button);
@@ -74,6 +78,8 @@ private:
     QFrame* searchRatingStarFrame;
     QCheckBox* searchIncludeRatingCheckBox;
     ClickableLabel* searchResultImgLabel;
+
+    StarEditor* starEditor = nullptr;
 };
 
 #endif // SEARCHPAGE_H

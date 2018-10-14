@@ -19,7 +19,7 @@
 
 CreatePage::CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
                            QWidget* createAddedIngredientsScrollViewContents, QWidget* createAddedKeywordsScrollViewContents,
-                       QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox){
+                       QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox){
     this->mw = mw;
     this->createCategoryComboBox = createCategoryComboBox;
     this->createAddIngredientWeightTypeComboBox = createAddIngredientWeightTypeComboBox;
@@ -27,12 +27,10 @@ CreatePage::CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QCombo
     this->createAddedKeywordsScrollViewContents = createAddedKeywordsScrollViewContents;
     this->createRatingStarFrame = createRatingStarFrame;
     this->createFavouriteCheckBox = createFavouriteCheckBox;
+    this->createRatingCheckBox = createRatingCheckBox;
 }
 
 void CreatePage::setup(){
-    //favourite checkbox
-    createFavouriteCheckBox->setStyleSheet("margin-bottom: 20px");
-
     //combo boxes
     createCategoryComboBox->addItems(Recipe::categoryList);
     createAddIngredientWeightTypeComboBox->addItems(Ingredient::weightTypeList);
@@ -100,7 +98,11 @@ QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vecto
     addedKeywordFrameList.clear();
     //rating
     StarEditor* starEditor = createRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
-    recipe->setRating(starEditor->starRating().getMyStarCount());
+    if (createRatingCheckBox->isChecked()){
+        recipe->setRating(starEditor->starRating().getMyStarCount());
+    } else {
+        recipe->setRating(0);
+    }
     //notes
     recipe->setNotes(createNotesTxtEdit->toPlainText());
     createNotesTxtEdit->clear();

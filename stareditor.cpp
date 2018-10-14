@@ -2,7 +2,7 @@
 #include "QMouseEvent"
 
 StarEditor::StarEditor(QWidget* parent) : QWidget(parent) {
-    editable = true;
+    editable = false;
     setMouseTracking(true);
     setAutoFillBackground(true);
 }
@@ -31,7 +31,6 @@ void StarEditor::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void StarEditor::mousePressEvent(QMouseEvent* /* event */){
-    editable = !editable;
 }
 
 QSize StarEditor::sizeHint() const{
@@ -39,6 +38,7 @@ QSize StarEditor::sizeHint() const{
 }
 
 void StarEditor::mouseReleaseEvent(QMouseEvent * /* event */) {
+    editable = !editable;
     emit editingFinished();
 }
 
