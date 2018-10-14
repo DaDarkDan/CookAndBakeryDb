@@ -2,8 +2,6 @@
 #include "starrating.h"
 #include "QPalette"
 
-const int PaintingScaleFactor = 20;
-
 StarRating::StarRating(int starCount, int maxStarCount)
 {
     myStarCount = starCount;
@@ -53,4 +51,8 @@ QSize StarRating::sizeHint() const {
 
 int StarRating::getMyStarCount() const {
     return myStarCount;
+}
+
+void StarRating::setPaintingScaleFactor(int value){
+    PaintingScaleFactor = value;
 }

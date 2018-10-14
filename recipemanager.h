@@ -21,7 +21,7 @@ public:
 
     vector<Recipe> findRecipes(const QString& name = "", const QString& category = "",
                                const QString& favourite = "", const vector<QString> ingList = vector<QString>(),
-                               const vector<QString> keywList = vector<QString>(), int rating = 0) const;
+                               const vector<QString> keywList = vector<QString>(), int rating = -1) const;
 
     bool saveRecipe(Recipe recipe);
     IOManager* getIoManager();

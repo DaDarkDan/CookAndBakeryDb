@@ -6,20 +6,25 @@
 class QFrame;
 class QVBoxLayout;
 class QPushButton;
-class QObject;
 class QLayout;
 class RecipeManager;
 class MainWindow;
 class QComboBox;
 class QTextEdit;
+class QCheckBox;
+class QLabel;
+class ClickableLabel;
 
-class SearchPage
+class SearchPage : public QObject
 {
+    Q_OBJECT
+
 public:
     SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaContents, QWidget* searchIngredientScrollAreaContents,
                QComboBox* searchCategoryComboBox, QComboBox* searchFavouriteComboBox, QTextEdit* searchRecipenameTxtEdit,
                QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
-               QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame);
+               QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
+               QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel);
 
     void setup();
 
@@ -37,18 +42,24 @@ public:
 
     void on_searchResetButton_clicked();
 
+    void on_searchIncludeRatingCheckBox_stateChanged(int arg1);
+
+private slots:
+    void displaySearchResultImage(QPixmap pixmap);
+
 private:
     MainWindow* mw;
 
     void setupSearchIngredientScrollViews();
     void setupSearchKeywordScrollView();
     void deleteLayoutAndWidgetsScrollView(QLayout* layout);
-    void fillFoundRecipesScrollViewContents();
-    QFrame* getRecipeAsFrame(const Recipe& recipe);
+    void updateFoundRecipes();
+    QFrame* getRecipeAsFrame(const Recipe& recipe, int index);
 
     void addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button);
 
     void on_searchIngredientKeyword_textChanged(QTextEdit* txtEdit, QLayout* layout);
+
 
     QWidget* searchAddedIngredientScrollAreaContents;
     QWidget* searchIngredientScrollAreaContents;
@@ -61,6 +72,8 @@ private:
     QTextEdit* searchKeywordTextEdit;
     QWidget* searchFoundRecipesScrollViewContents;
     QFrame* searchRatingStarFrame;
+    QCheckBox* searchIncludeRatingCheckBox;
+    ClickableLabel* searchResultImgLabel;
 };
 
 #endif // SEARCHPAGE_H

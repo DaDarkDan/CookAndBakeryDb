@@ -94,9 +94,13 @@ vector<Recipe> IOManager::loadRecipes() const{
             xmlReader.readNext();
             xmlReader.readNext();
         }
+        //rating
+        xmlReader.readNext();
+        xmlReader.readNext();
         recipe->setRating(xmlReader.readElementText().toInt());
         //picture
         QString imgFullPath = directoryPath + "/" + recipe->getName() +"_image.png";
+        recipe->setPixmapPath(imgFullPath);
         QPixmap* pixmap = new QPixmap();
         pixmap->load(imgFullPath);
         recipe->setPixmap(*pixmap);

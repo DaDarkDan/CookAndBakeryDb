@@ -4,4 +4,7 @@
         <file>img/background01.jpg</file>
         <file>img/background02.jpg</file>
     </qresource>
+    <qresource prefix="/">
+        <file>img/btnIcon_makeBigger.png</file>
+    </qresource>
 </RCC>

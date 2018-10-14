@@ -4,16 +4,17 @@
 #include "createpage.h"
 #include "searchpage.h"
 #include "homepage.h"
+#include "recipe.h"
+#include "recipemanager.h"
+#include "ingredient.h"
+#include "stareditor.h"
+#include "clickablelabel.h"
 
 #include "QFileDialog"
 #include "QStandardPaths"
 #include "QTableWidget"
 #include "QDate"
-
-#include "recipe.h"
-#include "recipemanager.h"
-#include "ingredient.h"
-#include "stareditor.h"
+#include "QDesktopServices"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,10 +26,15 @@ MainWindow::MainWindow(QWidget *parent) :
     cp = new CreatePage(this, ui->createCategoryComboBox, ui->createAddIngredientWeightTypeComboBox,
                         ui->createAddedIngredientsScrollViewContents, ui->createAddedKeywordsScrollViewContents,
                         ui->createRatingStarFrame, ui->createFavouriteCheckBox);
+
+    ClickableLabel* cl = new ClickableLabel("", this);
+    ui->searchTab->layout()->addWidget(cl);
+    connect(cl, &ClickableLabel::clicked, this, &MainWindow::openFileWithStdProgramm);
     sp = new SearchPage(this, ui->searchAddedIngredientScrollAreaContents, ui->searchIngredientScrollAreaContents,
                         ui->searchCategoryComboBox, ui->searchFavouriteComboBox, ui->searchRecipenameTxtEdit,
                         ui->searchIngredientTextEdit, ui->searchKeywordScrollAreaContents, ui->searchAddedKeywordScrollAreaContents,
-                        ui->searchKeywordTextEdit, ui->searchFoundRecipesScrollViewContents, ui->searchRatingStarFrame);
+                        ui->searchKeywordTextEdit, ui->searchFoundRecipesScrollViewContents, ui->searchRatingStarFrame,
+                        ui->searchIncludeRatingCheckBox, cl);
     hp = new HomePage(this);
 
     setupSearchPage();
@@ -180,4 +186,14 @@ QHBoxLayout* MainWindow::createStarEditorFrameLayout() {
     frameLayout->addWidget(starEditor);
     frameLayout->setContentsMargins(0,0,0,0);
     return frameLayout;
+}
+
+void MainWindow::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
+    sp->on_searchIncludeRatingCheckBox_stateChanged(arg1);
+}
+
+void MainWindow::openFileWithStdProgramm(QString path){
+    if (path != ""){
+        QDesktopServices::openUrl(path);
+    }
 }

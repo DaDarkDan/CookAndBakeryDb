@@ -63,6 +63,10 @@ class Recipe {
 
         int getNumberOfKeywords() const;
 
+        QString getPixmapPath() const;
+
+        void setPixmapPath(const QString &value);
+
 private:
         QString name;
         QString creationDate;
@@ -75,6 +79,7 @@ private:
         QString notes;
         bool favourite;
         QPixmap pixmap;
+        QString pixmapPath;
         int rating;
 };
 

@@ -2,20 +2,26 @@
 #include "mainwindow.h"
 #include "recipemanager.h"
 #include "ingredient.h"
+#include "stareditor.h"
+#include "recipesearchresultframe.h"
+#include "clickablelabel.h"
 
 #include "QLayoutItem"
 #include "QLayout"
-#include "QWidget"
 #include "QPushButton"
 #include "QComboBox"
 #include "QFrame"
 #include "QTextEdit"
 #include "QLabel"
+#include "QCheckBox"
+
+#include "QDebug"
 
 SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaContents, QWidget* searchIngredientScrollAreaContents,
                        QComboBox* searchCategoryComboBox, QComboBox* searchFavouriteComboBox, QTextEdit* searchRecipenameTxtEdit,
                        QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
-                       QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame){
+                       QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
+                       QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel){
     this->mw = mw;
     this->searchAddedIngredientScrollAreaContents = searchAddedIngredientScrollAreaContents;
     this->searchIngredientScrollAreaContents = searchIngredientScrollAreaContents;
@@ -28,12 +34,16 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
     this->searchKeywordTextEdit = searchKeywordTextEdit;
     this->searchRatingStarFrame = searchRatingStarFrame;
     this->searchFoundRecipesScrollViewContents = searchFoundRecipesScrollViewContents;
+    this->searchIncludeRatingCheckBox = searchIncludeRatingCheckBox;
+    this->searchResultImgLabel = searchResultImgLabel;
+    searchResultImgLabel->setMinimumSize(400, 800);
+    searchResultImgLabel->setMaximumSize(400, 800);
+    searchResultImgLabel->setScaledContents(true);
 }
 
 void SearchPage::setup() {
     setupSearchIngredientScrollViews();
     setupSearchKeywordScrollView();
-
 
     //combo boxes
     searchCategoryComboBox->addItem("egal");
@@ -43,61 +53,65 @@ void SearchPage::setup() {
     searchFavouriteComboBox->addItem("Ja");
     searchFavouriteComboBox->addItem("Nein");
 
-    fillFoundRecipesScrollViewContents();
-
     //star layout
     searchRatingStarFrame->setLayout(mw->createStarEditorFrameLayout());
+
+    //result image
+    searchResultImgLabel->setScaledContents(true);
+
+    updateFoundRecipes();
 }
 
 void SearchPage::on_searchAddIngredient_clicked(QPushButton* button) {
     button->disconnect();
     searchIngredientScrollAreaContents->layout()->removeWidget(button);
 
-    QObject::connect(button, SIGNAL(clicked()), mw, SLOT(on_searchDeleteIngredient_clicked()));
+    connect(button, SIGNAL(clicked()), mw, SLOT(on_searchDeleteIngredient_clicked()));
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(searchAddedIngredientScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
 void SearchPage::on_searchDeleteIngredient_clicked(QPushButton* button) {
     button->disconnect();
     searchAddedIngredientScrollAreaContents->layout()->removeWidget(button);
 
-    QObject::connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddIngredient_clicked()));
+    connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddIngredient_clicked()));
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(searchIngredientScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
     on_searchIngredientKeyword_textChanged(searchIngredientTextEdit, searchIngredientScrollAreaContents->layout());
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
 void SearchPage::on_searchAddKeyword_clicked(QPushButton* button) {
     button->disconnect();
     searchKeywordScrollAreaContents->layout()->removeWidget(button);
 
-    QObject::connect(button, SIGNAL(clicked()), mw, SLOT(on_searchDeleteKeyword_clicked()));
+    connect(button, SIGNAL(clicked()), mw, SLOT(on_searchDeleteKeyword_clicked()));
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(searchAddedKeywordScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
 void SearchPage::on_searchDeleteKeyword_clicked(QPushButton* button) {
     button->disconnect();
     searchAddedKeywordScrollAreaContents->layout()->removeWidget(button);
 
-    QObject::connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddKeyword_clicked()));
+    connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddKeyword_clicked()));
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(searchKeywordScrollAreaContents->layout());
     addButtonToScrollAreaContentsLayout(layout, button);
     on_searchIngredientKeyword_textChanged(searchKeywordTextEdit, searchKeywordScrollAreaContents->layout());
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
 void SearchPage::on_searchRecipenameTxtEdit_textChanged() {
+    qDebug() << "test";
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
 void SearchPage::on_searchIngredientTextEdit_textChanged(QTextEdit* txtEdit, QLayout* layout) {
@@ -108,14 +122,14 @@ void SearchPage::on_searchKeywordTextEdit_textChanged(QTextEdit* txtEdit, QLayou
     on_searchIngredientKeyword_textChanged(txtEdit, layout);
 }
 
-void SearchPage::on_searchCategoryComboBox_currentIndexChanged(int index){
+void SearchPage::on_searchCategoryComboBox_currentIndexChanged(int /*index*/){
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
-void SearchPage::on_searchFavouriteComboBox_currentIndexChanged(int index){
+void SearchPage::on_searchFavouriteComboBox_currentIndexChanged(int /*index*/){
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
 void SearchPage::on_searchResetButton_clicked() {
@@ -124,11 +138,12 @@ void SearchPage::on_searchResetButton_clicked() {
     searchFavouriteComboBox->setCurrentIndex(0);
     searchIngredientTextEdit->setText("");
     searchKeywordTextEdit->setText("");
+    searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
     setupSearchIngredientScrollViews();
     setupSearchKeywordScrollView();
 
     //update search results
-    fillFoundRecipesScrollViewContents();
+    updateFoundRecipes();
 }
 
 void SearchPage::setupSearchIngredientScrollViews(){
@@ -141,7 +156,7 @@ void SearchPage::setupSearchIngredientScrollViews(){
     for (auto i : mw->getRm()->getIngredientList()){
         QPushButton* button = new QPushButton(i);
         button->setMinimumHeight(20);
-        QObject::connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddIngredient_clicked()));
+        connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddIngredient_clicked()));
         layout->addWidget(button);
     }
     searchIngredientScrollAreaContents->setLayout(layout);
@@ -161,7 +176,7 @@ void SearchPage::setupSearchKeywordScrollView(){
     for (auto i : mw->getRm()->getKeywordList()){
         QPushButton* button = new QPushButton(i);
         button->setMinimumHeight(20);
-        QObject::connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddKeyword_clicked()));
+        connect(button, SIGNAL(clicked()), mw, SLOT(on_searchAddKeyword_clicked()));
         layout->addWidget(button);
     }
     searchKeywordScrollAreaContents->setLayout(layout);
@@ -182,7 +197,7 @@ void SearchPage::deleteLayoutAndWidgetsScrollView(QLayout *layout){
     }
 }
 
-void SearchPage::fillFoundRecipesScrollViewContents() {
+void SearchPage::updateFoundRecipes() {
     //clean up old search results
     if (searchFoundRecipesScrollViewContents->layout() != nullptr){
         deleteLayoutAndWidgetsScrollView(searchFoundRecipesScrollViewContents->layout());
@@ -199,48 +214,29 @@ void SearchPage::fillFoundRecipesScrollViewContents() {
     for (int i = 0; i < searchAddedKeywordScrollAreaContents->layout()->count(); i++){
         keywList.push_back(qobject_cast<QPushButton*>(searchAddedKeywordScrollAreaContents->layout()->itemAt(i)->widget())->text());
     }
-    vector<Recipe> foundRecipes = mw->getRm()->findRecipes(searchRecipenameTxtEdit->toPlainText(), searchCategoryComboBox->currentText(),
-                                                  searchFavouriteComboBox->currentText(), ingList, keywList); //TODO add rating
+    vector<Recipe> foundRecipes;
+    StarEditor* starEditor = nullptr;
+    if (searchRatingStarFrame->layout()){
+        starEditor = searchRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
+    }
+    if (searchIncludeRatingCheckBox->isChecked() && starEditor){
+        foundRecipes = mw->getRm()->findRecipes(searchRecipenameTxtEdit->toPlainText(), searchCategoryComboBox->currentText(),
+                                                      searchFavouriteComboBox->currentText(), ingList, keywList, starEditor->starRating().getMyStarCount());
+    } else {
+        foundRecipes = mw->getRm()->findRecipes(searchRecipenameTxtEdit->toPlainText(), searchCategoryComboBox->currentText(),
+                                                      searchFavouriteComboBox->currentText(), ingList, keywList);
+    }
 
     //fill with search results
-    for (auto r : foundRecipes){
-        searchFoundRecipesScrollViewContents->layout()->addWidget(getRecipeAsFrame(r));
+    for (unsigned int i = 0; i < foundRecipes.size(); i++){
+        searchFoundRecipesScrollViewContents->layout()->addWidget(getRecipeAsFrame(foundRecipes.at(i), i+1));
     }
 }
 
-QFrame *SearchPage::getRecipeAsFrame(const Recipe &recipe) {
-    QHBoxLayout* horLayout = new QHBoxLayout();
-    QGridLayout* gridLayout = new QGridLayout();
-    //TODO setup layout
-
-    QLabel* name = new QLabel(recipe.getName());
-    name->setMaximumSize(200, 20);
-    QLabel* date = new QLabel(recipe.getCreationDate());
-    date->setMaximumSize(150, 20);
-    QLabel* ing = new QLabel(QString::number(recipe.getNumberOfIngredients()) + " Zutaten");
-    ing->setMaximumSize(150, 20);
-    QFrame* starFrame = new QFrame();
-    starFrame->setMaximumSize(205, 25);
-    QLabel* image = new QLabel();
-    image->setMaximumSize(100, 100);
-    image->setPixmap(recipe.getPixmap());
-    image->setScaledContents(true);
-    starFrame->setLayout(mw->createStarEditorFrameLayout());
-
-    //zeile spalte
-    gridLayout->addWidget(name,0,0);
-    gridLayout->addWidget(date,1,0);
-    gridLayout->addWidget(ing,2,0);
-    gridLayout->addWidget(starFrame,3,0);
-
-    horLayout->addLayout(gridLayout);
-    horLayout->addWidget(image);
-
-    QFrame* frame = new QFrame();
-    frame->setFrameStyle(QFrame::Raised | QFrame::Box);
-    frame->setLayout(horLayout);
-
-    return frame;
+QFrame *SearchPage::getRecipeAsFrame(const Recipe &recipe, int index) {
+    RecipeSearchResultFrame* rsrFrame = new RecipeSearchResultFrame(recipe, mw->createStarEditorFrameLayout(), index, mw);
+    connect(rsrFrame, &RecipeSearchResultFrame::on_mousePressed, this, &SearchPage::displaySearchResultImage);
+    return rsrFrame->getFrame();
 }
 
 void SearchPage::addButtonToScrollAreaContentsLayout(QVBoxLayout *layout, QPushButton *button) {
@@ -270,4 +266,20 @@ void SearchPage::on_searchIngredientKeyword_textChanged(QTextEdit* txtEdit, QLay
             currentBtn->setVisible(false);
         }
     }
+}
+
+void SearchPage::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
+    if (arg1 == 0){
+        searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
+        searchRatingStarFrame->setDisabled(true);
+    } else if (arg1 == 2){
+        searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Checked);
+        searchRatingStarFrame->setDisabled(false);
+    }
+    //update search results
+    updateFoundRecipes();
+}
+
+void SearchPage::displaySearchResultImage(QPixmap pixmap){
+    searchResultImgLabel->setPixmap(pixmap);
 }

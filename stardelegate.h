@@ -9,7 +9,7 @@ class StarDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    StarDelegate(QWidget *parent = 0) : QStyledItemDelegate(parent) {}
+    StarDelegate(QWidget *parent = nullptr) : QStyledItemDelegate(parent) {}
 
     virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;

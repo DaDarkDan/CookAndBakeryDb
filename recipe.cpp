@@ -154,3 +154,13 @@ int Recipe::getNumberOfIngredients() const{
 int Recipe::getNumberOfKeywords() const{
     return keywords.size();
 }
+
+QString Recipe::getPixmapPath() const
+{
+    return pixmapPath;
+}
+
+void Recipe::setPixmapPath(const QString &value)
+{
+    pixmapPath = value;
+}

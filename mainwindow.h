@@ -62,6 +62,10 @@ private slots:
 
     void on_searchFavouriteComboBox_currentIndexChanged(int index);
 
+    void on_searchIncludeRatingCheckBox_stateChanged(int arg1);
+
+    void openFileWithStdProgramm(QString path);
+
 private:
     Ui::MainWindow *ui;
 

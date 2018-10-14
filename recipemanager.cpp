@@ -22,34 +22,37 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
                            const QString& favourite, const vector<QString> ingList,
                            const vector<QString> keywList, int rating) const{
     //return all recipes if no parameter set
-    if (name == "" && category == "" && favourite == "egal" && ingList.empty() && keywList.empty() && rating == 0) {
+    if (name == "" && category == "egal" && favourite == "egal" && ingList.empty() && keywList.empty() && rating == -1) {
         return recipeList;
+    }
+    //
+    if (category == "" || favourite == ""){
+        return vector<Recipe>();
     }
 
     vector<Recipe> foundRecipes;
     for (auto r : recipeList){
-        //TODO add rating
-        if (!r.getName().toUpper().contains(name.toUpper()) || r.getRating() != rating){
+        if (!r.getName().toUpper().contains(name.toUpper())){
             continue;
         } else if(r.getCategory().toUpper() != category.toUpper() && category != "egal") {
             continue;
         } else if(r.getFavouriteAsQString().toUpper() != favourite.toUpper() && favourite != "egal"){
-            foundRecipes.push_back(r);
+            continue;
+        } else if(r.getRating() == 0 || (r.getRating() != 0 && rating != -1 && r.getRating() != rating)){
             continue;
         }
         //check if all ingredients found in recipe, if not continue
-        //TODO ÜBERARBEITEN: sucht nur sublist in derselben Reihenfolge!!!
         auto recipeIngs = r.getIngredientStrings();
-        vector<QString>::iterator ingPos = std::search(recipeIngs.begin(), recipeIngs.end(),
-                                                       ingList.begin(), ingList.end());
-        if (ingPos == recipeIngs.end()){
-            continue;
+        for (auto ing : ingList){
+            if (std::find(recipeIngs.begin(), recipeIngs.end(), ing) == recipeIngs.end()){
+                continue;
+            }
         }
         //check if all keywords found in recipe, if not continue
-        auto keywPos = std::search(r.getKeywords().begin(), r.getKeywords().end(),
-                                   keywList.begin(), keywList.end());
-        if (keywPos == r.getKeywords().end()){
-            continue;
+        for (auto ing : keywList){
+            if (std::find(r.getKeywords().begin(), r.getKeywords().end(), ing) == r.getKeywords().end()){
+                continue;
+            }
         }
         foundRecipes.push_back(r);
     }
