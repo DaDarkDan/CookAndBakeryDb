@@ -17,10 +17,14 @@
 #include "QPushButton"
 #include "QCheckBox"
 
-CreatePage::CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
-                           QWidget* createAddedIngredientsScrollViewContents, QWidget* createAddedKeywordsScrollViewContents,
-                       QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox){
+CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* createCategoryComboBox,
+                       QComboBox* createAddIngredientWeightTypeComboBox, QWidget* createAddedIngredientsScrollViewContents,
+                       QWidget* createAddedKeywordsScrollViewContents, QFrame* createRatingStarFrame,
+                       QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox,
+                       vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList,
+                       QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel){
     this->mw = mw;
+    this->createNameTxtEdit = createNameTxtEdit;
     this->createCategoryComboBox = createCategoryComboBox;
     this->createAddIngredientWeightTypeComboBox = createAddIngredientWeightTypeComboBox;
     this->createAddedIngredientsScrollViewContents = createAddedIngredientsScrollViewContents;
@@ -28,6 +32,10 @@ CreatePage::CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QCombo
     this->createRatingStarFrame = createRatingStarFrame;
     this->createFavouriteCheckBox = createFavouriteCheckBox;
     this->createRatingCheckBox = createRatingCheckBox;
+    this->addedIngredientFrameList = addedIngredientFrameList;
+    this->addedKeywordFrameList = addedKeywordFrameList;
+    this->createNotesTxtEdit = createNotesTxtEdit;
+    this->createImgInputLabel = createImgInputLabel;
 }
 
 void CreatePage::setup(){
@@ -49,9 +57,7 @@ void CreatePage::setup(){
     createRatingStarFrame->setDisabled(true);
 }
 
-QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vector<QWidget*> addedIngredientFrameList,
-                                          vector<QWidget*> addedKeywordFrameList, QTextEdit* createNotesTxtEdit,
-                                          QLabel* createImgInputLabel, QCheckBox* createFavouriteCheckBox) {
+QString CreatePage::on_createSaveBtn_clicked() {
     if (createNameTxtEdit->toPlainText() == ""){
         return "Bitte gib einen Rezeptnamen an!";
     }
@@ -64,6 +70,10 @@ QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vecto
     recipe->setCreationDate(QDate::currentDate().toString());
     //category
     recipe->setCategory(createCategoryComboBox->currentText());
+    createCategoryComboBox->setCurrentIndex(0);
+    //favourite
+    recipe->setFavourite(createFavouriteCheckBox->isChecked());
+    createFavouriteCheckBox->setCheckState(Qt::Unchecked);
     //ingredients
     vector<Ingredient> addedIngredientList;
     for (auto frame : addedIngredientFrameList){
@@ -112,9 +122,6 @@ QString CreatePage::on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vecto
         recipe->setPixmap(*createImgInputLabel->pixmap());
         createImgInputLabel->clear();
     }
-    //favourite
-    recipe->setFavourite(createFavouriteCheckBox->isChecked());
-    createFavouriteCheckBox->setCheckState(Qt::Unchecked);
 
     if (mw->getRm()->saveRecipe(*recipe)){
         return "Rezept '" + recipe->getName() + " wurde erfolgreich gespeichert!";
@@ -226,4 +233,30 @@ void CreatePage::on_createRatingCheckBox_stateChanged(int arg1){
         createRatingStarFrame->setEnabled(true);
         starEditor->setEditable(true);
     }
+}
+
+void CreatePage::on_createResetBtn_clicked() {
+    createNameTxtEdit->clear();
+    createCategoryComboBox->setCurrentIndex(0);
+    createFavouriteCheckBox->setCheckState(Qt::Unchecked);
+    createRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
+
+    createNotesTxtEdit->clear();
+
+    addedIngredientFrameList.clear();
+    auto layout = createAddedIngredientsScrollViewContents->layout();
+    QLayoutItem* item;
+    while((item = layout->takeAt(0)) != nullptr){
+        delete item->widget();
+        delete item;
+    }
+
+    addedKeywordFrameList.clear();
+    layout = createAddedKeywordsScrollViewContents->layout();
+    while((item = layout->takeAt(0)) != nullptr){
+        delete item->widget();
+        delete item;
+    }
+
+    createImgInputLabel->clear();
 }

@@ -70,6 +70,8 @@ private slots:
 
     void on_createRatingCheckBox_stateChanged(int arg1);
 
+    void on_createResetBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
 

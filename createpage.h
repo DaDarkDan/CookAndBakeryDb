@@ -23,15 +23,16 @@ class StarEditor;
 class CreatePage
 {
 public:
-    CreatePage(MainWindow* mw, QComboBox* createCategoryComboBox, QComboBox* createAddIngredientWeightTypeComboBox,
-               QWidget* createAddedIngredientsScrollViewContents, QWidget* createAddedKeywordsScrollViewContents,
-               QFrame* createRatingStarFrame, QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox);
+    CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* createCategoryComboBox,
+               QComboBox* createAddIngredientWeightTypeComboBox, QWidget* createAddedIngredientsScrollViewContents,
+               QWidget* createAddedKeywordsScrollViewContents, QFrame* createRatingStarFrame,
+               QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox,
+               vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList,
+               QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel);
 
     void setup();
 
-    QString on_createSaveBtn_clicked(QTextEdit* createNameTxtEdit, vector<QWidget*> addedIngredientFrameList,
-                                  vector<QWidget*> addedKeywordFrameList, QTextEdit* createNotesTxtEdit,
-                                  QLabel* createImgInputLabel, QCheckBox* createFavouriteCheckBox);
+    QString on_createSaveBtn_clicked();
     QString on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
                                            vector<QWidget*> addedIngredientFrameList);
     QString on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit, vector<QWidget*> addedKeywordFrameList);
@@ -42,11 +43,14 @@ public:
 
     void on_createRatingCheckBox_stateChanged(int arg1);
 
+    void on_createResetBtn_clicked();
+
 private:
     MainWindow* mw;
 
     StarEditor* starEditor = nullptr;
 
+    QTextEdit* createNameTxtEdit;
     QComboBox* createCategoryComboBox;
     QComboBox* createAddIngredientWeightTypeComboBox;
     QWidget* createAddedIngredientsScrollViewContents;
@@ -54,6 +58,9 @@ private:
     QFrame* createRatingStarFrame;
     QCheckBox* createFavouriteCheckBox;
     QCheckBox* createRatingCheckBox;
+    vector<QWidget*> addedIngredientFrameList, addedKeywordFrameList;
+    QTextEdit* createNotesTxtEdit;
+    QLabel* createImgInputLabel;
 };
 
 #endif // CREATEPAGE_H

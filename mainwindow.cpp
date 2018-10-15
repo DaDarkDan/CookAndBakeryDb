@@ -23,9 +23,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     rm = new RecipeManager();
 
-    cp = new CreatePage(this, ui->createCategoryComboBox, ui->createAddIngredientWeightTypeComboBox,
-                        ui->createAddedIngredientsScrollViewContents, ui->createAddedKeywordsScrollViewContents,
-                        ui->createRatingStarFrame, ui->createFavouriteCheckBox, ui->createRatingCheckBox);
+    cp = new CreatePage(this, ui->createNameTxtEdit, ui->createCategoryComboBox,
+                        ui->createAddIngredientWeightTypeComboBox, ui->createAddedIngredientsScrollViewContents,
+                        ui->createAddedKeywordsScrollViewContents, ui->createRatingStarFrame,
+                        ui->createFavouriteCheckBox, ui->createRatingCheckBox, addedIngredientFrameList,
+                        addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel);
 
     ClickableLabel* cl = new ClickableLabel("", this);
     ui->searchTab->layout()->addWidget(cl);
@@ -103,8 +105,7 @@ void MainWindow::setupCreatePage() {
 }
 
 void MainWindow::on_createSaveBtn_clicked(){
-    QString saveResult = cp->on_createSaveBtn_clicked(ui->createNameTxtEdit, addedIngredientFrameList, addedKeywordFrameList,
-                                                      ui->createNotesTxtEdit, ui->createImgInputLabel, ui->createFavouriteCheckBox);
+    QString saveResult = cp->on_createSaveBtn_clicked();
     statusBar()->showMessage(saveResult);
 }
 
@@ -206,4 +207,8 @@ void MainWindow::on_tabWidget_currentChanged(int index){
 
 void MainWindow::on_createRatingCheckBox_stateChanged(int arg1){
     cp->on_createRatingCheckBox_stateChanged(arg1);
+}
+
+void MainWindow::on_createResetBtn_clicked() {
+    cp->on_createResetBtn_clicked();
 }
