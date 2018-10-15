@@ -33,11 +33,10 @@ public:
     void setup();
 
     QString on_createSaveBtn_clicked();
-    QString on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
-                                           vector<QWidget*> addedIngredientFrameList);
-    QString on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit, vector<QWidget*> addedKeywordFrameList);
+    QString on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit);
+    QString on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit);
 
-    void on_addedFrameDeleteButton_clicked(QPushButton* button, vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList);
+    void on_addedFrameDeleteButton_clicked(QPushButton* button);
 
     void on_uploadImgBtn_clicked();
 

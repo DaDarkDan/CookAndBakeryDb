@@ -12,11 +12,6 @@
 
 #include <iostream>
 
-
-IOManager::IOManager(){
-    directoryPath = "D:/Daniel/Dokumente/QtProjects/recipefolder"; //TODO delete
-}
-
 IOManager::~IOManager(){}
 
 vector<Recipe> IOManager::loadRecipes() const{

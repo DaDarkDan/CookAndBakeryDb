@@ -16,6 +16,8 @@
 #include "QString"
 #include "QPushButton"
 #include "QCheckBox"
+#include "QFileDialog"
+#include "QStandardPaths"
 
 CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* createCategoryComboBox,
                        QComboBox* createAddIngredientWeightTypeComboBox, QWidget* createAddedIngredientsScrollViewContents,
@@ -129,7 +131,7 @@ QString CreatePage::on_createSaveBtn_clicked() {
     return "Rezept konnte nicht gespeichert werden. Gibt es dieses schon?";
 }
 
-QString CreatePage::on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit, vector<QWidget*> addedIngredientFrameList) {
+QString CreatePage::on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit) {
     //check if amount is decimal number
     bool isFloat;
     createIngredientAmountTxtEdit->toPlainText().toFloat(&isFloat);
@@ -174,7 +176,7 @@ QString CreatePage::on_createAddIngredientBtn_clicked(QTextEdit* createIngredien
     return "Zutat konnte aufgrund eines Fehlers nicht hinzugefügt werden!";
 }
 
-QString CreatePage::on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit, vector<QWidget*> addedKeywordFrameList) {
+QString CreatePage::on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit) {
 
     if (createAddedKeywordsTxtEdit->toPlainText() != ""){
         //create contents
@@ -200,7 +202,7 @@ QString CreatePage::on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeyword
 
 }
 
-void CreatePage::on_addedFrameDeleteButton_clicked(QPushButton* button, vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList) {
+void CreatePage::on_addedFrameDeleteButton_clicked(QPushButton* button) {
     QFrame* parentFrame = qobject_cast<QFrame*>(button->parent());
 
     for (unsigned int i = 0; i < addedIngredientFrameList.size();i++){
@@ -222,7 +224,16 @@ void CreatePage::on_addedFrameDeleteButton_clicked(QPushButton* button, vector<Q
 }
 
 void CreatePage::on_uploadImgBtn_clicked() {
+    QString fileName = QFileDialog::getOpenFileName(mw, QObject::tr("Open Image"), QStandardPaths::writableLocation(QStandardPaths::PicturesLocation), QObject::tr("Formate(*.png *.jpg *.bmp *.pdf)"));
+    QImage image(fileName);
 
+    createImgInputLabel->setScaledContents(true);
+
+    if (fileName.endsWith(".pdf") || fileName.endsWith(".PDF")){
+
+    } else {
+        createImgInputLabel->setPixmap(QPixmap::fromImage(image));
+    }
 }
 
 void CreatePage::on_createRatingCheckBox_stateChanged(int arg1){

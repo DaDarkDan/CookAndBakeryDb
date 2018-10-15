@@ -19,7 +19,7 @@ public:
     QFrame *getFrame() const;
 
 signals:
-    void on_mousePressed(const QPixmap& pixmap);
+    void on_mousePressed(const QPixmap& pixmap, const QString& path);
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
@@ -36,7 +36,7 @@ private:
     QLabel* createIndex(int index);
     QLabel* createTitle();
     QLabel* createDate();
-    QLabel* createInAmount();
+    QLabel* createIngAmount();
     QFrame* createStarRating(QHBoxLayout* starLayout);
     QFrame* createImage();
 };

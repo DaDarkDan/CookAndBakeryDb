@@ -279,7 +279,8 @@ void SearchPage::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
     updateFoundRecipes();
 }
 
-void SearchPage::displaySearchResultImage(QPixmap pixmap){
+void SearchPage::displaySearchResultImage(QPixmap pixmap, QString path){
+    searchResultImgLabel->setFullPath(path);
     searchResultImgLabel->setPixmap(pixmap);
 }
 
@@ -288,5 +289,7 @@ void SearchPage::ratingEditingFinished(){
 }
 
 void SearchPage::on_searchTabOpened(){
+    setupSearchIngredientScrollViews();
+    setupSearchKeywordScrollView();
     updateFoundRecipes();
 }

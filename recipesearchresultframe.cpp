@@ -27,7 +27,7 @@ RecipeSearchResultFrame::RecipeSearchResultFrame(Recipe recipe, QHBoxLayout* sta
     gridLayout->addWidget(createIndex(index),0,0);
     gridLayout->addWidget(createTitle(),0,1);
     gridLayout->addWidget(createDate(),1,1);
-    gridLayout->addWidget(createInAmount(),2,1);
+    gridLayout->addWidget(createIngAmount(),2,1);
     gridLayout->addWidget(createStarRating(starLayout),3,1);
 
     horLayout->addLayout(gridLayout);
@@ -51,7 +51,7 @@ bool RecipeSearchResultFrame::eventFilter(QObject *obj, QEvent *event) {
 }
 
 void RecipeSearchResultFrame::mousePressEvent(QMouseEvent* /*event*/){
-    emit on_mousePressed(recipe.getPixmap());
+    emit on_mousePressed(recipe.getPixmap(), recipe.getPixmapPath());
 }
 
 QFrame *RecipeSearchResultFrame::getFrame() const{
@@ -83,8 +83,12 @@ QLabel *RecipeSearchResultFrame::createDate(){
     return date;
 }
 
-QLabel *RecipeSearchResultFrame::createInAmount(){
-    QLabel* ing = new QLabel(QString::number(recipe.getNumberOfIngredients()) + " Zutaten");
+QLabel *RecipeSearchResultFrame::createIngAmount(){
+    QString suffix = " Zutaten";
+    if (recipe.getNumberOfIngredients() == 1){
+        suffix = " Zutat";
+    }
+    QLabel* ing = new QLabel(QString::number(recipe.getNumberOfIngredients()) + suffix);
     ing->setMaximumSize(150, 20);
     ing->setMouseTracking(true);
     return ing;

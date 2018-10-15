@@ -8,8 +8,11 @@ class ClickableLabel : public QLabel
 {
     Q_OBJECT
 public:
-    explicit ClickableLabel(QString fullPath, QWidget *parent = nullptr);
+    explicit ClickableLabel(QWidget *parent = nullptr);
     ~ClickableLabel() override;
+
+    QString getFullPath() const;
+    void setFullPath(const QString &value);
 
 signals:
     void clicked(QString fullPath);

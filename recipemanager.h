@@ -15,7 +15,7 @@ class IOManager;
 class RecipeManager
 {
 public:
-    RecipeManager();
+    RecipeManager(QString directoryPath);
 
     void sortRecipes(RecipeCompare rc);
 

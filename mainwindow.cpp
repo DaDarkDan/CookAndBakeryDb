@@ -10,18 +10,20 @@
 #include "stareditor.h"
 #include "clickablelabel.h"
 
-#include "QFileDialog"
-#include "QStandardPaths"
 #include "QTableWidget"
 #include "QDate"
 #include "QDesktopServices"
+#include "QSettings"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow){
     ui->setupUi(this);
 
-    rm = new RecipeManager();
+    QCoreApplication::setOrganizationName("DaDarkSoftware");
+    QCoreApplication::setApplicationName("MomsBakeryDb");
+
+    loadSettings();
 
     cp = new CreatePage(this, ui->createNameTxtEdit, ui->createCategoryComboBox,
                         ui->createAddIngredientWeightTypeComboBox, ui->createAddedIngredientsScrollViewContents,
@@ -29,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->createFavouriteCheckBox, ui->createRatingCheckBox, addedIngredientFrameList,
                         addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel);
 
-    ClickableLabel* cl = new ClickableLabel("", this);
+    ClickableLabel* cl = new ClickableLabel(this);
     ui->searchTab->layout()->addWidget(cl);
     connect(cl, &ClickableLabel::clicked, this, &MainWindow::openFileWithStdProgramm);
     sp = new SearchPage(this, ui->searchAddedIngredientScrollAreaContents, ui->searchIngredientScrollAreaContents,
@@ -37,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->searchIngredientTextEdit, ui->searchKeywordScrollAreaContents, ui->searchAddedKeywordScrollAreaContents,
                         ui->searchKeywordTextEdit, ui->searchFoundRecipesScrollViewContents, ui->searchRatingStarFrame,
                         ui->searchIncludeRatingCheckBox, cl);
-    hp = new HomePage(this);
+    hp = new HomePage(this, ui->homeDirectoryLineEdit);
 
     setupSearchPage();
     setupCreatePage();
@@ -94,8 +96,8 @@ void MainWindow::on_searchFavouriteComboBox_currentIndexChanged(int index) {
     sp->on_searchFavouriteComboBox_currentIndexChanged(index);
 }
 
-RecipeManager *MainWindow::getRm() const {
-    return rm;
+void MainWindow::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
+    sp->on_searchIncludeRatingCheckBox_stateChanged(arg1);
 }
 
 //create page
@@ -110,44 +112,43 @@ void MainWindow::on_createSaveBtn_clicked(){
 }
 
 void MainWindow::on_createAddIngredientBtn_clicked(){
-    QString saveResult = cp->on_createAddIngredientBtn_clicked(ui->createIngredientNameTxtEdit, ui->createIngredientAmountTxtEdit, addedIngredientFrameList);
+    QString saveResult = cp->on_createAddIngredientBtn_clicked(ui->createIngredientNameTxtEdit, ui->createIngredientAmountTxtEdit);
     statusBar()->showMessage(saveResult);
 }
 
 void MainWindow::on_createAddKeywordBtn_clicked() {
-    QString saveResult = cp->on_createAddKeywordBtn_clicked(ui->createAddedKeywordsTxtEdit, addedKeywordFrameList);
+    QString saveResult = cp->on_createAddKeywordBtn_clicked(ui->createAddedKeywordsTxtEdit);
     statusBar()->showMessage(saveResult);
 }
 
 void MainWindow::on_addedFrameDeleteButton_clicked() {
     QPushButton* button = qobject_cast<QPushButton*>(sender());
-    cp->on_addedFrameDeleteButton_clicked(button, addedIngredientFrameList, addedKeywordFrameList);
+    cp->on_addedFrameDeleteButton_clicked(button);
 }
 
 void MainWindow::on_uploadImgBtn_clicked() {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), QStandardPaths::writableLocation(QStandardPaths::PicturesLocation), tr("Formate(*.png *.jpg *.bmp *.pdf)"));
-    QImage image(fileName);
+    cp->on_uploadImgBtn_clicked();
+}
 
-    ui->createImgInputLabel->setScaledContents(true);
+void MainWindow::on_createRatingCheckBox_stateChanged(int arg1){
+    cp->on_createRatingCheckBox_stateChanged(arg1);
+}
 
-    if (fileName.endsWith(".pdf") || fileName.endsWith(".PDF")){
-
-    } else {
-        ui->createImgInputLabel->setPixmap(QPixmap::fromImage(image));
-    }
+void MainWindow::on_createResetBtn_clicked() {
+    cp->on_createResetBtn_clicked();
 }
 
 
 //home page
 
 void MainWindow::setupHomePage() {
-
+    //"D:/Daniel/Dokumente/QtProjects/recipefolder"
+    ui->homeDirectoryLineEdit->setText(rm->getIoManager()->getDirectoryPath());
 }
 
-void MainWindow::on_pushButton_clicked() {
-    rm->getIoManager()->setDirectoryPath(QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks));
+void MainWindow::on_homeSetDirectoryLabel_clicked(){
+    hp->on_homeSetDirectoryLabel_clicked();
 }
-
 
 //helper functions
 
@@ -189,10 +190,6 @@ QHBoxLayout* MainWindow::createStarEditorFrameLayout() {
     return frameLayout;
 }
 
-void MainWindow::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
-    sp->on_searchIncludeRatingCheckBox_stateChanged(arg1);
-}
-
 void MainWindow::openFileWithStdProgramm(QString path){
     if (path != ""){
         QDesktopServices::openUrl(path);
@@ -205,10 +202,15 @@ void MainWindow::on_tabWidget_currentChanged(int index){
     }
 }
 
-void MainWindow::on_createRatingCheckBox_stateChanged(int arg1){
-    cp->on_createRatingCheckBox_stateChanged(arg1);
+void MainWindow::loadSettings(){
+    QSettings settings;
+    rm = new RecipeManager(settings.value("savePath").toString());
 }
 
-void MainWindow::on_createResetBtn_clicked() {
-    cp->on_createResetBtn_clicked();
+RecipeManager *MainWindow::getRm() const {
+    return rm;
+}
+
+void MainWindow::setRm(RecipeManager *rm){
+    this->rm = rm;
 }

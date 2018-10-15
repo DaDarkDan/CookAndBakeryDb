@@ -32,11 +32,9 @@ public:
     QPushButton* createCustomDeleteButton();
 
     RecipeManager* getRm() const;
+    void setRm(RecipeManager* rm);
 
 private slots:
-
-    void on_pushButton_clicked(); //TODO remove
-
     //create
     void on_createSaveBtn_clicked();
     void on_createAddIngredientBtn_clicked();
@@ -72,12 +70,16 @@ private slots:
 
     void on_createResetBtn_clicked();
 
+    void on_homeSetDirectoryLabel_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     CreatePage* cp;
     SearchPage* sp;
     HomePage* hp;
+
+    void loadSettings();
 
     RecipeManager* rm;
     vector<QWidget*> addedIngredientFrameList;

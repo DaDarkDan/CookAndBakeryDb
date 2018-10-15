@@ -8,8 +8,8 @@
 
 #include <algorithm>
 
-RecipeManager::RecipeManager(){
-    ioManager = new IOManager();
+RecipeManager::RecipeManager(QString directoryPath){
+    ioManager = new IOManager(directoryPath);
     recipeList = ioManager->loadRecipes();
     addAllUniqueIngredientsAndKeywords();
 }
@@ -25,7 +25,7 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
     if (name == "" && category == "egal" && favourite == "egal" && ingList.empty() && keywList.empty() && rating == -1) {
         return recipeList;
     }
-    //
+
     if (category == "" || favourite == ""){
         return vector<Recipe>();
     }
@@ -38,7 +38,7 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
             continue;
         } else if(r.getFavouriteAsQString().toUpper() != favourite.toUpper() && favourite != "egal"){
             continue;
-        } else if(r.getRating() == 0 || (r.getRating() != 0 && rating != -1 && r.getRating() != rating)){
+        } else if(rating != -1 && rating != r.getRating()){
             continue;
         }
         //check if all ingredients found in recipe, if not continue

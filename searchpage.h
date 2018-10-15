@@ -50,7 +50,7 @@ public:
     void on_searchTabOpened();
 
 private slots:
-    void displaySearchResultImage(QPixmap pixmap);
+    void displaySearchResultImage(QPixmap pixmap, QString path);
     void ratingEditingFinished();
 private:
     MainWindow* mw;

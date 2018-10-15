@@ -15,7 +15,7 @@ class QXmlStreamReader;
 class IOManager
 {
 public:
-    IOManager();
+    IOManager(QString directoryPath) : directoryPath(directoryPath) {}
 
     ~IOManager();
 

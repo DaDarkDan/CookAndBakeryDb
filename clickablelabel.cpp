@@ -1,11 +1,17 @@
 #include "clickablelabel.h"
 
-ClickableLabel::ClickableLabel(QString fullPath, QWidget *parent) : QLabel(parent), fullPath(fullPath){
-
-}
+ClickableLabel::ClickableLabel(QWidget *parent) : QLabel(parent){}
 
 ClickableLabel::~ClickableLabel(){}
 
-void ClickableLabel::mousePressEvent(QMouseEvent* event) {
+void ClickableLabel::mousePressEvent(QMouseEvent* /*event*/) {
     emit clicked(fullPath);
+}
+
+QString ClickableLabel::getFullPath() const {
+    return fullPath;
+}
+
+void ClickableLabel::setFullPath(const QString &value){
+    fullPath = value;
 }

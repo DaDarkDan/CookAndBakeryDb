@@ -75,9 +75,9 @@ void Recipe::setFavourite(const QString& value){
 
 QString Recipe::getFavouriteAsQString() const{
     if (favourite){
-        return "true";
+        return "Ja";
     }
-    return "false";
+    return "Nein";
 }
 
 QString Recipe::getName() const{
