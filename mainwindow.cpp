@@ -29,7 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->createAddIngredientWeightTypeComboBox, ui->createAddedIngredientsScrollViewContents,
                         ui->createAddedKeywordsScrollViewContents, ui->createRatingStarFrame,
                         ui->createFavouriteCheckBox, ui->createRatingCheckBox, addedIngredientFrameList,
-                        addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel);
+                        addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel,
+                        ui->createIngredientNameTxtEdit, ui->createIngredientAmountTxtEdit,
+                        ui->createAddedKeywordsTxtEdit);
 
     ClickableLabel* cl = new ClickableLabel(this);
     ui->searchTab->layout()->addWidget(cl);
@@ -112,12 +114,12 @@ void MainWindow::on_createSaveBtn_clicked(){
 }
 
 void MainWindow::on_createAddIngredientBtn_clicked(){
-    QString saveResult = cp->on_createAddIngredientBtn_clicked(ui->createIngredientNameTxtEdit, ui->createIngredientAmountTxtEdit);
+    QString saveResult = cp->on_createAddIngredientBtn_clicked();
     statusBar()->showMessage(saveResult);
 }
 
 void MainWindow::on_createAddKeywordBtn_clicked() {
-    QString saveResult = cp->on_createAddKeywordBtn_clicked(ui->createAddedKeywordsTxtEdit);
+    QString saveResult = cp->on_createAddKeywordBtn_clicked();
     statusBar()->showMessage(saveResult);
 }
 

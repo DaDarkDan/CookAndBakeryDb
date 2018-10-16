@@ -28,13 +28,15 @@ public:
                QWidget* createAddedKeywordsScrollViewContents, QFrame* createRatingStarFrame,
                QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox,
                vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList,
-               QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel);
+               QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
+               QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
+               QTextEdit* createAddedKeywordsTxtEdit);
 
     void setup();
 
     QString on_createSaveBtn_clicked();
-    QString on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit);
-    QString on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit);
+    QString on_createAddIngredientBtn_clicked();
+    QString on_createAddKeywordBtn_clicked();
 
     void on_addedFrameDeleteButton_clicked(QPushButton* button);
 
@@ -60,6 +62,9 @@ private:
     vector<QWidget*> addedIngredientFrameList, addedKeywordFrameList;
     QTextEdit* createNotesTxtEdit;
     QLabel* createImgInputLabel;
+    QTextEdit* createIngredientNameTxtEdit;
+    QTextEdit* createIngredientAmountTxtEdit;
+    QTextEdit* createAddedKeywordsTxtEdit;
 };
 
 #endif // CREATEPAGE_H

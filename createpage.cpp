@@ -24,7 +24,9 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
                        QWidget* createAddedKeywordsScrollViewContents, QFrame* createRatingStarFrame,
                        QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox,
                        vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList,
-                       QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel){
+                       QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
+                       QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
+                       QTextEdit* createAddedKeywordsTxtEdit){
     this->mw = mw;
     this->createNameTxtEdit = createNameTxtEdit;
     this->createCategoryComboBox = createCategoryComboBox;
@@ -38,9 +40,17 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
     this->addedKeywordFrameList = addedKeywordFrameList;
     this->createNotesTxtEdit = createNotesTxtEdit;
     this->createImgInputLabel = createImgInputLabel;
+    this->createIngredientNameTxtEdit = createIngredientNameTxtEdit;
+    this->createIngredientAmountTxtEdit = createIngredientAmountTxtEdit;
+    this->createAddedKeywordsTxtEdit = createAddedKeywordsTxtEdit;
 }
 
 void CreatePage::setup(){
+    //textEdits
+    createNameTxtEdit->setTabChangesFocus(true);
+    createIngredientNameTxtEdit->setTabChangesFocus(true);
+    createIngredientAmountTxtEdit->setTabChangesFocus(true);
+    createAddedKeywordsTxtEdit->setTabChangesFocus(true);
     //combo boxes
     createCategoryComboBox->addItems(Recipe::categoryList);
     createAddIngredientWeightTypeComboBox->addItems(Ingredient::weightTypeList);
@@ -126,12 +136,12 @@ QString CreatePage::on_createSaveBtn_clicked() {
     }
 
     if (mw->getRm()->saveRecipe(*recipe)){
-        return "Rezept '" + recipe->getName() + " wurde erfolgreich gespeichert!";
+        return "Rezept '" + recipe->getName() + "' wurde erfolgreich gespeichert!";
     }
     return "Rezept konnte nicht gespeichert werden. Gibt es dieses schon?";
 }
 
-QString CreatePage::on_createAddIngredientBtn_clicked(QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit) {
+QString CreatePage::on_createAddIngredientBtn_clicked() {
     //check if amount is decimal number
     bool isFloat;
     createIngredientAmountTxtEdit->toPlainText().toFloat(&isFloat);
@@ -176,7 +186,7 @@ QString CreatePage::on_createAddIngredientBtn_clicked(QTextEdit* createIngredien
     return "Zutat konnte aufgrund eines Fehlers nicht hinzugefügt werden!";
 }
 
-QString CreatePage::on_createAddKeywordBtn_clicked(QTextEdit* createAddedKeywordsTxtEdit) {
+QString CreatePage::on_createAddKeywordBtn_clicked() {
 
     if (createAddedKeywordsTxtEdit->toPlainText() != ""){
         //create contents
