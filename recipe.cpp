@@ -164,3 +164,13 @@ void Recipe::setPixmapPath(const QString &value)
 {
     pixmapPath = value;
 }
+
+QString Recipe::getFullPath() const
+{
+    return fullPath;
+}
+
+void Recipe::setFullPath(const QString &value)
+{
+    fullPath = value;
+}

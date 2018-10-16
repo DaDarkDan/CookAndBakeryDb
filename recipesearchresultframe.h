@@ -8,15 +8,19 @@ class QHBoxLayout;
 class QGridLayout;
 class QLabel;
 class QFrame;
+class QPushButton;
+class ParameterButton;
 
 class RecipeSearchResultFrame : public QWidget
 {
     Q_OBJECT
 
 public:
-    RecipeSearchResultFrame(Recipe recipe, QHBoxLayout* starLayout, int index, QWidget* parent = nullptr);
+    RecipeSearchResultFrame(Recipe* recipe, QHBoxLayout* starLayout, int index, QWidget* parent = nullptr);
 
     QFrame *getFrame() const;
+
+    ParameterButton *getDeleteButton() const;
 
 signals:
     void on_mousePressed(const QPixmap& pixmap, const QString& path);
@@ -27,7 +31,7 @@ protected:
     virtual bool eventFilter(QObject *obj, QEvent *event) override;
 
 private:
-    Recipe recipe;
+    Recipe* recipe;
     QFrame* frame;
 
     QHBoxLayout* horLayout;
@@ -39,6 +43,10 @@ private:
     QLabel* createIngAmount();
     QFrame* createStarRating(QHBoxLayout* starLayout);
     QFrame* createImage();
+    ParameterButton* createDeleteButton();
+
+    ParameterButton* deleteButton;
+
 };
 
 #endif // RECIPESEARCHRESULTFRAME_H

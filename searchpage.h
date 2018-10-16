@@ -52,18 +52,22 @@ public:
 private slots:
     void displaySearchResultImage(QPixmap pixmap, QString path);
     void ratingEditingFinished();
+
+    void openDeleteMessageBox(Recipe* recipe);
+
 private:
     MainWindow* mw;
 
     void setupSearchIngredientScrollViews();
     void setupSearchKeywordScrollView();
     void deleteLayoutAndWidgetsScrollView(QLayout* layout);
-    QFrame* getRecipeAsFrame(const Recipe& recipe, int index);
+    QFrame* getRecipeAsFrame(Recipe* recipe, int index);
 
     void addButtonToScrollAreaContentsLayout(QVBoxLayout* layout, QPushButton* button);
 
     void on_searchIngredientKeyword_textChanged(QTextEdit* txtEdit, QLayout* layout);
 
+    void deleteRecipe(Recipe* recipe);
 
     QWidget* searchAddedIngredientScrollAreaContents;
     QWidget* searchIngredientScrollAreaContents;

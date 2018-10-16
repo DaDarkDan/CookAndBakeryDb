@@ -18,7 +18,7 @@ void RecipeManager::sortRecipes(RecipeCompare rc){
     std::sort(recipeList.begin(), recipeList.end(), rc);
 }
 
-vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& category,
+vector<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& category,
                            const QString& favourite, const vector<QString> ingList,
                            const vector<QString> keywList, int rating) const{
     //return all recipes if no parameter set
@@ -27,23 +27,23 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
     }
 
     if (category == "" || favourite == ""){
-        return vector<Recipe>();
+        return vector<Recipe*>();
     }
 
-    vector<Recipe> foundRecipes;
+    vector<Recipe*> foundRecipes;
     for (auto r : recipeList){
-        if (!r.getName().toUpper().contains(name.toUpper())){
+        if (!r->getName().toUpper().contains(name.toUpper())){
             continue;
-        } else if(r.getCategory().toUpper() != category.toUpper() && category != "egal") {
+        } else if(r->getCategory().toUpper() != category.toUpper() && category != "egal") {
             continue;
-        } else if(r.getFavouriteAsQString().toUpper() != favourite.toUpper() && favourite != "egal"){
+        } else if(r->getFavouriteAsQString().toUpper() != favourite.toUpper() && favourite != "egal"){
             continue;
-        } else if(rating != -1 && rating != r.getRating()){
+        } else if(rating != -1 && rating != r->getRating()){
             continue;
         }
         //check if all ingredients found in recipe, if not continue
         bool notFound = false;
-        auto recipeIngs = r.getIngredientStrings();
+        auto recipeIngs = r->getIngredientStrings();
         for (auto ing : ingList){
             if (std::find(recipeIngs.begin(), recipeIngs.end(), ing) == recipeIngs.end()){
                 notFound = true;
@@ -51,7 +51,7 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
             }
         }
         //check if all keywords found in recipe, if not continue
-        auto recipeKeyw = r.getKeywords();
+        auto recipeKeyw = r->getKeywords();
         for (auto keyw : keywList){
             if (std::find(recipeKeyw.begin(), recipeKeyw.end(), keyw) == recipeKeyw.end()){
                 notFound = true;
@@ -65,15 +65,15 @@ vector<Recipe> RecipeManager::findRecipes(const QString& name, const QString& ca
     return foundRecipes;
 }
 
-bool RecipeManager::saveRecipe(Recipe recipe){
-    if (isNewRecipe(recipe)) {
+bool RecipeManager::saveRecipe(Recipe* recipe){
+    if (isNewRecipe(*recipe)) {
         recipeList.push_back(recipe);
-        for (auto i : recipe.getIngredients()){
+        for (auto i : recipe->getIngredients()){
             if (isNewIngredient(i)){
                 ingredientList.push_back(i.getName());
             }
         }
-        for (auto k : recipe.getKeywords()){
+        for (auto k : recipe->getKeywords()){
             if (isNewKeyword(k)){
                 keywordList.push_back(k);
             }
@@ -90,7 +90,7 @@ bool RecipeManager::saveRecipe(Recipe recipe){
 
 bool RecipeManager::isNewRecipe(Recipe recipe) {
     for(auto rec : recipeList){
-        if (rec == recipe) {
+        if (*rec == recipe) {
             return false;
         }
     }
@@ -119,12 +119,23 @@ IOManager *RecipeManager::getIoManager() {
     return ioManager;
 }
 
-vector<Recipe> RecipeManager::getRecipeList() const{
+vector<Recipe*> RecipeManager::getRecipeList() const{
     return recipeList;
 }
 
 vector<QString> RecipeManager::getKeywordList() const{
     return keywordList;
+}
+
+void RecipeManager::deleteRecipe(Recipe *recipe){
+    for (unsigned int i = 0; i < recipeList.size();i++) {
+        if (recipeList.at(i) == recipe){
+            recipeList.erase(recipeList.begin()+i);
+            QFile file(recipe->getFullPath());
+            file.remove();
+            delete recipe;
+        }
+    }
 }
 
 vector<QString> RecipeManager::getIngredientList() const{
@@ -133,14 +144,14 @@ vector<QString> RecipeManager::getIngredientList() const{
 
 void RecipeManager::addAllUniqueIngredientsAndKeywords(){
     for (auto r : recipeList){
-        for (auto i : r.getIngredients()){
+        for (auto i : r->getIngredients()){
             //if ingredient not found in list, add it
             if (std::find(ingredientList.begin(), ingredientList.end(), i.getName()) == ingredientList.end()){
                 ingredientList.push_back(i.getName());
             }
         }
         std::sort(ingredientList.begin(), ingredientList.end());
-        for (auto k : r.getKeywords()){
+        for (auto k : r->getKeywords()){
             //if keyword not found in list, add it
             if (std::find(keywordList.begin(), keywordList.end(), k) == keywordList.end()){
                 keywordList.push_back(k);

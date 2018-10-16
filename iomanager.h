@@ -19,8 +19,8 @@ public:
 
     ~IOManager();
 
-    vector<Recipe> loadRecipes() const;
-    void saveRecipe(Recipe recipe) const;
+    vector<Recipe*> loadRecipes() const;
+    void saveRecipe(Recipe* recipe) const;
 
     void setDirectoryPath(const QString &value);
     QString getDirectoryPath() const;

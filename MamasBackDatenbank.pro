@@ -39,7 +39,8 @@ SOURCES += \
     searchpage.cpp \
     homepage.cpp \
     recipesearchresultframe.cpp \
-    clickablelabel.cpp
+    clickablelabel.cpp \
+    parameterbutton.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -55,7 +56,8 @@ HEADERS += \
     searchpage.h \
     homepage.h \
     recipesearchresultframe.h \
-    clickablelabel.h
+    clickablelabel.h \
+    parameterbutton.h
 
 FORMS += \
         mainwindow.ui

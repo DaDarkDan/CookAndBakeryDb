@@ -5,6 +5,8 @@
 #include "stareditor.h"
 #include "recipesearchresultframe.h"
 #include "clickablelabel.h"
+#include "parameterbutton.h"
+#include "createpage.h"
 
 #include "QLayoutItem"
 #include "QLayout"
@@ -14,6 +16,8 @@
 #include "QTextEdit"
 #include "QLabel"
 #include "QCheckBox"
+#include "QMessageBox"
+#include "QSignalMapper"
 
 #include "QDebug"
 
@@ -111,7 +115,6 @@ void SearchPage::on_searchDeleteKeyword_clicked(QPushButton* button) {
 }
 
 void SearchPage::on_searchRecipenameTxtEdit_textChanged() {
-    qDebug() << "test";
     //update search results
     updateFoundRecipes();
 }
@@ -217,7 +220,7 @@ void SearchPage::updateFoundRecipes() {
     for (int i = 0; i < searchAddedKeywordScrollAreaContents->layout()->count(); i++){
         keywList.push_back(qobject_cast<QPushButton*>(searchAddedKeywordScrollAreaContents->layout()->itemAt(i)->widget())->text());
     }
-    vector<Recipe> foundRecipes;
+    vector<Recipe*> foundRecipes;
     if (searchIncludeRatingCheckBox->isChecked() && starEditor){
         foundRecipes = mw->getRm()->findRecipes(searchRecipenameTxtEdit->toPlainText(), searchCategoryComboBox->currentText(),
                                                       searchFavouriteComboBox->currentText(), ingList, keywList, starEditor->starRating().getMyStarCount());
@@ -232,10 +235,36 @@ void SearchPage::updateFoundRecipes() {
     }
 }
 
-QFrame *SearchPage::getRecipeAsFrame(const Recipe &recipe, int index) {
+QFrame *SearchPage::getRecipeAsFrame(Recipe* recipe, int index) {
     RecipeSearchResultFrame* rsrFrame = new RecipeSearchResultFrame(recipe, mw->createStarEditorFrameLayout(), index, mw);
     connect(rsrFrame, &RecipeSearchResultFrame::on_mousePressed, this, &SearchPage::displaySearchResultImage);
+    connect(rsrFrame->getDeleteButton(), &ParameterButton::clicked, this, &SearchPage::openDeleteMessageBox);
     return rsrFrame->getFrame();
+}
+
+void SearchPage::openDeleteMessageBox(Recipe* recipe){
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setText("Wollen Sie das Rezept '" + recipe->getName() + "' wirklich löschen?");
+    QPushButton* applyBtn = msgBox.addButton(QMessageBox::Apply);
+    applyBtn->setText("Löschen");
+    applyBtn->setStyleSheet("color: red");
+    QPushButton* discardBtn = msgBox.addButton(QMessageBox::Discard);
+    discardBtn->setText("Abbrechen");
+    msgBox.setDefaultButton(discardBtn);
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == applyBtn){
+        deleteRecipe(recipe);
+        updateFoundRecipes();
+    } else if(msgBox.clickedButton() == discardBtn){
+        msgBox.close();
+    }
+}
+
+
+void SearchPage::deleteRecipe(Recipe *recipe){
+    mw->getRm()->deleteRecipe(recipe);
 }
 
 void SearchPage::addButtonToScrollAreaContentsLayout(QVBoxLayout *layout, QPushButton *button) {

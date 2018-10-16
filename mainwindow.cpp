@@ -110,17 +110,17 @@ void MainWindow::setupCreatePage() {
 
 void MainWindow::on_createSaveBtn_clicked(){
     QString saveResult = cp->on_createSaveBtn_clicked();
-    statusBar()->showMessage(saveResult);
+    statusBar()->showMessage(saveResult, 3000);
 }
 
 void MainWindow::on_createAddIngredientBtn_clicked(){
     QString saveResult = cp->on_createAddIngredientBtn_clicked();
-    statusBar()->showMessage(saveResult);
+    statusBar()->showMessage(saveResult,2000);
 }
 
 void MainWindow::on_createAddKeywordBtn_clicked() {
     QString saveResult = cp->on_createAddKeywordBtn_clicked();
-    statusBar()->showMessage(saveResult);
+    statusBar()->showMessage(saveResult,2000);
 }
 
 void MainWindow::on_addedFrameDeleteButton_clicked() {
@@ -139,7 +139,6 @@ void MainWindow::on_createRatingCheckBox_stateChanged(int arg1){
 void MainWindow::on_createResetBtn_clicked() {
     cp->on_createResetBtn_clicked();
 }
-
 
 //home page
 

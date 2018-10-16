@@ -14,7 +14,7 @@ public:
         RATING_ASC,  RATING_DESC
     };
     RecipeCompare(CompareType ct) : ct(ct) {}
-    bool operator()(const Recipe& l, const Recipe& r);
+    bool operator()(Recipe* l, Recipe* r);
 
 private:
     CompareType ct;

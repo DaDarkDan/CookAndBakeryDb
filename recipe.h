@@ -64,11 +64,14 @@ class Recipe {
         int getNumberOfKeywords() const;
 
         QString getPixmapPath() const;
-
         void setPixmapPath(const QString &value);
+
+        QString getFullPath() const;
+        void setFullPath(const QString &value);
 
 private:
         QString name;
+        QString fullPath;
         QString creationDate;
         const char* timeFormat = "%Y%m%d-%H:%M:%S";
         vector<Ingredient> ingredients;

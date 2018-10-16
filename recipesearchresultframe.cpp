@@ -5,16 +5,17 @@
 #include "QGridLayout"
 #include "QLabel"
 #include "QMouseEvent"
-
-#include "stareditor.h"
-#include "ingredient.h"
-
 #include "QDebug"
 #include "QEvent"
 #include "QMetaEnum"
 #include "QCoreApplication"
 
-RecipeSearchResultFrame::RecipeSearchResultFrame(Recipe recipe, QHBoxLayout* starLayout, int index, QWidget* parent) : QWidget(parent), recipe(recipe){
+#include "stareditor.h"
+#include "ingredient.h"
+#include "parameterbutton.h"
+
+
+RecipeSearchResultFrame::RecipeSearchResultFrame(Recipe* recipe, QHBoxLayout* starLayout, int index, QWidget* parent) : QWidget(parent), recipe(recipe){
     setMouseTracking(true);
     QCoreApplication::instance()->installEventFilter(this); //install filter application-wide
 
@@ -22,13 +23,14 @@ RecipeSearchResultFrame::RecipeSearchResultFrame(Recipe recipe, QHBoxLayout* sta
     gridLayout = new QGridLayout();
 
     //setup gridlayout
-    gridLayout->setMargin(5);
+    gridLayout->setMargin(0);
     gridLayout->setSpacing(5);
     gridLayout->addWidget(createIndex(index),0,0);
     gridLayout->addWidget(createTitle(),0,1);
     gridLayout->addWidget(createDate(),1,1);
     gridLayout->addWidget(createIngAmount(),2,1);
     gridLayout->addWidget(createStarRating(starLayout),3,1);
+    gridLayout->addWidget(createDeleteButton(),4,1);
 
     horLayout->addLayout(gridLayout);
     horLayout->addWidget(createImage());
@@ -51,7 +53,7 @@ bool RecipeSearchResultFrame::eventFilter(QObject *obj, QEvent *event) {
 }
 
 void RecipeSearchResultFrame::mousePressEvent(QMouseEvent* /*event*/){
-    emit on_mousePressed(recipe.getPixmap(), recipe.getPixmapPath());
+    emit on_mousePressed(recipe->getPixmap(), recipe->getPixmapPath());
 }
 
 QFrame *RecipeSearchResultFrame::getFrame() const{
@@ -68,7 +70,7 @@ QLabel* RecipeSearchResultFrame::createIndex(int index){
 }
 
 QLabel *RecipeSearchResultFrame::createTitle() {
-    QLabel* name = new QLabel(recipe.getName());
+    QLabel* name = new QLabel(recipe->getName());
     name->setMinimumSize(200, 20);
     name->setMaximumSize(250, 20);
     name->setStyleSheet("font: bold large; font-size: 12px");
@@ -77,7 +79,7 @@ QLabel *RecipeSearchResultFrame::createTitle() {
 }
 
 QLabel *RecipeSearchResultFrame::createDate(){
-    QLabel* date = new QLabel(recipe.getCreationDate());
+    QLabel* date = new QLabel(recipe->getCreationDate());
     date->setMaximumSize(150, 20);
     date->setMouseTracking(true);
     return date;
@@ -85,10 +87,10 @@ QLabel *RecipeSearchResultFrame::createDate(){
 
 QLabel *RecipeSearchResultFrame::createIngAmount(){
     QString suffix = " Zutaten";
-    if (recipe.getNumberOfIngredients() == 1){
+    if (recipe->getNumberOfIngredients() == 1){
         suffix = " Zutat";
     }
-    QLabel* ing = new QLabel(QString::number(recipe.getNumberOfIngredients()) + suffix);
+    QLabel* ing = new QLabel(QString::number(recipe->getNumberOfIngredients()) + suffix);
     ing->setMaximumSize(150, 20);
     ing->setMouseTracking(true);
     return ing;
@@ -103,15 +105,15 @@ QFrame *RecipeSearchResultFrame::createStarRating(QHBoxLayout* starLayout){
     starFrame->setDisabled(true);
     starFrame->setMouseTracking(true);
     StarEditor* starEditor = starFrame->layout()->parent()->findChild<StarEditor*>();
-    starEditor->setStarPosition(recipe.getRating());
+    starEditor->setStarPosition(recipe->getRating());
     starEditor->setStarRatingPaintingScaleFactor(15);
     return starFrame;
 }
 
 QFrame *RecipeSearchResultFrame::createImage(){
     QLabel* image = new QLabel();
-    image->setMaximumSize(100, 100);
-    image->setPixmap(recipe.getPixmap());
+    image->setMaximumSize(110, 110);
+    image->setPixmap(recipe->getPixmap());
     image->setScaledContents(true);
     image->setMouseTracking(true);
     QGridLayout* imageLayout = new QGridLayout();
@@ -119,10 +121,24 @@ QFrame *RecipeSearchResultFrame::createImage(){
     imageLayout->setSpacing(0);
     imageLayout->setMargin(0);
     QFrame* imageFrame = new QFrame();
-    imageFrame->setMinimumSize(100,100);
-    imageFrame->setMaximumSize(100,100);
+    imageFrame->setMinimumSize(110,110);
+    imageFrame->setMaximumSize(110,110);
     imageFrame->setFrameStyle(QFrame::NoFrame | QFrame::Box);
     imageFrame->setLayout(imageLayout);
     imageFrame->setMouseTracking(true);
     return imageFrame;
+}
+
+ParameterButton* RecipeSearchResultFrame::createDeleteButton(){
+    deleteButton = new ParameterButton(recipe);
+    deleteButton->setMaximumSize(80,20);
+    deleteButton->setMinimumSize(80,20);
+    deleteButton->setText("Löschen");
+    deleteButton->setStyleSheet("font: 10px; color: red");
+
+    return deleteButton;
+}
+
+ParameterButton *RecipeSearchResultFrame::getDeleteButton() const{
+    return deleteButton;
 }

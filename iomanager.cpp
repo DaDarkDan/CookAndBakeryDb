@@ -14,8 +14,8 @@
 
 IOManager::~IOManager(){}
 
-vector<Recipe> IOManager::loadRecipes() const{
-    vector<Recipe> recipeList;
+vector<Recipe*> IOManager::loadRecipes() const{
+    vector<Recipe*> recipeList;
 
     QStringList filter("*.xml"); //only parse xml files
     QDirIterator it(directoryPath, filter);
@@ -44,8 +44,9 @@ vector<Recipe> IOManager::loadRecipes() const{
         //name
         Recipe* recipe = new Recipe();
         recipe->setName(xmlReader.readElementText());
+        recipe->setFullPath(directoryPath + "/" + recipe->getName() + ".xml");
         xmlReader.readNext();
-        xmlReader.readNext();
+        xmlReader.readNext();        
         //date
         recipe->setCreationDate(xmlReader.readElementText());
         xmlReader.readNext();
@@ -100,14 +101,15 @@ vector<Recipe> IOManager::loadRecipes() const{
         pixmap->load(imgFullPath);
         recipe->setPixmap(*pixmap);
 
-        recipeList.push_back(*recipe);
+        recipeList.push_back(recipe);
     }
     return recipeList;
 }
 
-void IOManager::saveRecipe(Recipe recipe) const{
+void IOManager::saveRecipe(Recipe* recipe) const{
     //setup
-    QString fileName = recipe.getName() + ".xml";
+    QString fileName = recipe->getName() + ".xml";
+    recipe->setFullPath(directoryPath + "/" + fileName);
 
     QFile file(directoryPath + "/" + fileName);
     if (file.open(QIODevice::WriteOnly)) {
@@ -119,15 +121,15 @@ void IOManager::saveRecipe(Recipe recipe) const{
         //write to xml
         xmlWriter.writeStartElement("Recipe");
 
-        xmlWriter.writeTextElement("Name", recipe.getName());
-        xmlWriter.writeTextElement("Date", recipe.getCreationDate());
-        xmlWriter.writeTextElement("Category", recipe.getCategory());
-        xmlWriter.writeTextElement("Favourite", recipe.getFavouriteAsQString());
-        xmlWriter.writeTextElement("Notes", recipe.getNotes());
+        xmlWriter.writeTextElement("Name", recipe->getName());
+        xmlWriter.writeTextElement("Date", recipe->getCreationDate());
+        xmlWriter.writeTextElement("Category", recipe->getCategory());
+        xmlWriter.writeTextElement("Favourite", recipe->getFavouriteAsQString());
+        xmlWriter.writeTextElement("Notes", recipe->getNotes());
 
         //save ingredient list
         xmlWriter.writeStartElement("Ingredient");
-        for (auto ingredient : recipe.getIngredients()){
+        for (auto ingredient : recipe->getIngredients()){
             xmlWriter.writeTextElement("IngredientName", ingredient.getName());
             QString amount = QString::fromStdString(std::to_string(ingredient.getAmount()));
             xmlWriter.writeTextElement("IngredientAmount", amount);
@@ -138,13 +140,13 @@ void IOManager::saveRecipe(Recipe recipe) const{
 
         //save keyword list
         xmlWriter.writeStartElement("Keywords");
-        for (auto keyword : recipe.getKeywords()){
+        for (auto keyword : recipe->getKeywords()){
             xmlWriter.writeTextElement("keyword", keyword);
         }
         xmlWriter.writeEndElement();
 
         //rating
-        xmlWriter.writeTextElement("rating", QString::number(recipe.getRating()));
+        xmlWriter.writeTextElement("rating", QString::number(recipe->getRating()));
 
         //finish
         xmlWriter.writeEndElement();
@@ -153,11 +155,11 @@ void IOManager::saveRecipe(Recipe recipe) const{
     }
     file.close();
     //save image
-    if (!recipe.getPixmap().isNull()){
-        fileName = recipe.getName() + "_image.png";
+    if (!recipe->getPixmap().isNull()){
+        fileName = recipe->getName() + "_image.png";
         QFile imgFile(directoryPath + "/" + fileName);
         imgFile.open(QIODevice::WriteOnly);
-        recipe.getPixmap().save(&imgFile, "PNG");
+        recipe->getPixmap().save(&imgFile, "PNG");
         imgFile.close();
     }
 }

@@ -135,7 +135,7 @@ QString CreatePage::on_createSaveBtn_clicked() {
         createImgInputLabel->clear();
     }
 
-    if (mw->getRm()->saveRecipe(*recipe)){
+    if (mw->getRm()->saveRecipe(recipe)){
         return "Rezept '" + recipe->getName() + "' wurde erfolgreich gespeichert!";
     }
     return "Rezept konnte nicht gespeichert werden. Gibt es dieses schon?";
@@ -181,7 +181,7 @@ QString CreatePage::on_createAddIngredientBtn_clicked() {
         createAddedIngredientsScrollViewContents->layout()->addWidget(frame);
         addedIngredientFrameList.push_back(frame);
 
-        return "Zutat '" + name->toPlainText() + " wurde hinzugefügt!";
+        return "Zutat '" + name->toPlainText() + "' wurde hinzugefügt!";
     }
     return "Zutat konnte aufgrund eines Fehlers nicht hinzugefügt werden!";
 }

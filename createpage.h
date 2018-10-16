@@ -65,6 +65,7 @@ private:
     QTextEdit* createIngredientNameTxtEdit;
     QTextEdit* createIngredientAmountTxtEdit;
     QTextEdit* createAddedKeywordsTxtEdit;
+
 };
 
 #endif // CREATEPAGE_H
