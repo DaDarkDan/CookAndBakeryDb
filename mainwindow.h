@@ -72,6 +72,8 @@ private slots:
 
     void on_homeSetDirectoryLabel_clicked();
 
+    void on_searchSortComboBox_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 

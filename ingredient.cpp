@@ -11,7 +11,7 @@ Ingredient::Ingredient(QString name, QString wt, float amount) : name(name), wei
 
 Ingredient::~Ingredient(){}
 
-QStringList Ingredient::weightTypeList = QStringList() << "Gramm" << "Milliliter" << "Stück" << "EL" << "TL";
+QStringList Ingredient::weightTypeList = QStringList() << "Gramm" << "Milliliter" << "Stück" << "EL" << "TL" << "Packung";
 
 bool Ingredient::operator==(const Ingredient &rIngredient) const{
     if (name == rIngredient.getName()){

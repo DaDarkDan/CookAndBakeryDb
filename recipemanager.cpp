@@ -2,25 +2,56 @@
 #include "ingredient.h"
 #include "recipe.h"
 #include "iomanager.h"
+#include "recipecompare.h"
 
 #include "QDir"
 #include "QXmlStreamWriter"
 
 #include <algorithm>
 
+#include "QDebug"
+
 RecipeManager::RecipeManager(QString directoryPath){
     ioManager = new IOManager(directoryPath);
     recipeList = ioManager->loadRecipes();
+    currentSorting = 0;
     addAllUniqueIngredientsAndKeywords();
 }
 
-void RecipeManager::sortRecipes(RecipeCompare rc){
-    std::sort(recipeList.begin(), recipeList.end(), rc);
+void RecipeManager::sortRecipes(){
+    switch(currentSorting){
+    case 0: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::NAME_ASC));
+        break;
+    case 1: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::NAME_DESC));
+        break;
+    case 2: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::DATE_ASC));
+        break;
+    case 3: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::DATE_DESC));
+        break;
+    case 4: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::CATEGORY_ASC));
+        break;
+    case 5: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::CATEGORY_DESC));
+        break;
+    case 6: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::FAVOURITE));
+        break;
+    case 7: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::RATING_ASC));
+        break;
+    case 8: std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::RATING_DESC));
+        break;
+    default:
+        qDebug() << "ERROR in sorting input";
+    }
+}
+
+void RecipeManager::setCurrentSorting(int value)
+{
+    currentSorting = value;
 }
 
 vector<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& category,
                            const QString& favourite, const vector<QString> ingList,
-                           const vector<QString> keywList, int rating) const{
+                           const vector<QString> keywList, int rating){
+    sortRecipes();
     //return all recipes if no parameter set
     if (name == "" && category == "egal" && favourite == "egal" && ingList.empty() && keywList.empty() && rating == -1) {
         return recipeList;
@@ -62,6 +93,7 @@ vector<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& c
             foundRecipes.push_back(r);
         }
     }
+
     return foundRecipes;
 }
 
@@ -78,7 +110,7 @@ bool RecipeManager::saveRecipe(Recipe* recipe){
                 keywordList.push_back(k);
             }
         }
-        std::sort(recipeList.begin(), recipeList.end(), RecipeCompare(RecipeCompare::CompareType::NAME_ASC));
+        sortRecipes();
         std::sort(ingredientList.begin(), ingredientList.end());
         std::sort(keywordList.begin(), keywordList.end());
         ioManager->saveRecipe(recipe);

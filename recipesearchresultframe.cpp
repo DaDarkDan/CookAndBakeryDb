@@ -28,9 +28,9 @@ RecipeSearchResultFrame::RecipeSearchResultFrame(Recipe* recipe, QHBoxLayout* st
     gridLayout->addWidget(createIndex(index),0,0);
     gridLayout->addWidget(createTitle(),0,1);
     gridLayout->addWidget(createDate(),1,1);
-    gridLayout->addWidget(createIngAmount(),2,1);
+    gridLayout->addWidget(createCategoryIngredientAmountLabel(),2,1);
     gridLayout->addWidget(createStarRating(starLayout),3,1);
-    gridLayout->addWidget(createDeleteButton(),4,1);
+    gridLayout->addWidget(createDeleteButton(),3,0);
 
     horLayout->addLayout(gridLayout);
     horLayout->addWidget(createImage());
@@ -85,15 +85,15 @@ QLabel *RecipeSearchResultFrame::createDate(){
     return date;
 }
 
-QLabel *RecipeSearchResultFrame::createIngAmount(){
+QLabel *RecipeSearchResultFrame::createCategoryIngredientAmountLabel(){
     QString suffix = " Zutaten";
     if (recipe->getNumberOfIngredients() == 1){
         suffix = " Zutat";
     }
-    QLabel* ing = new QLabel(QString::number(recipe->getNumberOfIngredients()) + suffix);
-    ing->setMaximumSize(150, 20);
-    ing->setMouseTracking(true);
-    return ing;
+    QLabel* label = new QLabel(recipe->getCategory() + " mit " + QString::number(recipe->getNumberOfIngredients()) + suffix);
+    label->setMaximumSize(200, 20);
+    label->setMouseTracking(true);
+    return label;
 }
 
 QFrame *RecipeSearchResultFrame::createStarRating(QHBoxLayout* starLayout){
@@ -131,9 +131,9 @@ QFrame *RecipeSearchResultFrame::createImage(){
 
 ParameterButton* RecipeSearchResultFrame::createDeleteButton(){
     deleteButton = new ParameterButton(recipe);
-    deleteButton->setMaximumSize(80,20);
-    deleteButton->setMinimumSize(80,20);
-    deleteButton->setText("Löschen");
+    deleteButton->setMaximumSize(30,20);
+    deleteButton->setMinimumSize(30,20);
+    deleteButton->setText("X");
     deleteButton->setStyleSheet("font: 10px; color: red");
 
     return deleteButton;

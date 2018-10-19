@@ -10,9 +10,10 @@ public:
         NAME_ASC = 0, NAME_DESC,
         DATE_ASC, DATE_DESC,
         CATEGORY_ASC, CATEGORY_DESC,
-        FAVOURITE_ASC, FAVOURITE_DESC,
+        FAVOURITE,
         RATING_ASC,  RATING_DESC
     };
+
     RecipeCompare(CompareType ct) : ct(ct) {}
     bool operator()(Recipe* l, Recipe* r);
 

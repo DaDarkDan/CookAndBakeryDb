@@ -14,7 +14,7 @@ bool RecipeCompare::operator()(Recipe* l, Recipe* r) {
         return l->getCategory() < r->getCategory();
     case CATEGORY_DESC:
         return l->getCategory() > r->getCategory();
-    case FAVOURITE_ASC:
+    case FAVOURITE:
         if (l->getFavourite() && r->getFavourite()){
             return l->getName() < r->getName();
         } else if (l->getFavourite() && !r->getFavourite()) {
@@ -23,16 +23,6 @@ bool RecipeCompare::operator()(Recipe* l, Recipe* r) {
             return false;
         } else {
             return l->getName() < r->getName();
-        }
-    case FAVOURITE_DESC:
-        if (l->getFavourite() && r->getFavourite()){
-            return l->getName() > r->getName();
-        } else if (l->getFavourite() && !r->getFavourite()) {
-            return false;
-        } else if (!l->getFavourite() && r->getFavourite()){
-            return true;
-        } else {
-            return l->getName() > r->getName();
         }
     case RATING_ASC:
         return l->getRating() < r->getRating();

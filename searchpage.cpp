@@ -25,7 +25,7 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
                        QComboBox* searchCategoryComboBox, QComboBox* searchFavouriteComboBox, QTextEdit* searchRecipenameTxtEdit,
                        QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
                        QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
-                       QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel){
+                       QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox){
     this->mw = mw;
     this->searchAddedIngredientScrollAreaContents = searchAddedIngredientScrollAreaContents;
     this->searchIngredientScrollAreaContents = searchIngredientScrollAreaContents;
@@ -40,6 +40,7 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
     this->searchFoundRecipesScrollViewContents = searchFoundRecipesScrollViewContents;
     this->searchIncludeRatingCheckBox = searchIncludeRatingCheckBox;
     this->searchResultImgLabel = searchResultImgLabel;
+    this->searchSortComboBox = searchSortComboBox;
 }
 
 void SearchPage::setup() {
@@ -53,6 +54,10 @@ void SearchPage::setup() {
     searchFavouriteComboBox->addItem("egal");
     searchFavouriteComboBox->addItem("Ja");
     searchFavouriteComboBox->addItem("Nein");
+
+    for (auto str : sortings){
+        searchSortComboBox->addItem(str);
+    }
 
     //star layout
     searchRatingStarFrame->setLayout(mw->createStarEditorFrameLayout());
@@ -141,6 +146,7 @@ void SearchPage::on_searchResetButton_clicked() {
     searchRecipenameTxtEdit->clear();
     searchCategoryComboBox->setCurrentIndex(0);
     searchFavouriteComboBox->setCurrentIndex(0);
+    searchSortComboBox->setCurrentIndex(0);
     searchIngredientTextEdit->clear();
     searchKeywordTextEdit->clear();
     searchIncludeRatingCheckBox->setCheckState(Qt::CheckState::Unchecked);
@@ -233,6 +239,11 @@ void SearchPage::updateFoundRecipes() {
     for (unsigned int i = 0; i < foundRecipes.size(); i++){
         searchFoundRecipesScrollViewContents->layout()->addWidget(getRecipeAsFrame(foundRecipes.at(i), i+1));
     }
+}
+
+void SearchPage::on_searchSortComboBox_currentIndexChanged(int index){
+    mw->getRm()->setCurrentSorting(index);
+    updateFoundRecipes();
 }
 
 QFrame *SearchPage::getRecipeAsFrame(Recipe* recipe, int index) {

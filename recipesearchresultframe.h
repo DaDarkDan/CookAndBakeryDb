@@ -40,7 +40,7 @@ private:
     QLabel* createIndex(int index);
     QLabel* createTitle();
     QLabel* createDate();
-    QLabel* createIngAmount();
+    QLabel* createCategoryIngredientAmountLabel();
     QFrame* createStarRating(QHBoxLayout* starLayout);
     QFrame* createImage();
     ParameterButton* createDeleteButton();

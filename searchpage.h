@@ -1,4 +1,6 @@
 #include "recipe.h"
+#include "recipecompare.h"
+#include "QMap"
 
 #ifndef SEARCHPAGE_H
 #define SEARCHPAGE_H
@@ -25,7 +27,7 @@ public:
                QComboBox* searchCategoryComboBox, QComboBox* searchFavouriteComboBox, QTextEdit* searchRecipenameTxtEdit,
                QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
                QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
-               QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel);
+               QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox);
 
     void setup();
 
@@ -48,6 +50,7 @@ public:
     void updateFoundRecipes();
 
     void on_searchTabOpened();
+    void on_searchSortComboBox_currentIndexChanged(int index);
 
 private slots:
     void displaySearchResultImage(QPixmap pixmap, QString path);
@@ -82,8 +85,15 @@ private:
     QFrame* searchRatingStarFrame;
     QCheckBox* searchIncludeRatingCheckBox;
     ClickableLabel* searchResultImgLabel;
+    QComboBox* searchSortComboBox;
 
     StarEditor* starEditor = nullptr;
+
+    QString sortings[9] = {"Name aufsteigend", "Name absteigend",
+                          "Datum aufsteigend", "Datum absteigend",
+                          "Kategorie aufsteigend", "Kategorie absteigend",
+                          "Favorit",
+                          "Bewertung aufsteigend",  "Bewertung absteigend"};
 };
 
 #endif // SEARCHPAGE_H

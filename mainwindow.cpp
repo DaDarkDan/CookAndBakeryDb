@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->searchCategoryComboBox, ui->searchFavouriteComboBox, ui->searchRecipenameTxtEdit,
                         ui->searchIngredientTextEdit, ui->searchKeywordScrollAreaContents, ui->searchAddedKeywordScrollAreaContents,
                         ui->searchKeywordTextEdit, ui->searchFoundRecipesScrollViewContents, ui->searchRatingStarFrame,
-                        ui->searchIncludeRatingCheckBox, cl);
+                        ui->searchIncludeRatingCheckBox, cl, ui->searchSortComboBox);
     hp = new HomePage(this, ui->homeDirectoryLineEdit);
 
     setupSearchPage();
@@ -214,4 +214,8 @@ RecipeManager *MainWindow::getRm() const {
 
 void MainWindow::setRm(RecipeManager *rm){
     this->rm = rm;
+}
+
+void MainWindow::on_searchSortComboBox_currentIndexChanged(int index){
+    sp->on_searchSortComboBox_currentIndexChanged(index);
 }
