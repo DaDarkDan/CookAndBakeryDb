@@ -5,6 +5,11 @@
         <file>img/background02.jpg</file>
     </qresource>
     <qresource prefix="/">
-        <file>img/btnIcon_makeBigger.png</file>
+        <file>img/book_icon.ico</file>
+        <file>img/cake_icon.ico</file>
+        <file>img/idea.png</file>
+        <file>img/ingredient.png</file>
+        <file>img/arrow_down.png</file>
+        <file>img/trashBin.png</file>
     </qresource>
 </RCC>

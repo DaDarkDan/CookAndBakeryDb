@@ -27,7 +27,8 @@ public:
                QComboBox* searchCategoryComboBox, QComboBox* searchFavouriteComboBox, QTextEdit* searchRecipenameTxtEdit,
                QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
                QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
-               QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox);
+               QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox,
+               QLabel* searchIngredientIconLabel, QLabel* searchKeywordIconLabel);
 
     void setup();
 
@@ -86,6 +87,7 @@ private:
     QCheckBox* searchIncludeRatingCheckBox;
     ClickableLabel* searchResultImgLabel;
     QComboBox* searchSortComboBox;
+    QLabel* searchIngredientIconLabel, *searchKeywordIconLabel;
 
     StarEditor* starEditor = nullptr;
 

@@ -131,10 +131,12 @@ QFrame *RecipeSearchResultFrame::createImage(){
 
 ParameterButton* RecipeSearchResultFrame::createDeleteButton(){
     deleteButton = new ParameterButton(recipe);
-    deleteButton->setMaximumSize(30,20);
-    deleteButton->setMinimumSize(30,20);
+    deleteButton->setMaximumSize(20,20);
+    deleteButton->setMinimumSize(20,20);
     deleteButton->setText("X");
-    deleteButton->setStyleSheet("font: 10px; color: red");
+    deleteButton->setStyleSheet("font: 12px bold red; background-color: qradialgradient(cx:0, cy:0, radius: 1.6, fx:0.5, fy:0.5, \
+                                    stop:0  rgb(255, 239, 229), stop:0.8 rgb(247, 188, 128), stop:1  rgb(247, 188, 128));}"
+                                );
 
     return deleteButton;
 }

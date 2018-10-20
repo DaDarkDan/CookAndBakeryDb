@@ -26,7 +26,8 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
                        vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList,
                        QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
                        QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
-                       QTextEdit* createAddedKeywordsTxtEdit){
+                       QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
+                       QLabel* createKeywordIconLabel){
     this->mw = mw;
     this->createNameTxtEdit = createNameTxtEdit;
     this->createCategoryComboBox = createCategoryComboBox;
@@ -43,9 +44,17 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
     this->createIngredientNameTxtEdit = createIngredientNameTxtEdit;
     this->createIngredientAmountTxtEdit = createIngredientAmountTxtEdit;
     this->createAddedKeywordsTxtEdit = createAddedKeywordsTxtEdit;
+    this-> createIngredientIconLabel = createIngredientIconLabel;
+    this->createKeywordIconLabel = createKeywordIconLabel;
 }
 
 void CreatePage::setup(){
+    //icons
+    createIngredientIconLabel->setPixmap(QPixmap(":/img/ingredient.png"));
+    createIngredientIconLabel->setScaledContents(true);
+    createIngredientIconLabel->setAlignment(Qt::AlignRight);
+    createKeywordIconLabel->setPixmap(QPixmap(":/img/idea.png"));
+    createKeywordIconLabel->setScaledContents(true);
     //textEdits
     createNameTxtEdit->setTabChangesFocus(true);
     createIngredientNameTxtEdit->setTabChangesFocus(true);

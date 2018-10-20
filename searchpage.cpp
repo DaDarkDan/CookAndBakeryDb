@@ -25,7 +25,8 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
                        QComboBox* searchCategoryComboBox, QComboBox* searchFavouriteComboBox, QTextEdit* searchRecipenameTxtEdit,
                        QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
                        QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
-                       QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox){
+                       QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox,
+                       QLabel* searchIngredientIconLabel, QLabel* searchKeywordIconLabel){
     this->mw = mw;
     this->searchAddedIngredientScrollAreaContents = searchAddedIngredientScrollAreaContents;
     this->searchIngredientScrollAreaContents = searchIngredientScrollAreaContents;
@@ -41,11 +42,20 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
     this->searchIncludeRatingCheckBox = searchIncludeRatingCheckBox;
     this->searchResultImgLabel = searchResultImgLabel;
     this->searchSortComboBox = searchSortComboBox;
+    this->searchIngredientIconLabel = searchIngredientIconLabel;
+    this->searchKeywordIconLabel = searchKeywordIconLabel;
 }
 
 void SearchPage::setup() {
     setupSearchIngredientScrollViews();
     setupSearchKeywordScrollView();
+
+    //icons
+    searchIngredientIconLabel->setPixmap(QPixmap(":/img/ingredient.png"));
+    searchIngredientIconLabel->setScaledContents(true);
+    searchIngredientIconLabel->setAlignment(Qt::AlignRight);
+    searchKeywordIconLabel->setPixmap(QPixmap(":/img/idea.png"));
+    searchKeywordIconLabel->setScaledContents(true);
 
     //combo boxes
     searchCategoryComboBox->addItem("egal");

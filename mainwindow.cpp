@@ -31,7 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->createFavouriteCheckBox, ui->createRatingCheckBox, addedIngredientFrameList,
                         addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel,
                         ui->createIngredientNameTxtEdit, ui->createIngredientAmountTxtEdit,
-                        ui->createAddedKeywordsTxtEdit);
+                        ui->createAddedKeywordsTxtEdit, ui->createIngredientIconLabel,
+                        ui->createKeywordIconLabel);
 
     ClickableLabel* cl = new ClickableLabel(this);
     ui->searchTab->layout()->addWidget(cl);
@@ -40,7 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->searchCategoryComboBox, ui->searchFavouriteComboBox, ui->searchRecipenameTxtEdit,
                         ui->searchIngredientTextEdit, ui->searchKeywordScrollAreaContents, ui->searchAddedKeywordScrollAreaContents,
                         ui->searchKeywordTextEdit, ui->searchFoundRecipesScrollViewContents, ui->searchRatingStarFrame,
-                        ui->searchIncludeRatingCheckBox, cl, ui->searchSortComboBox);
+                        ui->searchIncludeRatingCheckBox, cl, ui->searchSortComboBox, ui->searchIngredientIconLabel,
+                        ui->searchKeywordIconLabel);
     hp = new HomePage(this, ui->homeDirectoryLineEdit);
 
     setupSearchPage();

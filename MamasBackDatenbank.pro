@@ -72,3 +72,4 @@ RESOURCES += \
 
 DISTFILES +=
 
+win32:RC_ICONS += book_icon.ico

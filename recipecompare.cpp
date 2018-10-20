@@ -29,4 +29,6 @@ bool RecipeCompare::operator()(Recipe* l, Recipe* r) {
     case RATING_DESC:
         return l->getRating() > r->getRating();
     }
+
+    return false;
 }

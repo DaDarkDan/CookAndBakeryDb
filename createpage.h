@@ -30,7 +30,8 @@ public:
                vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList,
                QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
                QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
-               QTextEdit* createAddedKeywordsTxtEdit);
+               QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
+               QLabel* createKeywordIconLabel);
 
     void setup();
 
@@ -65,7 +66,7 @@ private:
     QTextEdit* createIngredientNameTxtEdit;
     QTextEdit* createIngredientAmountTxtEdit;
     QTextEdit* createAddedKeywordsTxtEdit;
-
+    QLabel* createIngredientIconLabel, *createKeywordIconLabel;
 };
 
 #endif // CREATEPAGE_H

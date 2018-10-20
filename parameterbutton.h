@@ -14,7 +14,7 @@ public:
 signals:
     void clicked(Recipe* recipe);
 public slots:
-    virtual void mousePressEvent(QMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
     Recipe* recipe;
