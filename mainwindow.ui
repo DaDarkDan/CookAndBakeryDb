@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1218</width>
-    <height>750</height>
+    <width>1217</width>
+    <height>775</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -82,6 +82,8 @@ QTabBar::tab:!selected {
 QPushButton#createResetBtn, QPushButton#searchResetButton {
     background-color: qradialgradient(cx:0, cy:0, radius: 1.6, fx:0.5, fy:0.5, 
 		stop:0  rgb(255, 239, 229), stop:0.8 rgb(255, 103, 86), stop:1  rgb(255, 103, 86));
+	border-radius: 5px;
+    border: 1px solid #8f8f91;
 }
 
 QPushButton#createSaveBtn{
@@ -162,8 +164,8 @@ QScrollArea {
 	background-color: transparent;
 }
 
-QWidget#searchIngredientScrollAreaContents {
-	background-color:  rgb(255, 145, 35);
+QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollAreaContents, QWidget#searchKeywordScrollAreaContents, QWidget#searchAddedKeywordScrollAreaContents  {
+	background-color:  rgb(255, 225, 186);
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -1008,7 +1010,7 @@ QWidget#searchIngredientScrollAreaContents {
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <property name="spacing">
-            <number>0</number>
+            <number>6</number>
            </property>
            <item>
             <widget class="QFrame" name="searchSortFrame">
@@ -1125,8 +1127,8 @@ QWidget#searchIngredientScrollAreaContents {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>838</width>
-                <height>562</height>
+                <width>431</width>
+                <height>575</height>
                </rect>
               </property>
              </widget>
@@ -1141,8 +1143,177 @@ QWidget#searchIngredientScrollAreaContents {
               </size>
              </property>
              <property name="text">
-              <string>Zurücksetzen</string>
+              <string>Alles zurücksetzen</string>
              </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="searchShownImageFrame">
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>660</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>660</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_14">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="searchImgTitleLabel">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Bild:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="searchImageButtonFrame">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>10000</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <spacer name="horizontalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="searchImageLeft">
+                <property name="minimumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="background.qrc">
+                  <normaloff>:/img/arrow_left.png</normaloff>:/img/arrow_left.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="searchImageRight">
+                <property name="minimumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="background.qrc">
+                  <normaloff>:/img/arrow_right.png</normaloff>:/img/arrow_right.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_7">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
@@ -2223,8 +2394,8 @@ QWidget#searchIngredientScrollAreaContents {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>460</width>
-                   <height>160</height>
+                   <width>459</width>
+                   <height>180</height>
                   </rect>
                  </property>
                 </widget>
@@ -2298,7 +2469,7 @@ QWidget#searchIngredientScrollAreaContents {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>460</width>
+                   <width>459</width>
                    <height>138</height>
                   </rect>
                  </property>
@@ -2353,7 +2524,7 @@ QWidget#searchIngredientScrollAreaContents {
                  </size>
                 </property>
                 <property name="text">
-                 <string>Zurücksetzen</string>
+                 <string>Alles zurücksetzen</string>
                 </property>
                 <property name="autoRepeatDelay">
                  <number>0</number>
@@ -2419,17 +2590,36 @@ QWidget#searchIngredientScrollAreaContents {
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="createImgInputLabel">
+            <widget class="QLabel" name="createImgTitleLabel">
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>0</height>
+               <height>20</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>10000</width>
-               <height>10000</height>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Bild: </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="createImgInputLabel">
+             <property name="minimumSize">
+              <size>
+               <width>400</width>
+               <height>600</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>400</width>
+               <height>600</height>
               </size>
              </property>
              <property name="frameShape">
@@ -2465,13 +2655,13 @@ QWidget#searchIngredientScrollAreaContents {
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <property name="leftMargin">
-               <number>100</number>
+               <number>0</number>
               </property>
               <property name="topMargin">
                <number>0</number>
               </property>
               <property name="rightMargin">
-               <number>100</number>
+               <number>0</number>
               </property>
               <property name="bottomMargin">
                <number>0</number>
@@ -2480,12 +2670,83 @@ QWidget#searchIngredientScrollAreaContents {
                <widget class="QPushButton" name="uploadImgBtn">
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>150</width>
                   <height>25</height>
                  </size>
                 </property>
                 <property name="text">
                  <string>Bild hochladen</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="createDeleteImg">
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>100</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Bild entfernen</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="createImageLeft">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="background.qrc">
+                  <normaloff>:/img/arrow_left.png</normaloff>:/img/arrow_left.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="createImgRight">
+                <property name="minimumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="background.qrc">
+                  <normaloff>:/img/arrow_right.png</normaloff>:/img/arrow_right.png</iconset>
                 </property>
                </widget>
               </item>
@@ -2614,7 +2875,7 @@ QWidget#searchIngredientScrollAreaContents {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1218</width>
+     <width>1217</width>
      <height>21</height>
     </rect>
    </property>
@@ -2630,6 +2891,8 @@ QWidget#searchIngredientScrollAreaContents {
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="background.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -6,7 +6,7 @@
 #include "mainwindow.h"
 
 #include "QTextEdit"
-#include "QDate"
+#include "QDateTime"
 #include "QComboBox"
 #include "QFrame"
 #include "QLabel"
@@ -18,6 +18,7 @@
 #include "QCheckBox"
 #include "QFileDialog"
 #include "QStandardPaths"
+#include "QMessageBox"
 
 CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* createCategoryComboBox,
                        QComboBox* createAddIngredientWeightTypeComboBox, QWidget* createAddedIngredientsScrollViewContents,
@@ -27,7 +28,7 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
                        QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
                        QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
                        QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
-                       QLabel* createKeywordIconLabel){
+                       QLabel* createKeywordIconLabel, QLabel* createImgTitleLabel){
     this->mw = mw;
     this->createNameTxtEdit = createNameTxtEdit;
     this->createCategoryComboBox = createCategoryComboBox;
@@ -46,6 +47,9 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
     this->createAddedKeywordsTxtEdit = createAddedKeywordsTxtEdit;
     this-> createIngredientIconLabel = createIngredientIconLabel;
     this->createKeywordIconLabel = createKeywordIconLabel;
+    this->createImgTitleLabel = createImgTitleLabel;
+
+    currentPixmapIndex = 0;
 }
 
 void CreatePage::setup(){
@@ -57,6 +61,12 @@ void CreatePage::setup(){
     createKeywordIconLabel->setScaledContents(true);
     //textEdits
     createNameTxtEdit->setTabChangesFocus(true);
+    if (mw->getRm()->getIoManager()->getDirectoryPath() == ""){
+        createNameTxtEdit->setText("Sie benötigen einen Speicherpfad!");
+        createNameTxtEdit->setStyleSheet("background: rgb(202, 205, 209)");
+        createNameTxtEdit->setDisabled(true);
+    }
+
     createIngredientNameTxtEdit->setTabChangesFocus(true);
     createIngredientAmountTxtEdit->setTabChangesFocus(true);
     createAddedKeywordsTxtEdit->setTabChangesFocus(true);
@@ -79,8 +89,16 @@ void CreatePage::setup(){
 }
 
 QString CreatePage::on_createSaveBtn_clicked() {
+    Recipe temp;
+    temp.setName(createNameTxtEdit->toPlainText());
     if (createNameTxtEdit->toPlainText() == ""){
+        createNameTxtEdit->setStyleSheet("background: red");
         return "Bitte gib einen Rezeptnamen an!";
+    } else if (!mw->getRm()->isNewRecipe(temp)){
+        createNameTxtEdit->setStyleSheet("background: red");
+        return "Dieser Rezeptname ist schon vergeben!";
+    } else if (createNameTxtEdit->toPlainText() == "Sie benötigen einen Speicherpfad!"){
+        return "Bitte geben Sie einen Speicherpfad unter 'Meine Datenbank' an!";
     }
 
     Recipe* recipe = new Recipe();
@@ -88,7 +106,7 @@ QString CreatePage::on_createSaveBtn_clicked() {
     recipe->setName(createNameTxtEdit->toPlainText());
     createNameTxtEdit->clear();
     //date
-    recipe->setCreationDate(QDate::currentDate().toString());
+    recipe->setCreationDate(QDateTime::currentDateTime().toString("dd/MM/yyyy H:mm'Uhr'"));
     //category
     recipe->setCategory(createCategoryComboBox->currentText());
     createCategoryComboBox->setCurrentIndex(0);
@@ -102,7 +120,7 @@ QString CreatePage::on_createSaveBtn_clicked() {
         if (children.size() == 5) {
             Ingredient ing;
             ing.setName(qobject_cast<QTextEdit*>(children.at(0))->toPlainText());
-            ing.setAmount(qobject_cast<QTextEdit*>(children.at(1))->toPlainText().toFloat());
+            ing.setAmount(qobject_cast<QTextEdit*>(children.at(1))->toPlainText().replace(",", ".").toFloat());
             ing.setWeightType(qobject_cast<QComboBox*>(children.at(2))->currentText());
             addedIngredientList.push_back(ing);
         }
@@ -138,22 +156,31 @@ QString CreatePage::on_createSaveBtn_clicked() {
     //notes
     recipe->setNotes(createNotesTxtEdit->toPlainText());
     createNotesTxtEdit->clear();
-    //image
+    //images
     if (createImgInputLabel->pixmap()){
-        recipe->setPixmap(*createImgInputLabel->pixmap());
+        QList<PathPixmap> saveList;
+        for (int i = 0; i < currentPixmapList.size(); i++){
+            PathPixmap ppm(mw->getRm()->getIoManager()->getDirectoryPath() + "/" + recipe->getName() + QString::number(i) + "_image.png", currentPixmapList.at(i));
+            saveList.push_back(ppm);
+        }
+        recipe->setPixmapList(saveList);
         createImgInputLabel->clear();
     }
 
+    QMessageBox box;
+    box.setText("Rezept '" + recipe->getName() + "' wurde erfolgreich gespeichert!");
+    box.exec();
     if (mw->getRm()->saveRecipe(recipe)){
         return "Rezept '" + recipe->getName() + "' wurde erfolgreich gespeichert!";
     }
-    return "Rezept konnte nicht gespeichert werden. Gibt es dieses schon?";
+    return "Rezept konnte nicht gespeichert werden.";
 }
 
 QString CreatePage::on_createAddIngredientBtn_clicked() {
     //check if amount is decimal number
     bool isFloat;
-    createIngredientAmountTxtEdit->toPlainText().toFloat(&isFloat);
+    QString germanInput = createIngredientAmountTxtEdit->toPlainText().replace(",", ".");
+    germanInput.toFloat(&isFloat);
 
     if (!isFloat){
         return "Die eingegebene Menge muss eine Zahl sein!";
@@ -243,16 +270,17 @@ void CreatePage::on_addedFrameDeleteButton_clicked(QPushButton* button) {
 }
 
 void CreatePage::on_uploadImgBtn_clicked() {
-    QString fileName = QFileDialog::getOpenFileName(mw, QObject::tr("Open Image"), QStandardPaths::writableLocation(QStandardPaths::PicturesLocation), QObject::tr("Formate(*.png *.jpg *.bmp *.pdf)"));
+    QString fileName = QFileDialog::getOpenFileName(mw, QObject::tr("Open Image"), QStandardPaths::writableLocation(QStandardPaths::PicturesLocation), QObject::tr("Formate(*.png *.jpg *.bmp)"));
     QImage image(fileName);
 
     createImgInputLabel->setScaledContents(true);
-
-    if (fileName.endsWith(".pdf") || fileName.endsWith(".PDF")){
-
-    } else {
-        createImgInputLabel->setPixmap(QPixmap::fromImage(image));
+    createImgInputLabel->setPixmap(QPixmap::fromImage(image));
+    currentPixmapList.push_back(QPixmap::fromImage(image));
+    if (currentPixmapList.size() > 1){
+        currentPixmapIndex = currentPixmapList.size()-1;
+        createImgInputLabel->setPixmap(currentPixmapList.at(currentPixmapIndex));
     }
+    createImgTitleLabel->setText("Bild " + QString::number(currentPixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));
 }
 
 void CreatePage::on_createRatingCheckBox_stateChanged(int arg1){
@@ -289,4 +317,47 @@ void CreatePage::on_createResetBtn_clicked() {
     }
 
     createImgInputLabel->clear();
+}
+
+void CreatePage::on_createNameTxtEdit_textChanged() {
+    createNameTxtEdit->setStyleSheet("background: white");
+}
+
+QTextEdit *CreatePage::getCreateNameTxtEdit() const{
+    return createNameTxtEdit;
+}
+
+void CreatePage::on_createDeleteImg_clicked(){
+    if (currentPixmapList.empty()) return;
+
+    currentPixmapList.removeAt(currentPixmapIndex);
+    createImgInputLabel->clear();
+    if (!currentPixmapList.empty() && currentPixmapIndex > 0){
+        currentPixmapIndex--;
+        createImgInputLabel->setPixmap(currentPixmapList.at(currentPixmapIndex));
+    } else if (!currentPixmapList.empty() && currentPixmapIndex == 0){
+        createImgInputLabel->setPixmap(currentPixmapList.at(currentPixmapIndex));
+    }
+}
+
+void CreatePage::on_createImageLeft_clicked(){
+    if (currentPixmapList.empty()) return;
+    if (currentPixmapIndex == 0){
+        currentPixmapIndex = currentPixmapList.size()-1;
+    } else {
+        currentPixmapIndex--;
+    }
+    createImgInputLabel->setPixmap(currentPixmapList.at(currentPixmapIndex));
+    createImgTitleLabel->setText("Bild " + QString::number(currentPixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));
+}
+
+void CreatePage::on_createImgRight_clicked(){
+    if (currentPixmapList.empty()) return;
+    if (currentPixmapIndex == currentPixmapList.size()-1){
+        currentPixmapIndex = 0;
+    } else {
+        currentPixmapIndex++;
+    }
+    createImgInputLabel->setPixmap(currentPixmapList.at(currentPixmapIndex));
+    createImgTitleLabel->setText("Bild " + QString::number(currentPixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));
 }

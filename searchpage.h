@@ -28,7 +28,8 @@ public:
                QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
                QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
                QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox,
-               QLabel* searchIngredientIconLabel, QLabel* searchKeywordIconLabel);
+               QLabel* searchIngredientIconLabel, QLabel* searchKeywordIconLabel, QFrame* searchShownImageFrame,
+               QLabel* searchImgTitleLabel);
 
     void setup();
 
@@ -53,8 +54,15 @@ public:
     void on_searchTabOpened();
     void on_searchSortComboBox_currentIndexChanged(int index);
 
+    void on_searchImageLeft_clicked();
+    void on_searchImageRight_clicked();
+
+public slots:
+    void setFavourite(QString string, Recipe* recipe);
+    void openChangeDialog(QString string, Recipe* recipe);
+
 private slots:
-    void displaySearchResultImage(QPixmap pixmap, QString path);
+    void displaySearchResultImage(Recipe* recipe);
     void ratingEditingFinished();
 
     void openDeleteMessageBox(Recipe* recipe);
@@ -88,6 +96,8 @@ private:
     ClickableLabel* searchResultImgLabel;
     QComboBox* searchSortComboBox;
     QLabel* searchIngredientIconLabel, *searchKeywordIconLabel;
+    QFrame* searchShownImageFrame;
+    QLabel* searchImgTitleLabel;
 
     StarEditor* starEditor = nullptr;
 
@@ -96,6 +106,9 @@ private:
                           "Kategorie aufsteigend", "Kategorie absteigend",
                           "Favorit",
                           "Bewertung aufsteigend",  "Bewertung absteigend"};
+
+    int currentRecipePixmapIndex;
+    Recipe* currentActiveRecipe;
 };
 
 #endif // SEARCHPAGE_H

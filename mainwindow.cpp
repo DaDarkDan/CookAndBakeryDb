@@ -32,17 +32,18 @@ MainWindow::MainWindow(QWidget *parent) :
                         addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel,
                         ui->createIngredientNameTxtEdit, ui->createIngredientAmountTxtEdit,
                         ui->createAddedKeywordsTxtEdit, ui->createIngredientIconLabel,
-                        ui->createKeywordIconLabel);
+                        ui->createKeywordIconLabel, ui->createImgTitleLabel);
 
-    ClickableLabel* cl = new ClickableLabel(this);
-    ui->searchTab->layout()->addWidget(cl);
+    ui->searchShownImageFrame->layout()->setAlignment(Qt::AlignHCenter);
+    ClickableLabel* cl = new ClickableLabel(ui->searchShownImageFrame);
+    qobject_cast<QVBoxLayout*>(ui->searchShownImageFrame->layout())->insertWidget(1,cl);
     connect(cl, &ClickableLabel::clicked, this, &MainWindow::openFileWithStdProgramm);
     sp = new SearchPage(this, ui->searchAddedIngredientScrollAreaContents, ui->searchIngredientScrollAreaContents,
                         ui->searchCategoryComboBox, ui->searchFavouriteComboBox, ui->searchRecipenameTxtEdit,
                         ui->searchIngredientTextEdit, ui->searchKeywordScrollAreaContents, ui->searchAddedKeywordScrollAreaContents,
                         ui->searchKeywordTextEdit, ui->searchFoundRecipesScrollViewContents, ui->searchRatingStarFrame,
                         ui->searchIncludeRatingCheckBox, cl, ui->searchSortComboBox, ui->searchIngredientIconLabel,
-                        ui->searchKeywordIconLabel);
+                        ui->searchKeywordIconLabel, ui->searchShownImageFrame, ui->searchImgTitleLabel);
     hp = new HomePage(this, ui->homeDirectoryLineEdit);
 
     setupSearchPage();
@@ -172,7 +173,7 @@ QFrame* MainWindow::createCustomFrame(){
     QSizePolicy* sp = new QSizePolicy();
     sp->setVerticalPolicy(QSizePolicy::Maximum);
     frame->setSizePolicy(*sp);
-    frame->setStyleSheet(" .QFrame {background-color : red}");
+    frame->setFrameStyle(QFrame::Box);
     return frame;
 }
 
@@ -220,4 +221,37 @@ void MainWindow::setRm(RecipeManager *rm){
 
 void MainWindow::on_searchSortComboBox_currentIndexChanged(int index){
     sp->on_searchSortComboBox_currentIndexChanged(index);
+}
+
+void MainWindow::on_createNameTxtEdit_textChanged(){
+    cp->on_createNameTxtEdit_textChanged();
+}
+
+CreatePage *MainWindow::getCp() const{
+    return cp;
+}
+
+void MainWindow::on_createDeleteImg_clicked(){
+    cp->on_createDeleteImg_clicked();
+}
+
+void MainWindow::on_createImageLeft_clicked(){
+    cp->on_createImageLeft_clicked();
+}
+
+void MainWindow::on_createImgRight_clicked(){
+    cp->on_createImgRight_clicked();
+}
+
+void MainWindow::on_searchImageLeft_clicked(){
+    sp->on_searchImageLeft_clicked();
+}
+
+void MainWindow::on_searchImageRight_clicked(){
+    sp->on_searchImageRight_clicked();
+}
+
+SearchPage *MainWindow::getSp() const
+{
+    return sp;
 }

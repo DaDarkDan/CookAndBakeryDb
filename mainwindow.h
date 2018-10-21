@@ -34,6 +34,10 @@ public:
     RecipeManager* getRm() const;
     void setRm(RecipeManager* rm);
 
+    CreatePage *getCp() const;
+
+    SearchPage *getSp() const;
+
 private slots:
     //create
     void on_createSaveBtn_clicked();
@@ -73,6 +77,18 @@ private slots:
     void on_homeSetDirectoryLabel_clicked();
 
     void on_searchSortComboBox_currentIndexChanged(int index);
+
+    void on_createNameTxtEdit_textChanged();
+
+    void on_createDeleteImg_clicked();
+
+    void on_createImageLeft_clicked();
+
+    void on_createImgRight_clicked();
+
+    void on_searchImageLeft_clicked();
+
+    void on_searchImageRight_clicked();
 
 private:
     Ui::MainWindow *ui;

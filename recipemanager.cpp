@@ -97,8 +97,8 @@ vector<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& c
     return foundRecipes;
 }
 
-bool RecipeManager::saveRecipe(Recipe* recipe){
-    if (isNewRecipe(*recipe)) {
+bool RecipeManager::saveRecipe(Recipe* recipe, bool overwriteFlag){
+    if (isNewRecipe(*recipe) || overwriteFlag) {
         recipeList.push_back(recipe);
         for (auto i : recipe->getIngredients()){
             if (isNewIngredient(i)){

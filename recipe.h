@@ -4,6 +4,9 @@
 #include "QString"
 #include "QStringList"
 #include "QPixmap"
+#include "QMap"
+
+#include "pathpixmap.h"
 
 #ifndef RECIPE_H
 #define RECIPE_H
@@ -51,9 +54,6 @@ class Recipe {
 
         static QStringList categoryList;
 
-        QPixmap getPixmap() const;
-        void setPixmap(QPixmap value);
-
         int getRating() const;
         void setRating(int value);
 
@@ -63,11 +63,12 @@ class Recipe {
 
         int getNumberOfKeywords() const;
 
-        QString getPixmapPath() const;
-        void setPixmapPath(const QString &value);
-
         QString getFullPath() const;
         void setFullPath(const QString &value);
+
+        QList<PathPixmap> getPixmapList() const;
+        void setPixmapList(const QList<PathPixmap> &value);
+        void addPixmap(const PathPixmap& pixmap);
 
 private:
         QString name;
@@ -81,8 +82,7 @@ private:
         int numberOfKeywords;
         QString notes;
         bool favourite;
-        QPixmap pixmap;
-        QString pixmapPath;
+        QList<PathPixmap> pixmapList;
         int rating;
 };
 

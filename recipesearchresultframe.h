@@ -10,20 +10,24 @@ class QLabel;
 class QFrame;
 class QPushButton;
 class ParameterButton;
+class MainWindow;
+class ClickableLabel;
 
 class RecipeSearchResultFrame : public QWidget
 {
     Q_OBJECT
 
 public:
-    RecipeSearchResultFrame(Recipe* recipe, QHBoxLayout* starLayout, int index, QWidget* parent = nullptr);
+    RecipeSearchResultFrame(MainWindow* mw, Recipe* recipe, QHBoxLayout* starLayout, int index, QWidget* parent = nullptr);
 
     QFrame *getFrame() const;
 
     ParameterButton *getDeleteButton() const;
 
+    QLabel *getHeart() const;
+
 signals:
-    void on_mousePressed(const QPixmap& pixmap, const QString& path);
+    void on_mousePressed(Recipe* recipe);
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
@@ -33,12 +37,15 @@ protected:
 private:
     Recipe* recipe;
     QFrame* frame;
+    MainWindow* mw;
 
     QHBoxLayout* horLayout;
     QGridLayout* gridLayout;
 
     QLabel* createIndex(int index);
+    ClickableLabel* createInspectLabel();
     QLabel* createTitle();
+    QLabel* createFavouriteLabel();
     QLabel* createDate();
     QLabel* createCategoryIngredientAmountLabel();
     QFrame* createStarRating(QHBoxLayout* starLayout);
@@ -46,7 +53,7 @@ private:
     ParameterButton* createDeleteButton();
 
     ParameterButton* deleteButton;
-
+    ClickableLabel* heart;
 };
 
 #endif // RECIPESEARCHRESULTFRAME_H

@@ -40,7 +40,8 @@ SOURCES += \
     homepage.cpp \
     recipesearchresultframe.cpp \
     clickablelabel.cpp \
-    parameterbutton.cpp
+    parameterbutton.cpp \
+    pathpixmap.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -57,7 +58,8 @@ HEADERS += \
     homepage.h \
     recipesearchresultframe.h \
     clickablelabel.h \
-    parameterbutton.h
+    parameterbutton.h \
+    pathpixmap.h
 
 FORMS += \
         mainwindow.ui

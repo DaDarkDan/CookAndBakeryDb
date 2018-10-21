@@ -1,6 +1,7 @@
 #include "iomanager.h"
 #include "recipe.h"
 #include "ingredient.h"
+#include "pathpixmap.h"
 
 #include "QFile"
 #include "QXmlStreamWriter"
@@ -95,11 +96,21 @@ vector<Recipe*> IOManager::loadRecipes() const{
         xmlReader.readNext();
         recipe->setRating(xmlReader.readElementText().toInt());
         //picture
-        QString imgFullPath = directoryPath + "/" + recipe->getName() +"_image.png";
-        recipe->setPixmapPath(imgFullPath);
-        QPixmap* pixmap = new QPixmap();
-        pixmap->load(imgFullPath);
-        recipe->setPixmap(*pixmap);
+        QDirIterator dirIt(directoryPath);
+        while(dirIt.hasNext()){
+            dirIt.next();
+            if (QFileInfo(dirIt.filePath()).isFile()){
+                QString fileName = QFileInfo(dirIt.filePath()).fileName();
+                if (fileName.startsWith(recipe->getName()) && fileName.endsWith("_image.png")){
+                    QString imgFullPath = QFileInfo(dirIt.filePath()).absoluteFilePath();
+                    QPixmap* pixmap = new QPixmap();
+                    pixmap->load(imgFullPath);
+                    PathPixmap ppm(imgFullPath, *pixmap);
+                    recipe->addPixmap(ppm);
+                }
+            }
+        }
+
 
         recipeList.push_back(recipe);
     }
@@ -155,12 +166,14 @@ void IOManager::saveRecipe(Recipe* recipe) const{
     }
     file.close();
     //save image
-    if (!recipe->getPixmap().isNull()){
-        fileName = recipe->getName() + "_image.png";
-        QFile imgFile(directoryPath + "/" + fileName);
-        imgFile.open(QIODevice::WriteOnly);
-        recipe->getPixmap().save(&imgFile, "PNG");
-        imgFile.close();
+    if (!recipe->getPixmapList().empty()){
+        for (int i = 0; i < recipe->getPixmapList().size(); i++){
+            fileName = recipe->getPixmapList().at(i).getPath();
+            QFile imgFile(fileName);
+            imgFile.open(QIODevice::WriteOnly);
+            recipe->getPixmapList().at(i).getPixmap().save(&imgFile, "PNG");
+            imgFile.close();
+        }
     }
 }
 

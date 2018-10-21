@@ -21,7 +21,7 @@ public:
                                const QString& favourite = "", const vector<QString> ingList = vector<QString>(),
                                const vector<QString> keywList = vector<QString>(), int rating = -1);
 
-    bool saveRecipe(Recipe* recipe);
+    bool saveRecipe(Recipe* recipe, bool overwriteFlag = false);
     IOManager* getIoManager();
 
     vector<QString> getIngredientList() const;
@@ -32,6 +32,8 @@ public:
 
     void setCurrentSorting(int value);
 
+    bool isNewRecipe(Recipe recipe);
+
 private:
     IOManager* ioManager;
     vector<QString> ingredientList;
@@ -39,7 +41,6 @@ private:
     vector<QString> keywordList;
 
     bool isNewIngredient(Ingredient ingredient);
-    bool isNewRecipe(Recipe recipe);
     bool isNewKeyword(QString keyword);
 
     void addAllUniqueIngredientsAndKeywords();

@@ -26,7 +26,8 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
                        QTextEdit* searchIngredientTextEdit, QWidget* searchKeywordScrollAreaContents, QWidget* searchAddedKeywordScrollAreaContents,
                        QTextEdit* searchKeywordTextEdit, QWidget* searchFoundRecipesScrollViewContents, QFrame* searchRatingStarFrame,
                        QCheckBox* searchIncludeRatingCheckBox, ClickableLabel* searchResultImgLabel, QComboBox* searchSortComboBox,
-                       QLabel* searchIngredientIconLabel, QLabel* searchKeywordIconLabel){
+                       QLabel* searchIngredientIconLabel, QLabel* searchKeywordIconLabel, QFrame* searchShownImageFrame,
+                       QLabel* searchImgTitleLabel){
     this->mw = mw;
     this->searchAddedIngredientScrollAreaContents = searchAddedIngredientScrollAreaContents;
     this->searchIngredientScrollAreaContents = searchIngredientScrollAreaContents;
@@ -44,6 +45,10 @@ SearchPage::SearchPage(MainWindow* mw, QWidget* searchAddedIngredientScrollAreaC
     this->searchSortComboBox = searchSortComboBox;
     this->searchIngredientIconLabel = searchIngredientIconLabel;
     this->searchKeywordIconLabel = searchKeywordIconLabel;
+    this->searchShownImageFrame = searchShownImageFrame;
+    this->searchImgTitleLabel = searchImgTitleLabel;
+
+    currentRecipePixmapIndex = 0;
 }
 
 void SearchPage::setup() {
@@ -79,7 +84,6 @@ void SearchPage::setup() {
     searchResultImgLabel->setScaledContents(true);
     searchResultImgLabel->setMinimumSize(400, 600);
     searchResultImgLabel->setMaximumSize(400, 600);
-
     updateFoundRecipes();
 }
 
@@ -257,7 +261,7 @@ void SearchPage::on_searchSortComboBox_currentIndexChanged(int index){
 }
 
 QFrame *SearchPage::getRecipeAsFrame(Recipe* recipe, int index) {
-    RecipeSearchResultFrame* rsrFrame = new RecipeSearchResultFrame(recipe, mw->createStarEditorFrameLayout(), index, mw);
+    RecipeSearchResultFrame* rsrFrame = new RecipeSearchResultFrame(mw, recipe, mw->createStarEditorFrameLayout(), index, mw);
     connect(rsrFrame, &RecipeSearchResultFrame::on_mousePressed, this, &SearchPage::displaySearchResultImage);
     connect(rsrFrame->getDeleteButton(), &ParameterButton::clicked, this, &SearchPage::openDeleteMessageBox);
     return rsrFrame->getFrame();
@@ -329,9 +333,16 @@ void SearchPage::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
     updateFoundRecipes();
 }
 
-void SearchPage::displaySearchResultImage(QPixmap pixmap, QString path){
-    searchResultImgLabel->setFullPath(path);
-    searchResultImgLabel->setPixmap(pixmap);
+void SearchPage::displaySearchResultImage(Recipe* recipe){
+    if (recipe){
+        searchImgTitleLabel->setText("Bild " + QString::number(currentRecipePixmapIndex+1) + " von " + QString::number(recipe->getPixmapList().size()));
+        currentActiveRecipe = recipe;
+        searchResultImgLabel->setFullPath(recipe->getPixmapList().at(0).getPath());
+        searchResultImgLabel->setPixmap(recipe->getPixmapList().at(0).getPixmap());
+    } else {
+        searchResultImgLabel->setFullPath(currentActiveRecipe->getPixmapList().at(0).getPath());
+        searchResultImgLabel->setPixmap(currentActiveRecipe->getPixmapList().at(0).getPixmap());
+    }
 }
 
 void SearchPage::ratingEditingFinished(){
@@ -342,4 +353,48 @@ void SearchPage::on_searchTabOpened(){
     setupSearchIngredientScrollViews();
     setupSearchKeywordScrollView();
     updateFoundRecipes();
+}
+
+void SearchPage::on_searchImageLeft_clicked(){
+    if (!currentActiveRecipe) return;
+    if (currentRecipePixmapIndex == 0){
+        currentRecipePixmapIndex = currentActiveRecipe->getPixmapList().size()-1;
+    } else {
+        currentRecipePixmapIndex--;
+    }
+    searchResultImgLabel->setPixmap(currentActiveRecipe->getPixmapList().at(currentRecipePixmapIndex).getPixmap());
+    searchImgTitleLabel->setText("Bild " + QString::number(currentRecipePixmapIndex+1) + " von " + QString::number(currentActiveRecipe->getPixmapList().size()));
+}
+
+void SearchPage::on_searchImageRight_clicked(){
+    if (!currentActiveRecipe) return;
+    if (currentRecipePixmapIndex == currentActiveRecipe->getPixmapList().size()-1){
+        currentRecipePixmapIndex = 0;
+    } else {
+        currentRecipePixmapIndex++;
+    }
+    searchResultImgLabel->setPixmap(currentActiveRecipe->getPixmapList().at(currentRecipePixmapIndex).getPixmap());
+    searchImgTitleLabel->setText("Bild " + QString::number(currentRecipePixmapIndex+1) + " von " + QString::number(currentActiveRecipe->getPixmapList().size()));
+}
+
+void SearchPage::setFavourite(QString /*string*/, Recipe* recipe){
+    ClickableLabel* heart = qobject_cast<ClickableLabel*>(sender());
+    if (recipe){
+        if (recipe->getFavourite()){
+            recipe->setFavourite(false);
+            QPixmap pm(":/img/heart_off.png");
+            heart->setPixmap(pm);
+        } else {
+            recipe->setFavourite(true);
+            QPixmap pm(":/img/heart_on.png");
+            heart->setPixmap(pm);
+        }
+        mw->getRm()->saveRecipe(recipe, true);
+    }
+}
+
+void SearchPage::openChangeDialog(QString /*string*/, Recipe *recipe){
+    QMessageBox box;
+    box.setText("Hier kommt bald die Option hin, ein Rezept einzusehen und zu ändern");
+    box.exec();
 }

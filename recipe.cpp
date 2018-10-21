@@ -12,20 +12,30 @@ Recipe::~Recipe(){
     timeFormat = nullptr;
 }
 
+QStringList Recipe::categoryList = QStringList() << "ohne Kategorie"
+                                                 << "Brot/Brötchen"
+                                                 << "Cocktail"
+                                                 << "Cremes"
+                                                 << "Dessert"
+                                                 << "Frühstück"
+                                                 << "Keks/Plätzchen"
+                                                 << "Hauptspeise"
+                                                 << "Kuchen"
+                                                 << "Muffin"
+                                                 << "Sauce"
+                                                 << "Smoothie"
+                                                 << "Suppe"
+                                                 << "Torte"
+                                                 << "Vorspeise";
+
 bool Recipe::operator==(const Recipe &rRecipe) const{
-    if (name == rRecipe.getName()){
+    if (name.toUpper() == rRecipe.getName().toUpper()){
         return true;
     }
     return false;
 }
-
-QStringList Recipe::categoryList = QStringList() << "ohne Kategorie" << "Torte"
-                                                 << "Kuchen" << "Keks"
-                                                 << "Muffin" << "Dessert"
-                                                 << "Smoothie";
-
 bool Recipe::operator!=(const Recipe &rRecipe) const{
-    if (name == rRecipe.getName()){
+    if (name.toUpper() == rRecipe.getName().toUpper()){
         return false;
     }
     return true;
@@ -42,14 +52,7 @@ QString Recipe::getCreationDate() const {
 }
 
 void Recipe::setCreationDate(const QString& value){
-    if (value == "now"){
-        time_t currentTime = std::time(nullptr);
-        std::ostringstream oss;
-        oss << std::put_time(localtime(&currentTime), timeFormat);
-        creationDate = QString::fromStdString(oss.str());
-    } else {
-        creationDate = value;
-    }
+    creationDate = value;
 }
 
 void Recipe::setNotes(const QString &value){
@@ -121,21 +124,11 @@ void Recipe::addKeyword(const QString& keyword){
     keywords.push_back(keyword);
 }
 
-QPixmap Recipe::getPixmap() const{
-    return pixmap;
-}
-
-void Recipe::setPixmap(QPixmap value){
-    pixmap = value;
-}
-
-int Recipe::getRating() const
-{
+int Recipe::getRating() const{
     return rating;
 }
 
-void Recipe::setRating(int value)
-{
+void Recipe::setRating(int value){
     rating = value;
 }
 
@@ -155,22 +148,22 @@ int Recipe::getNumberOfKeywords() const{
     return keywords.size();
 }
 
-QString Recipe::getPixmapPath() const
-{
-    return pixmapPath;
-}
-
-void Recipe::setPixmapPath(const QString &value)
-{
-    pixmapPath = value;
-}
-
-QString Recipe::getFullPath() const
-{
+QString Recipe::getFullPath() const{
     return fullPath;
 }
 
-void Recipe::setFullPath(const QString &value)
-{
+void Recipe::setFullPath(const QString &value){
     fullPath = value;
+}
+
+QList<PathPixmap> Recipe::getPixmapList() const{
+    return pixmapList;
+}
+
+void Recipe::setPixmapList(const QList<PathPixmap> &value){
+    pixmapList = value;
+}
+
+void Recipe::addPixmap(const PathPixmap &pixmap){
+    pixmapList.push_back(pixmap);
 }

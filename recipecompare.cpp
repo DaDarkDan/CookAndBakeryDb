@@ -3,9 +3,9 @@
 bool RecipeCompare::operator()(Recipe* l, Recipe* r) {
     switch(ct){
     case NAME_ASC:
-        return l->getName() < r->getName();
+        return l->getName().toUpper() < r->getName().toUpper();
     case NAME_DESC:
-        return l->getName() > r->getName();
+        return l->getName().toUpper() > r->getName().toUpper();
     case DATE_ASC:
         return l->getCreationDate() < r->getCreationDate();
     case DATE_DESC:
@@ -16,13 +16,13 @@ bool RecipeCompare::operator()(Recipe* l, Recipe* r) {
         return l->getCategory() > r->getCategory();
     case FAVOURITE:
         if (l->getFavourite() && r->getFavourite()){
-            return l->getName() < r->getName();
+            return l->getName().toUpper() < r->getName().toUpper();
         } else if (l->getFavourite() && !r->getFavourite()) {
             return true;
         } else if (!l->getFavourite() && r->getFavourite()){
             return false;
         } else {
-            return l->getName() < r->getName();
+            return l->getName().toUpper() < r->getName().toUpper();
         }
     case RATING_ASC:
         return l->getRating() < r->getRating();

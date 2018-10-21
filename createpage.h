@@ -1,4 +1,6 @@
 #include <vector>
+#include "QList"
+#include "pathpixmap.h"
 
 using std::vector;
 
@@ -31,7 +33,7 @@ public:
                QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
                QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
                QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
-               QLabel* createKeywordIconLabel);
+               QLabel* createKeywordIconLabel, QLabel* createImgTitleLabel);
 
     void setup();
 
@@ -46,6 +48,16 @@ public:
     void on_createRatingCheckBox_stateChanged(int arg1);
 
     void on_createResetBtn_clicked();
+
+    void on_createNameTxtEdit_textChanged();
+
+    void on_createDeleteImg_clicked();
+
+    void on_createImageLeft_clicked();
+
+    void on_createImgRight_clicked();
+
+    QTextEdit *getCreateNameTxtEdit() const;
 
 private:
     MainWindow* mw;
@@ -66,7 +78,10 @@ private:
     QTextEdit* createIngredientNameTxtEdit;
     QTextEdit* createIngredientAmountTxtEdit;
     QTextEdit* createAddedKeywordsTxtEdit;
-    QLabel* createIngredientIconLabel, *createKeywordIconLabel;
+    QLabel* createIngredientIconLabel, *createKeywordIconLabel, *createImgTitleLabel;
+
+    QList<QPixmap> currentPixmapList;
+    int currentPixmapIndex;
 };
 
 #endif // CREATEPAGE_H
