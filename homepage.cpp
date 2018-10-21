@@ -28,7 +28,6 @@ void HomePage::on_homeSetDirectoryLabel_clicked(){
     if (homeDirectoryLineEdit->text() != ""){
         mw->getCp()->getCreateNameTxtEdit()->setStyleSheet("background: white");
         mw->getCp()->getCreateNameTxtEdit()->setEnabled(true);
-    } else {
         mw->getCp()->getCreateNameTxtEdit()->clear();
     }
 }
