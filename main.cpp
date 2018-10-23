@@ -2,8 +2,6 @@
 #include <QApplication>
 #include "recipe.h"
 
-#include "QtQml/QQmlDebuggingEnabler"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1217</width>
-    <height>775</height>
+    <width>1279</width>
+    <height>734</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -179,7 +179,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <attribute name="title">
@@ -1145,8 +1145,8 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>441</width>
-                <height>575</height>
+                <width>503</width>
+                <height>534</height>
                </rect>
               </property>
              </widget>
@@ -1371,360 +1371,21 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <item row="0" column="1" rowspan="2">
-            <widget class="QFrame" name="createNameCategoryFrame">
-             <property name="minimumSize">
-              <size>
-               <width>280</width>
-               <height>130</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>280</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::Box</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <property name="lineWidth">
-              <number>1</number>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_3">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetDefaultConstraint</enum>
-              </property>
-              <property name="leftMargin">
-               <number>10</number>
-              </property>
-              <property name="topMargin">
-               <number>5</number>
-              </property>
-              <property name="rightMargin">
-               <number>10</number>
-              </property>
-              <property name="bottomMargin">
-               <number>10</number>
-              </property>
-              <item row="4" column="0">
-               <widget class="QFrame" name="frame_4">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_7">
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="horizontalSpacing">
-                  <number>20</number>
-                 </property>
-                 <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="createRatingTitleLabel">
-                   <property name="minimumSize">
-                    <size>
-                     <width>100</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>100</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="frameShape">
-                    <enum>QFrame::NoFrame</enum>
-                   </property>
-                   <property name="text">
-                    <string>Bewertung</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QFrame" name="createRatingStarFrame">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>205</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>205</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="frameShape">
-                    <enum>QFrame::Box</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QCheckBox" name="createRatingCheckBox">
-                   <property name="minimumSize">
-                    <size>
-                     <width>25</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QFrame" name="frame_2">
-                <property name="minimumSize">
-                 <size>
-                  <width>250</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_6">
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QLabel" name="createNameTitleLabel">
-                   <property name="minimumSize">
-                    <size>
-                     <width>150</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>150</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Rezeptname</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QTextEdit" name="createNameTxtEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>230</width>
-                     <height>23</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>230</width>
-                     <height>23</height>
-                    </size>
-                   </property>
-                   <property name="verticalScrollBarPolicy">
-                    <enum>Qt::ScrollBarAlwaysOff</enum>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QFrame" name="frame_3">
-                <property name="minimumSize">
-                 <size>
-                  <width>200</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_6">
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="horizontalSpacing">
-                  <number>40</number>
-                 </property>
-                 <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="createCategoryTItleLabel">
-                   <property name="minimumSize">
-                    <size>
-                     <width>100</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>100</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Kategorie</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QComboBox" name="createCategoryComboBox">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>110</width>
-                     <height>23</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>110</width>
-                     <height>23</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QCheckBox" name="createFavouriteCheckBox">
-                   <property name="minimumSize">
-                    <size>
-                     <width>100</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Favorit</string>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>16</width>
-                     <height>16</height>
-                    </size>
-                   </property>
-                   <property name="tristate">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
+           <property name="verticalSpacing">
+            <number>5</number>
+           </property>
            <item row="0" column="2">
             <widget class="QFrame" name="createNotesFrame">
              <property name="minimumSize">
               <size>
                <width>400</width>
-               <height>150</height>
+               <height>200</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>16777215</height>
+               <height>200</height>
               </size>
              </property>
              <property name="frameShape">
@@ -1804,13 +1465,13 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
              <property name="minimumSize">
               <size>
                <width>280</width>
-               <height>170</height>
+               <height>200</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>280</width>
-               <height>16777215</height>
+               <height>200</height>
               </size>
              </property>
              <property name="frameShape">
@@ -1837,6 +1498,9 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
               </property>
               <property name="bottomMargin">
                <number>10</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>0</number>
               </property>
               <item row="2" column="2">
                <widget class="QPushButton" name="createAddIngredientBtn">
@@ -2149,7 +1813,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
              <property name="maximumSize">
               <size>
                <width>280</width>
-               <height>16777215</height>
+               <height>120</height>
               </size>
              </property>
              <property name="frameShape">
@@ -2346,13 +2010,13 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
              <property name="minimumSize">
               <size>
                <width>400</width>
-               <height>170</height>
+               <height>200</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>16777215</height>
+               <height>200</height>
               </size>
              </property>
              <property name="frameShape">
@@ -2412,8 +2076,8 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>459</width>
-                   <height>180</height>
+                   <width>521</width>
+                   <height>161</height>
                   </rect>
                  </property>
                 </widget>
@@ -2487,8 +2151,8 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>459</width>
-                   <height>138</height>
+                   <width>521</width>
+                   <height>143</height>
                   </rect>
                  </property>
                 </widget>
@@ -2571,6 +2235,429 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
              </layout>
             </widget>
            </item>
+           <item row="4" column="1">
+            <widget class="QFrame" name="frame_15">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>280</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_12">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Bearbeitungszeit</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTextEdit" name="textEdit">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>23</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>23</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>23</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>23</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Minuten</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QFrame" name="createNameCategoryFrame">
+             <property name="minimumSize">
+              <size>
+               <width>280</width>
+               <height>200</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>280</width>
+               <height>200</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_3">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
+              </property>
+              <property name="leftMargin">
+               <number>10</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>10</number>
+              </property>
+              <property name="bottomMargin">
+               <number>10</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>0</number>
+              </property>
+              <item row="4" column="0">
+               <widget class="QFrame" name="frame_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_7">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="horizontalSpacing">
+                  <number>20</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="createRatingTitleLabel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::NoFrame</enum>
+                   </property>
+                   <property name="text">
+                    <string>Bewertung</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QFrame" name="createRatingStarFrame">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>205</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>205</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Box</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QCheckBox" name="createRatingCheckBox">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QFrame" name="frame_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>250</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_6">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="createNameTitleLabel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Rezeptname</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QTextEdit" name="createNameTxtEdit">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>230</width>
+                     <height>23</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>230</width>
+                     <height>23</height>
+                    </size>
+                   </property>
+                   <property name="verticalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QFrame" name="frame_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_6">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="horizontalSpacing">
+                  <number>40</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="createCategoryTItleLabel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Kategorie</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QComboBox" name="createCategoryComboBox">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>110</width>
+                     <height>23</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>110</width>
+                     <height>23</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QCheckBox" name="createFavouriteCheckBox">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Favorit</string>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>16</width>
+                     <height>16</height>
+                    </size>
+                   </property>
+                   <property name="tristate">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -2631,13 +2718,13 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
              <property name="minimumSize">
               <size>
                <width>400</width>
-               <height>600</height>
+               <height>550</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>400</width>
-               <height>600</height>
+               <height>550</height>
               </size>
              </property>
              <property name="frameShape">
@@ -2893,7 +2980,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1217</width>
+     <width>1279</width>
      <height>21</height>
     </rect>
    </property>

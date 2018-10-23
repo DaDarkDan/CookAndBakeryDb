@@ -41,7 +41,9 @@ SOURCES += \
     recipesearchresultframe.cpp \
     clickablelabel.cpp \
     parameterbutton.cpp \
-    pathpixmap.cpp
+    pathpixmap.cpp \
+    recipeframe.cpp \
+    changedialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -59,10 +61,13 @@ HEADERS += \
     recipesearchresultframe.h \
     clickablelabel.h \
     parameterbutton.h \
-    pathpixmap.h
+    pathpixmap.h \
+    recipeframe.h \
+    changedialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    changedialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

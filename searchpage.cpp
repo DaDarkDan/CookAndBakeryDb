@@ -7,6 +7,8 @@
 #include "clickablelabel.h"
 #include "parameterbutton.h"
 #include "createpage.h"
+#include "recipeframe.h"
+#include "changedialog.h"
 
 #include "QLayoutItem"
 #include "QLayout"
@@ -394,7 +396,6 @@ void SearchPage::setFavourite(QString /*string*/, Recipe* recipe){
 }
 
 void SearchPage::openChangeDialog(QString /*string*/, Recipe *recipe){
-    QMessageBox box;
-    box.setText("Hier kommt bald die Option hin, ein Rezept einzusehen und zu ändern");
-    box.exec();
+    ChangeDialog dialog;
+    dialog.exec();
 }
