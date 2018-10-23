@@ -233,14 +233,14 @@ void SearchPage::updateFoundRecipes() {
     searchFoundRecipesScrollViewContents->setLayout(layout);
 
     //apply search parameters
-    vector<QString> ingList, keywList;
+    QList<QString> ingList, keywList;
     for (int i = 0; i < searchAddedIngredientScrollAreaContents->layout()->count(); i++){
         ingList.push_back(qobject_cast<QPushButton*>(searchAddedIngredientScrollAreaContents->layout()->itemAt(i)->widget())->text());
     }
     for (int i = 0; i < searchAddedKeywordScrollAreaContents->layout()->count(); i++){
         keywList.push_back(qobject_cast<QPushButton*>(searchAddedKeywordScrollAreaContents->layout()->itemAt(i)->widget())->text());
     }
-    vector<Recipe*> foundRecipes;
+    QList<Recipe*> foundRecipes;
     if (searchIncludeRatingCheckBox->isChecked() && starEditor){
         foundRecipes = mw->getRm()->findRecipes(searchRecipenameTxtEdit->toPlainText(), searchCategoryComboBox->currentText(),
                                                       searchFavouriteComboBox->currentText(), ingList, keywList, starEditor->starRating().getMyStarCount());

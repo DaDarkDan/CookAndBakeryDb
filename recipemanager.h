@@ -1,10 +1,8 @@
-#include <vector>
 #include "QString"
+#include "QList"
 
 #ifndef RECIPEMANAGER_H
 #define RECIPEMANAGER_H
-
-using std::vector;
 
 class Ingredient;
 class Recipe;
@@ -17,16 +15,16 @@ public:
 
     friend class RecipeCompare;
 
-    vector<Recipe*> findRecipes(const QString& name = "", const QString& category = "",
-                               const QString& favourite = "", const vector<QString> ingList = vector<QString>(),
-                               const vector<QString> keywList = vector<QString>(), int rating = -1);
+    QList<Recipe*> findRecipes(const QString& name = "", const QString& category = "",
+                               const QString& favourite = "", const QList<QString> ingList = QList<QString>(),
+                               const QList<QString> keywList = QList<QString>(), int rating = -1);
 
     bool saveRecipe(Recipe* recipe, bool overwriteFlag = false);
     IOManager* getIoManager();
 
-    vector<QString> getIngredientList() const;
-    vector<Recipe*> getRecipeList() const;
-    vector<QString> getKeywordList() const;
+    QList<QString> getIngredientList() const;
+    QList<Recipe*> getRecipeList() const;
+    QList<QString> getKeywordList() const;
 
     void deleteRecipe(Recipe* recipe);
 
@@ -36,9 +34,9 @@ public:
 
 private:
     IOManager* ioManager;
-    vector<QString> ingredientList;
-    vector<Recipe*> recipeList;
-    vector<QString> keywordList;
+    QList<QString> ingredientList;
+    QList<Recipe*> recipeList;
+    QList<QString> keywordList;
 
     bool isNewIngredient(Ingredient ingredient);
     bool isNewKeyword(QString keyword);

@@ -48,9 +48,9 @@ void RecipeManager::setCurrentSorting(int value)
     currentSorting = value;
 }
 
-vector<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& category,
-                           const QString& favourite, const vector<QString> ingList,
-                           const vector<QString> keywList, int rating){
+QList<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& category,
+                           const QString& favourite, const QList<QString> ingList,
+                           const QList<QString> keywList, int rating){
     sortRecipes();
     //return all recipes if no parameter set
     if (name == "" && category == "egal" && favourite == "egal" && ingList.empty() && keywList.empty() && rating == -1) {
@@ -58,10 +58,10 @@ vector<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& c
     }
 
     if (category == "" || favourite == ""){
-        return vector<Recipe*>();
+        return QList<Recipe*>();
     }
 
-    vector<Recipe*> foundRecipes;
+    QList<Recipe*> foundRecipes;
     for (auto r : recipeList){
         if (!r->getName().toUpper().contains(name.toUpper())){
             continue;
@@ -114,7 +114,6 @@ bool RecipeManager::saveRecipe(Recipe* recipe, bool overwriteFlag){
         std::sort(ingredientList.begin(), ingredientList.end());
         std::sort(keywordList.begin(), keywordList.end());
         ioManager->saveRecipe(recipe);
-        recipeList = ioManager->loadRecipes();
         return true;
     }
     return false;
@@ -151,11 +150,11 @@ IOManager *RecipeManager::getIoManager() {
     return ioManager;
 }
 
-vector<Recipe*> RecipeManager::getRecipeList() const{
+QList<Recipe*> RecipeManager::getRecipeList() const{
     return recipeList;
 }
 
-vector<QString> RecipeManager::getKeywordList() const{
+QList<QString> RecipeManager::getKeywordList() const{
     return keywordList;
 }
 
@@ -170,7 +169,7 @@ void RecipeManager::deleteRecipe(Recipe *recipe){
     }
 }
 
-vector<QString> RecipeManager::getIngredientList() const{
+QList<QString> RecipeManager::getIngredientList() const{
     return ingredientList;
 }
 

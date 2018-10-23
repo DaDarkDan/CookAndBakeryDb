@@ -29,7 +29,7 @@ public:
                QComboBox* createAddIngredientWeightTypeComboBox, QWidget* createAddedIngredientsScrollViewContents,
                QWidget* createAddedKeywordsScrollViewContents, QFrame* createRatingStarFrame,
                QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox,
-               vector<QWidget*> addedIngredientFrameList, vector<QWidget*> addedKeywordFrameList,
+               QList<QWidget*> addedIngredientFrameList, QList<QWidget*> addedKeywordFrameList,
                QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
                QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
                QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
@@ -72,7 +72,7 @@ private:
     QFrame* createRatingStarFrame;
     QCheckBox* createFavouriteCheckBox;
     QCheckBox* createRatingCheckBox;
-    vector<QWidget*> addedIngredientFrameList, addedKeywordFrameList;
+    QList<QWidget*> addedIngredientFrameList, addedKeywordFrameList;
     QTextEdit* createNotesTxtEdit;
     QLabel* createImgInputLabel;
     QTextEdit* createIngredientNameTxtEdit;

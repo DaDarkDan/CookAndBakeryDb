@@ -100,8 +100,8 @@ private:
     void loadSettings();
 
     RecipeManager* rm;
-    vector<QWidget*> addedIngredientFrameList;
-    vector<QWidget*> addedKeywordFrameList;
+    QList<QWidget*> addedIngredientFrameList;
+    QList<QWidget*> addedKeywordFrameList;
 
     void setupSearchPage();
     void setupCreatePage();

@@ -5,116 +5,118 @@
 
 #include "QFile"
 #include "QXmlStreamWriter"
-#include "QXmlStreamReader"
 #include "QDirIterator"
 #include "QBuffer"
 #include "QPixmap"
 #include "QTextCodec"
+#include "QMap"
 
 #include <iostream>
 
 IOManager::~IOManager(){}
 
-vector<Recipe*> IOManager::loadRecipes() const{
-    vector<Recipe*> recipeList;
+QList<Recipe*> IOManager::loadRecipes() {
+    QStringList filter = {"*xml", "*png"};
 
-    QStringList filter("*.xml"); //only parse xml files
-    QDirIterator it(directoryPath, filter);
+    //read files
+    QDir dir(directoryPath);
+    dir.setNameFilters(filter);
+    dir.setSorting(QDir::SortFlag::Name);
+    QFileInfoList fileList = dir.entryInfoList();
 
-    //start file parsing
-    while(it.hasNext()){
-        QFile file(it.next());
+    QList<Recipe*> recipeList;
+    QList<PathPixmap*> pixmapList;
+    while(!fileList.empty()){
+        QFile file(fileList.at(0).absoluteFilePath());
         if (!file.open(QFile::ReadOnly | QFile::Text)){
-            std::cerr << "Error: Cannot read file " << qPrintable(it.next())
-                      << ": " << qPrintable(file.errorString()) << std::endl;
+            std::cerr << "Error: Cannot read file " << file.fileName().toStdString();
+            continue;
         }
-        QXmlStreamReader xmlReader(&file);
-        xmlReader.setDevice(&file);
-        xmlReader.readNext();
-
-        //start parsing xml file
-        while(!xmlReader.isStartElement()){
-            xmlReader.readNext();
+        if (fileList.at(0).absoluteFilePath().endsWith(".xml")){
+            QXmlStreamReader* xmlReader = new QXmlStreamReader(fileList.at(0).absoluteFilePath());
+            xmlReader->setDevice(&file);
+            recipeList.push_back(parseRecipe(xmlReader));
+        } else if (fileList.at(0).absoluteFilePath().endsWith(".png")){
+            PathPixmap* ppm = parsePixmap(fileList.at(0).absoluteFilePath());
+            //since it's sorted add pixmaps to last corresponding last recipe
+            recipeList.last()->addPixmap(*ppm);
         }
-        if(xmlReader.name() == "Recipe"){
-            xmlReader.readNext();
-            xmlReader.readNext();
-        } else {
-            //TODO throw error
-        }
-        //name
-        Recipe* recipe = new Recipe();
-        recipe->setName(xmlReader.readElementText());
-        recipe->setFullPath(directoryPath + "/" + recipe->getName() + ".xml");
-        xmlReader.readNext();
-        xmlReader.readNext();        
-        //date
-        recipe->setCreationDate(xmlReader.readElementText());
-        xmlReader.readNext();
-        xmlReader.readNext();
-        //category
-        recipe->setCategory(xmlReader.readElementText());
-        xmlReader.readNext();
-        xmlReader.readNext();
-        //favourite
-        recipe->setFavourite(xmlReader.readElementText());
-        xmlReader.readNext();
-        xmlReader.readNext();
-        //notes
-        recipe->setNotes(xmlReader.readElementText());
-        xmlReader.readNext();
-        xmlReader.readNext();
-
-        //ingredients
-        xmlReader.readNext(); //StartElement
-        xmlReader.readNext();
-        Ingredient* ingredient = new Ingredient();
-        while(xmlReader.name() == "IngredientName"){
-            ingredient->setName(xmlReader.readElementText());
-            xmlReader.readNext();
-            xmlReader.readNext();
-            ingredient->setAmount(std::stof(xmlReader.readElementText().toStdString()));
-            xmlReader.readNext();
-            xmlReader.readNext();
-            ingredient->setWeightType(xmlReader.readElementText());
-            xmlReader.readNext();
-            xmlReader.readNext();
-            recipe->addIngredient(*ingredient);
-        }
-        //keywords
-        xmlReader.readNext(); //StartElement
-        xmlReader.readNext();
-        xmlReader.readNext();
-        xmlReader.readNext();
-        while (xmlReader.name() == "keyword"){
-            recipe->addKeyword(xmlReader.readElementText());
-            xmlReader.readNext();
-            xmlReader.readNext();
-        }
-        //rating
-        xmlReader.readNext();
-        xmlReader.readNext();
-        recipe->setRating(xmlReader.readElementText().toInt());
-        //picture
-        QDirIterator dirIt(directoryPath);
-        while(dirIt.hasNext()){
-            dirIt.next();
-            if (QFileInfo(dirIt.filePath()).isFile()){
-                QString fileName = QFileInfo(dirIt.filePath()).fileName();
-                if (fileName.startsWith(recipe->getName()) && fileName.endsWith("_image.png")){
-                    QString imgFullPath = QFileInfo(dirIt.filePath()).absoluteFilePath();
-                    QPixmap* pixmap = new QPixmap();
-                    pixmap->load(imgFullPath);
-                    PathPixmap ppm(imgFullPath, *pixmap);
-                    recipe->addPixmap(ppm);
-                }
-            }
-        }
-
-
-        recipeList.push_back(recipe);
+        fileList.removeAt(0);
     }
     return recipeList;
+}
+
+Recipe *IOManager::parseRecipe(QXmlStreamReader* xmlReader){
+    xmlReader->readNext();
+
+    while(!xmlReader->isStartElement()){
+        xmlReader->readNext();
+    }
+    if(xmlReader->name() == "Recipe"){
+        xmlReader->readNext();
+        xmlReader->readNext();
+    }
+    //name
+    Recipe* recipe = new Recipe();
+    recipe->setName(xmlReader->readElementText());
+    recipe->setFullPath(directoryPath + "/" + recipe->getName() + ".xml");
+    xmlReader->readNext();
+    xmlReader->readNext();
+    //date
+    recipe->setCreationDate(xmlReader->readElementText());
+    xmlReader->readNext();
+    xmlReader->readNext();
+    //category
+    recipe->setCategory(xmlReader->readElementText());
+    xmlReader->readNext();
+    xmlReader->readNext();
+    //favourite
+    recipe->setFavourite(xmlReader->readElementText());
+    xmlReader->readNext();
+    xmlReader->readNext();
+    //notes
+    recipe->setNotes(xmlReader->readElementText());
+    xmlReader->readNext();
+    xmlReader->readNext();
+
+    //ingredients
+    xmlReader->readNext(); //StartElement
+    xmlReader->readNext();
+    Ingredient* ingredient = new Ingredient();
+    while(xmlReader->name() == "IngredientName"){
+        ingredient->setName(xmlReader->readElementText());
+        xmlReader->readNext();
+        xmlReader->readNext();
+        ingredient->setAmount(std::stof(xmlReader->readElementText().toStdString()));
+        xmlReader->readNext();
+        xmlReader->readNext();
+        ingredient->setWeightType(xmlReader->readElementText());
+        xmlReader->readNext();
+        xmlReader->readNext();
+        recipe->addIngredient(*ingredient);
+    }
+    //keywords
+    xmlReader->readNext(); //StartElement
+    xmlReader->readNext();
+    xmlReader->readNext();
+    xmlReader->readNext();
+    while (xmlReader->name() == "keyword"){
+        recipe->addKeyword(xmlReader->readElementText());
+        xmlReader->readNext();
+        xmlReader->readNext();
+    }
+    //rating
+    xmlReader->readNext();
+    xmlReader->readNext();
+    recipe->setRating(xmlReader->readElementText().toInt());
+
+    return recipe;
+}
+
+PathPixmap *IOManager::parsePixmap(QString path){
+    QPixmap* pixmap = new QPixmap();
+    pixmap->load(path);
+    return new PathPixmap(path, *pixmap);
 }
 
 void IOManager::saveRecipe(Recipe* recipe) const{
@@ -165,7 +167,7 @@ void IOManager::saveRecipe(Recipe* recipe) const{
 
     }
     file.close();
-    //save image
+    //save images
     if (!recipe->getPixmapList().empty()){
         for (int i = 0; i < recipe->getPixmapList().size(); i++){
             fileName = recipe->getPixmapList().at(i).getPath();

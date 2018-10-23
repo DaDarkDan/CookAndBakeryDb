@@ -1,16 +1,14 @@
-#include <vector>
-
 #include "QString"
+#include "QXmlStreamReader"
 
 #ifndef IOMANAGER_H
 #define IOMANAGER_H
-
-using std::vector;
 
 class Ingredient;
 class Recipe;
 class QXmlStreamWriter;
 class QXmlStreamReader;
+class PathPixmap;
 
 class IOManager
 {
@@ -19,7 +17,7 @@ public:
 
     ~IOManager();
 
-    vector<Recipe*> loadRecipes() const;
+    QList<Recipe*> loadRecipes();
     void saveRecipe(Recipe* recipe) const;
 
     void setDirectoryPath(const QString &value);
@@ -27,6 +25,9 @@ public:
 
 private:
     QString directoryPath;
+
+    Recipe* parseRecipe(QXmlStreamReader* xmlReader);
+    PathPixmap* parsePixmap(QString path);
 };
 
 #endif // IOMANAGER_H
