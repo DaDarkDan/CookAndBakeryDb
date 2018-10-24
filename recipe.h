@@ -70,7 +70,14 @@ class Recipe {
         void setPixmapList(const QList<PathPixmap> &value);
         void addPixmap(const PathPixmap& pixmap);
 
+        float getProcessTime() const;
+        void setProcessTime(float value);
+
+        QString getId() const;
+        void setId(QString value);
+
 private:
+        QString id;
         QString name;
         QString fullPath;
         QString creationDate;
@@ -84,6 +91,7 @@ private:
         bool favourite;
         QList<PathPixmap> pixmapList;
         int rating;
+        float processTime;
 };
 
 #endif // RECIPE_H

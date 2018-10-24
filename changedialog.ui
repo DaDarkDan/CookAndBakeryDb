@@ -14,11 +14,7 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow {
-	background-image: url(&quot;:/img/img/background00.jpeg&quot;);
-}
-
-/*														*/
+   <string notr="true">/*														*/
 
 QTextEdit {
 	/*background: rgb(255, 225, 186);*/
@@ -30,48 +26,13 @@ QTextEdit {
 
 /*												*/
 
-QTabWidget {
-   image: url(:/img/img/background00.jpeg); 
-}
-
-QTabWidget::pane { /* The tab widget frame */
+QDialog {
     border: 1px solid rgb(247, 188, 128);
     border-radius: 5px;
 	background: rgb(255, 225, 186);
 }
 
-QTabWidget::tab-bar {
-    left: 5px; /* move to the right by 5px */
-}
-
-/* Style the tab using the tab sub-control. Note that
-    it reads QTabBar _not_ QTabWidget */
-QTabBar::tab {
-	background: rgb(247, 188, 128);
-    border: 2px solid;
-	border-color: rgb(247, 188, 128);
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    min-width: 40ex;
-    padding: 2px;
-}
-
-QTabBar::tab:selected, QTabBar::tab:hover {
-	background: rgb(255, 225, 186);
-    border: 1px solid rgb(247, 188, 128);
-	font: bold;
-}
-
-QTabBar::tab:selected {
-    border-color: rgb(255, 225, 186);
-}
-
-QTabBar::tab:!selected {
-    margin-top: 2px; /* make non-selected tabs look smaller */
-}
-
 /*									*/
-
 
 QPushButton#createResetBtn, QPushButton#searchResetButton {
     background-color: qradialgradient(cx:0, cy:0, radius: 1.6, fx:0.5, fy:0.5, 
@@ -996,7 +957,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <property name="spacing">
-          <number>50</number>
+          <number>20</number>
          </property>
          <property name="leftMargin">
           <number>10</number>
@@ -1011,7 +972,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="createPrintRecipe">
+          <widget class="QPushButton" name="createPrintRecipeBtn">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -1020,8 +981,14 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
            </property>
            <property name="minimumSize">
             <size>
-             <width>0</width>
-             <height>25</height>
+             <width>110</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777214</width>
+             <height>30</height>
             </size>
            </property>
            <property name="text">
@@ -1042,8 +1009,14 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
            </property>
            <property name="minimumSize">
             <size>
-             <width>0</width>
-             <height>25</height>
+             <width>110</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
             </size>
            </property>
            <property name="text">
@@ -1051,11 +1024,30 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QPushButton" name="discardChangesButton">
+           <property name="minimumSize">
+            <size>
+             <width>110</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Änderungen verwerfen</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QFrame" name="frame_15">
+       <widget class="QFrame" name="createTimeInputFrame">
         <property name="minimumSize">
          <size>
           <width>280</width>
@@ -1089,7 +1081,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
           </widget>
          </item>
          <item>
-          <widget class="QTextEdit" name="textEdit">
+          <widget class="QTextEdit" name="createTimeInputTextEdit">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -1591,7 +1583,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="uploadImgBtn">
+          <widget class="QPushButton" name="createUploadImgBtn">
            <property name="minimumSize">
             <size>
              <width>150</width>

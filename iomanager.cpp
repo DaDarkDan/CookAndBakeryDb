@@ -56,10 +56,14 @@ Recipe *IOManager::parseRecipe(QXmlStreamReader* xmlReader){
         xmlReader->readNext();
         xmlReader->readNext();
     }
-    //name
     Recipe* recipe = new Recipe();
+    //id
+    recipe->setId(xmlReader->readElementText());
+    recipe->setFullPath(directoryPath + "/" + recipe->getId() + ".xml");
+    xmlReader->readNext();
+    xmlReader->readNext();
+    //name
     recipe->setName(xmlReader->readElementText());
-    recipe->setFullPath(directoryPath + "/" + recipe->getName() + ".xml");
     xmlReader->readNext();
     xmlReader->readNext();
     //date
@@ -121,7 +125,7 @@ PathPixmap *IOManager::parsePixmap(QString path){
 
 void IOManager::saveRecipe(Recipe* recipe) const{
     //setup
-    QString fileName = recipe->getName() + ".xml";
+    QString fileName = recipe->getId() + ".xml";
     recipe->setFullPath(directoryPath + "/" + fileName);
 
     QFile file(directoryPath + "/" + fileName);
@@ -134,6 +138,7 @@ void IOManager::saveRecipe(Recipe* recipe) const{
         //write to xml
         xmlWriter.writeStartElement("Recipe");
 
+        xmlWriter.writeTextElement("id", recipe->getId());
         xmlWriter.writeTextElement("Name", recipe->getName());
         xmlWriter.writeTextElement("Date", recipe->getCreationDate());
         xmlWriter.writeTextElement("Category", recipe->getCategory());

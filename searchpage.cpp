@@ -84,8 +84,8 @@ void SearchPage::setup() {
 
     //result image
     searchResultImgLabel->setScaledContents(true);
-    searchResultImgLabel->setMinimumSize(400, 600);
-    searchResultImgLabel->setMaximumSize(400, 600);
+    searchResultImgLabel->setMinimumSize(400, 550);
+    searchResultImgLabel->setMaximumSize(400, 550);
     updateFoundRecipes();
 }
 
@@ -396,6 +396,10 @@ void SearchPage::setFavourite(QString /*string*/, Recipe* recipe){
 }
 
 void SearchPage::openChangeDialog(QString /*string*/, Recipe *recipe){
-    ChangeDialog dialog;
+    mw->setDisabled(true);
+    ChangeDialog dialog(mw, recipe);
+    dialog.setWindowTitle(recipe->getName() + " (ID " + recipe->getId() + ")");
     dialog.exec();
+    mw->setEnabled(true);
+    updateFoundRecipes();
 }

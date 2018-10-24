@@ -99,7 +99,17 @@ QList<Recipe*> RecipeManager::findRecipes(const QString& name, const QString& ca
 
 bool RecipeManager::saveRecipe(Recipe* recipe, bool overwriteFlag){
     if (isNewRecipe(*recipe) || overwriteFlag) {
-        recipeList.push_back(recipe);
+        if (!overwriteFlag){
+            recipe->setId(createId());
+            recipeList.push_back(recipe);
+        } else {
+            for (int i = 0; i < recipeList.size(); i++){
+                if (*recipe == *recipeList.at(i)){
+                    recipeList.removeAt(i);
+                    recipeList.push_back(recipe);
+                }
+            }
+        }
         for (auto i : recipe->getIngredients()){
             if (isNewIngredient(i)){
                 ingredientList.push_back(i.getName());
@@ -119,7 +129,7 @@ bool RecipeManager::saveRecipe(Recipe* recipe, bool overwriteFlag){
     return false;
 }
 
-bool RecipeManager::isNewRecipe(Recipe recipe) {
+bool RecipeManager::isNewRecipe(Recipe recipe){
     for(auto rec : recipeList){
         if (*rec == recipe) {
             return false;
@@ -128,7 +138,7 @@ bool RecipeManager::isNewRecipe(Recipe recipe) {
     return true;
 }
 
-bool RecipeManager::isNewKeyword(QString keyword){
+bool RecipeManager::isNewKeyword(const QString& keyword) const{
     for (auto k : keywordList){
         if (k == keyword){
             return false;
@@ -137,7 +147,7 @@ bool RecipeManager::isNewKeyword(QString keyword){
     return true;
 }
 
-bool RecipeManager::isNewIngredient(Ingredient ingredient) {
+bool RecipeManager::isNewIngredient(const Ingredient& ingredient) const{
     for(auto ing : ingredientList){
         if (ing == ingredient.getName()) {
             return false;
@@ -146,7 +156,7 @@ bool RecipeManager::isNewIngredient(Ingredient ingredient) {
     return true;
 }
 
-IOManager *RecipeManager::getIoManager() {
+IOManager *RecipeManager::getIoManager(){
     return ioManager;
 }
 
@@ -159,7 +169,7 @@ QList<QString> RecipeManager::getKeywordList() const{
 }
 
 void RecipeManager::deleteRecipe(Recipe *recipe){
-    for (unsigned int i = 0; i < recipeList.size();i++) {
+    for (int i = 0; i < recipeList.size();i++) {
         if (recipeList.at(i) == recipe){
             recipeList.erase(recipeList.begin()+i);
             QFile file(recipe->getFullPath());
@@ -192,4 +202,31 @@ void RecipeManager::addAllUniqueIngredientsAndKeywords(){
     }
 }
 
+QString RecipeManager::createId() const{
+    QList<int> idList;
+    for (auto rec : recipeList){
+        idList.push_back(convertIdStringToInt(rec->getId()));
+    }
+    std::sort(idList.begin(), idList.end());
+    for(int i = 0; i < idList.size(); i++){
+        if (i != idList.at(i)){
+            return convertIdIntToString(i);
+        }
+    }
+    return convertIdIntToString(idList.size());
+}
 
+int RecipeManager::convertIdStringToInt(QString id) const{
+    while(id.startsWith("0")){
+        id = id.remove(0,1);
+    }
+    return id.toInt();
+}
+
+QString RecipeManager::convertIdIntToString(int id) const{
+    QString result = QString::number(id);
+    while(result.size() < 10){
+        result.insert(0, "0");
+    }
+    return result;
+}

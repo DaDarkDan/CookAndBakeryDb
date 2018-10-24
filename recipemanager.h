@@ -38,12 +38,16 @@ private:
     QList<Recipe*> recipeList;
     QList<QString> keywordList;
 
-    bool isNewIngredient(Ingredient ingredient);
-    bool isNewKeyword(QString keyword);
+    bool isNewIngredient(const Ingredient& ingredient) const;
+    bool isNewKeyword(const QString& keyword) const;
 
     void addAllUniqueIngredientsAndKeywords();
 
     void sortRecipes();
+
+    QString createId() const;
+    int convertIdStringToInt(QString id) const;
+    QString convertIdIntToString(int id) const;
 
     int currentSorting;
 };

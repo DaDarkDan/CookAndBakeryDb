@@ -85,6 +85,7 @@ ClickableLabel *RecipeSearchResultFrame::createInspectLabel(){
     inspect->setScaledContents(true);
     inspect->setMouseTracking(true);
     inspect->setStyleSheet("background: transparent");
+    inspect->setRecipe(recipe);
     connect(inspect, &ClickableLabel::clicked, mw->getSp(), &SearchPage::openChangeDialog);
     return inspect;
 }

@@ -29,13 +29,13 @@ QStringList Recipe::categoryList = QStringList() << "ohne Kategorie"
                                                  << "Vorspeise";
 
 bool Recipe::operator==(const Recipe &rRecipe) const{
-    if (name.toUpper() == rRecipe.getName().toUpper()){
+    if (id == rRecipe.getId() || name == rRecipe.getName()){
         return true;
     }
     return false;
 }
 bool Recipe::operator!=(const Recipe &rRecipe) const{
-    if (name.toUpper() == rRecipe.getName().toUpper()){
+    if (id == rRecipe.getId() || name == rRecipe.getName()){
         return false;
     }
     return true;
@@ -166,4 +166,22 @@ void Recipe::setPixmapList(const QList<PathPixmap> &value){
 
 void Recipe::addPixmap(const PathPixmap &pixmap){
     pixmapList.push_back(pixmap);
+}
+
+float Recipe::getProcessTime() const
+{
+    return processTime;
+}
+
+void Recipe::setProcessTime(float value)
+{
+    processTime = value;
+}
+
+QString Recipe::getId() const{
+    return id;
+}
+
+void Recipe::setId(QString value){
+    id = value;
 }

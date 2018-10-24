@@ -160,7 +160,7 @@ QString CreatePage::on_createSaveBtn_clicked() {
     if (createImgInputLabel->pixmap()){
         QList<PathPixmap> saveList;
         for (int i = 0; i < currentPixmapList.size(); i++){
-            PathPixmap ppm(mw->getRm()->getIoManager()->getDirectoryPath() + "/" + recipe->getName() + QString::number(i) + "_image.png", currentPixmapList.at(i));
+            PathPixmap ppm(mw->getRm()->getIoManager()->getDirectoryPath() + "/" + recipe->getId() + "_image" + QString::number(i) + ".png", currentPixmapList.at(i));
             saveList.push_back(ppm);
         }
         recipe->setPixmapList(saveList);
@@ -194,7 +194,12 @@ QString CreatePage::on_createAddIngredientBtn_clicked() {
         createIngredientAmountTxtEdit->clear();
         QComboBox* weightType = new QComboBox();
         weightType->addItems(Ingredient::weightTypeList);
-        weightType->setCurrentText(createAddIngredientWeightTypeComboBox->currentText());
+        for (int i = 0; i < Ingredient::weightTypeList.size(); i++){
+            if (createAddIngredientWeightTypeComboBox->currentText() == Ingredient::weightTypeList.at(i)){
+                weightType->setCurrentIndex(i);
+                break;
+            }
+        }
         weightType->setMaximumHeight(25);
         weightType->setMinimumHeight(25);
         weightType->setMaximumWidth(70);
@@ -245,7 +250,6 @@ QString CreatePage::on_createAddKeywordBtn_clicked() {
         return "Schlagwort '" + txtEdit->toPlainText() + " wurde hinzugefügt!";
     }
     return "Schlagwort konnte aufgrund eines Fehlers nicht hinzugefügt werden!";
-
 }
 
 void CreatePage::on_addedFrameDeleteButton_clicked(QPushButton* button) {
@@ -338,10 +342,15 @@ void CreatePage::on_createDeleteImg_clicked(){
     } else if (!currentPixmapList.empty() && currentPixmapIndex == 0){
         createImgInputLabel->setPixmap(currentPixmapList.at(currentPixmapIndex));
     }
+    if (currentPixmapList.size() != 0){
+        createImgTitleLabel->setText("Bild " + QString::number(currentPixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));
+    } else {
+        createImgTitleLabel->setText("Bild: ");
+    }
 }
 
 void CreatePage::on_createImageLeft_clicked(){
-    if (currentPixmapList.empty()) return;
+    if (currentPixmapList.size() <= 1) return;
     if (currentPixmapIndex == 0){
         currentPixmapIndex = currentPixmapList.size()-1;
     } else {
@@ -352,7 +361,7 @@ void CreatePage::on_createImageLeft_clicked(){
 }
 
 void CreatePage::on_createImgRight_clicked(){
-    if (currentPixmapList.empty()) return;
+    if (currentPixmapList.size() <= 1) return;
     if (currentPixmapIndex == currentPixmapList.size()-1){
         currentPixmapIndex = 0;
     } else {
