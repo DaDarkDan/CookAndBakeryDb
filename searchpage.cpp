@@ -77,7 +77,7 @@ void SearchPage::setup() {
     }
 
     //star layout
-    searchRatingStarFrame->setLayout(mw->createStarEditorFrameLayout());
+    searchRatingStarFrame->setLayout(mw->createStarEditorFrameLayout(false));
     starEditor = searchRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
     connect(starEditor, &StarEditor::editingFinished, this, &SearchPage::ratingEditingFinished);
     searchRatingStarFrame->setDisabled(true);
@@ -263,7 +263,7 @@ void SearchPage::on_searchSortComboBox_currentIndexChanged(int index){
 }
 
 QFrame *SearchPage::getRecipeAsFrame(Recipe* recipe, int index) {
-    RecipeSearchResultFrame* rsrFrame = new RecipeSearchResultFrame(mw, recipe, mw->createStarEditorFrameLayout(), index, mw);
+    RecipeSearchResultFrame* rsrFrame = new RecipeSearchResultFrame(mw, recipe, mw->createStarEditorFrameLayout(true), index, mw);
     connect(rsrFrame, &RecipeSearchResultFrame::on_mousePressed, this, &SearchPage::displaySearchResultImage);
     connect(rsrFrame->getDeleteButton(), &ParameterButton::clicked, this, &SearchPage::openDeleteMessageBox);
     return rsrFrame->getFrame();
@@ -325,11 +325,11 @@ void SearchPage::on_searchIngredientKeyword_textChanged(QTextEdit* txtEdit, QLay
 
 void SearchPage::on_searchIncludeRatingCheckBox_stateChanged(int arg1){
     if (arg1 == 0){
-        searchRatingStarFrame->setEnabled(false);
         starEditor->setEditable(false);
+        searchRatingStarFrame->setEnabled(false);
     } else if (arg1 == 2){
-        searchRatingStarFrame->setEnabled(true);
         starEditor->setEditable(true);
+        searchRatingStarFrame->setEnabled(true);
     }
     //update search results
     updateFoundRecipes();

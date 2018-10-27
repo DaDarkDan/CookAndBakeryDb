@@ -10,6 +10,7 @@
 #include "QPixmap"
 #include "QTextCodec"
 #include "QMap"
+#include "QDebug"
 
 #include <iostream>
 
@@ -49,12 +50,14 @@ QList<Recipe*> IOManager::loadRecipes() {
 Recipe *IOManager::parseRecipe(QXmlStreamReader* xmlReader){
     xmlReader->readNext();
 
-    while(!xmlReader->isStartElement()){
+    while(!xmlReader->isStartElement() && !xmlReader->atEnd()){
         xmlReader->readNext();
     }
     if(xmlReader->name() == "Recipe"){
         xmlReader->readNext();
         xmlReader->readNext();
+    } else {
+        qDebug() << "Erroneous file found";
     }
     Recipe* recipe = new Recipe();
     //id
@@ -123,7 +126,7 @@ PathPixmap *IOManager::parsePixmap(QString path){
     return new PathPixmap(path, *pixmap);
 }
 
-void IOManager::saveRecipe(Recipe* recipe) const{
+void IOManager::saveRecipe(Recipe* recipe, bool overwriteFlag) const{
     //setup
     QString fileName = recipe->getId() + ".xml";
     recipe->setFullPath(directoryPath + "/" + fileName);
@@ -174,6 +177,13 @@ void IOManager::saveRecipe(Recipe* recipe) const{
     file.close();
     //save images
     if (!recipe->getPixmapList().empty()){
+        if (overwriteFlag){
+            for (int i = 0; i < recipe->getPixmapList().size(); i++){
+                fileName = recipe->getPixmapList().at(i).getPath();
+                QFile imgFile(fileName);
+                imgFile.remove();
+            }
+        }
         for (int i = 0; i < recipe->getPixmapList().size(); i++){
             fileName = recipe->getPixmapList().at(i).getPath();
             QFile imgFile(fileName);

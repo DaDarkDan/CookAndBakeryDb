@@ -11,7 +11,7 @@ class StarEditor : public QWidget
     Q_OBJECT
 
 public:
-    StarEditor(QWidget* parent = nullptr);
+    StarEditor(QWidget* parent = nullptr, bool editable = false);
 
     virtual QSize sizeHint() const override;
     void setStarRating(const StarRating &starRating) {

@@ -123,7 +123,7 @@ bool RecipeManager::saveRecipe(Recipe* recipe, bool overwriteFlag){
         sortRecipes();
         std::sort(ingredientList.begin(), ingredientList.end());
         std::sort(keywordList.begin(), keywordList.end());
-        ioManager->saveRecipe(recipe);
+        ioManager->saveRecipe(recipe, overwriteFlag);
         return true;
     }
     return false;
@@ -174,7 +174,12 @@ void RecipeManager::deleteRecipe(Recipe *recipe){
             recipeList.erase(recipeList.begin()+i);
             QFile file(recipe->getFullPath());
             file.remove();
+            for (int j = 0; j < recipe->getImgFileDeleteList().size(); j++){
+                QFile imgFile(recipe->getImgFileDeleteList().at(j));
+                imgFile.remove();
+            }
             delete recipe;
+            break;
         }
     }
 }

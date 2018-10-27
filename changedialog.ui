@@ -1525,31 +1525,6 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="createImgInputLabel">
-        <property name="minimumSize">
-         <size>
-          <width>400</width>
-          <height>550</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>400</width>
-          <height>550</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QFrame" name="createUploadImgFrame">
         <property name="minimumSize">
          <size>

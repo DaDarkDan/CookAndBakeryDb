@@ -10,6 +10,7 @@
 #include "stareditor.h"
 #include "ingredient.h"
 #include "recipemanager.h"
+#include "clickablelabel.h"
 
 ChangeDialog::ChangeDialog(MainWindow* mw, Recipe* recipe, QWidget *parent) : QDialog(parent), ui(new Ui::ChangeDialog), recipe(recipe), mw(mw){
     ui->setupUi(this);
@@ -67,7 +68,7 @@ void ChangeDialog::setup() {
     }
     ui->createRatingStarFrame->setLayout(mw->createStarEditorFrameLayout());
     StarEditor* starEditor = ui->createRatingStarFrame->layout()->parent()->findChild<StarEditor*>();
-    starEditor->setStarPosition(recipe->getRating());
+    starEditor->starRating().setStarCount(-1);
     ui->createRatingStarFrame->setDisabled(true);
 
     //scroll views
@@ -155,11 +156,30 @@ void ChangeDialog::setup() {
     //notes
     ui->createNotesTxtEdit->setText(recipe->getNotes());
     //images
-    ui->createImgTitleLabel->setText("Bild 1 von " + QString::number(recipe->getPixmapList().size()));
-    ui->createImgInputLabel->setScaledContents(true);
-    ui->createImgInputLabel->setPixmap(recipe->getPixmapList().at(0).getPixmap());
-    for (auto pm : recipe->getPixmapList()){
-        currentPixmapList.push_back(pm.getPixmap());
+    currentPixmapList.clear();
+    ui->createImgInputFrame->layout()->setAlignment(Qt::AlignHCenter);
+    QLayoutItem* item;
+    while ((item = ui->createImgInputFrame->layout()->takeAt(0)) != nullptr){
+        delete item->widget();
+        delete item;
+    }
+    createImgInputLabel = new ClickableLabel(ui->createImgInputFrame);
+    createImgInputLabel->setScaledContents(true);
+    createImgInputLabel->setMinimumSize(400, 550);
+    createImgInputLabel->setMaximumSize(400, 550);
+    qobject_cast<QVBoxLayout*>(ui->createImgInputFrame->layout())->insertWidget(1,createImgInputLabel);
+
+    if (recipe->getPixmapList().size() > 0){
+        createImgInputLabel->setPixmap(recipe->getPixmapList().at(0).getPixmap());
+        QString test = QString::number(recipe->getPixmapList().size());
+        auto test2 = ui->createImgTitleLabel;
+        ui->createImgTitleLabel->setText("Bild 1 von " + QString::number(recipe->getPixmapList().size()));
+        createImgInputLabel->setFullPath(recipe->getPixmapList().at(0).getPath());
+        for (auto pm : recipe->getPixmapList()){
+            currentPixmapList.push_back(pm.getPixmap());
+        }
+    } else {
+        ui->createImgTitleLabel->setText("Bild: ");
     }
     currentRecipePixmapIndex = 0;
 }
@@ -191,7 +211,7 @@ void ChangeDialog::on_createImageLeft_clicked(){
     } else {
         currentRecipePixmapIndex--;
     }
-    ui->createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
+    createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
     ui->createImgTitleLabel->setText("Bild " + QString::number(currentRecipePixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));
 }
 
@@ -202,7 +222,7 @@ void ChangeDialog::on_createImgRight_clicked(){
     } else {
         currentRecipePixmapIndex++;
     }
-    ui->createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
+    createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
     ui->createImgTitleLabel->setText("Bild " + QString::number(currentRecipePixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));
 }
 
@@ -284,7 +304,7 @@ void ChangeDialog::saveChanges(){
     //notes
     rec->setNotes(ui->createNotesTxtEdit->toPlainText());
     //images
-    if (ui->createImgInputLabel->pixmap()){
+    if (createImgInputLabel->pixmap()){
         QList<PathPixmap> saveList;
         for (int i = 0; i < currentPixmapList.size(); i++){
             PathPixmap ppm(mw->getRm()->getIoManager()->getDirectoryPath() + "/" + rec->getId() + "_image" + QString::number(i) + ".png", currentPixmapList.at(i));
@@ -300,12 +320,12 @@ void ChangeDialog::on_createUploadImgBtn_clicked(){
     QString fileName = QFileDialog::getOpenFileName(mw, QObject::tr("Open Image"), QStandardPaths::writableLocation(QStandardPaths::PicturesLocation), QObject::tr("Formate(*.png *.jpg *.bmp)"));
     QImage image(fileName);
 
-    ui->createImgInputLabel->setScaledContents(true);
-    ui->createImgInputLabel->setPixmap(QPixmap::fromImage(image));
+    createImgInputLabel->setScaledContents(true);
+    createImgInputLabel->setPixmap(QPixmap::fromImage(image));
     currentPixmapList.push_back(QPixmap::fromImage(image));
     if (currentPixmapList.size() > 1){
         currentRecipePixmapIndex = currentPixmapList.size()-1;
-        ui->createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
+        createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
     }
     ui->createImgTitleLabel->setText("Bild " + QString::number(currentRecipePixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));
 }
@@ -313,13 +333,15 @@ void ChangeDialog::on_createUploadImgBtn_clicked(){
 void ChangeDialog::on_createDeleteImg_clicked(){
     if (currentPixmapList.empty()) return;
 
+    recipe->getImgFileDeleteList().push_back(createImgInputLabel->getFullPath());
+
     currentPixmapList.removeAt(currentRecipePixmapIndex);
-    ui->createImgInputLabel->clear();
+    createImgInputLabel->clear();
     if (!currentPixmapList.empty() && currentRecipePixmapIndex > 0){
         currentRecipePixmapIndex--;
-        ui->createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
+        createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
     } else if (!currentPixmapList.empty() && currentRecipePixmapIndex == 0){
-        ui->createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
+        createImgInputLabel->setPixmap(currentPixmapList.at(currentRecipePixmapIndex));
     }
     if (currentPixmapList.size() != 0){
         ui->createImgTitleLabel->setText("Bild " + QString::number(currentRecipePixmapIndex+1) + " von " + QString::number(currentPixmapList.size()));

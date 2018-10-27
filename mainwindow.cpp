@@ -46,11 +46,13 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->searchKeywordTextEdit, ui->searchFoundRecipesScrollViewContents, ui->searchRatingStarFrame,
                         ui->searchIncludeRatingCheckBox, cl, ui->searchSortComboBox, ui->searchIngredientIconLabel,
                         ui->searchKeywordIconLabel, ui->searchShownImageFrame, ui->searchImgTitleLabel);
+
     hp = new HomePage(this, ui->homeDirectoryLineEdit);
 
     setupSearchPage();
     setupCreatePage();
     setupHomePage();
+
 }
 
 MainWindow::~MainWindow(){
@@ -188,8 +190,8 @@ QTextEdit* MainWindow::createCustomTextEdit(const QString &value, int minH, int 
     return textEdit;
 }
 
-QHBoxLayout* MainWindow::createStarEditorFrameLayout() {
-    StarEditor* starEditor = new StarEditor();
+QHBoxLayout* MainWindow::createStarEditorFrameLayout(bool editable) {
+    StarEditor* starEditor = new StarEditor(nullptr, editable);
     QHBoxLayout* frameLayout = new QHBoxLayout();
     frameLayout->addWidget(starEditor);
     frameLayout->setContentsMargins(0,0,0,0);

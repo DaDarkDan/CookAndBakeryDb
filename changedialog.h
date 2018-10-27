@@ -5,6 +5,7 @@
 
 class Recipe;
 class MainWindow;
+class ClickableLabel;
 
 namespace Ui {
 class ChangeDialog;
@@ -47,6 +48,7 @@ private:
     MainWindow* mw;
     int currentRecipePixmapIndex;
     QList<QPixmap> currentPixmapList;
+    ClickableLabel* createImgInputLabel;
 
     void setup();
     void saveChanges();

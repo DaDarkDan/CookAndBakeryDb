@@ -18,7 +18,7 @@ public:
     ~IOManager();
 
     QList<Recipe*> loadRecipes();
-    void saveRecipe(Recipe* recipe) const;
+    void saveRecipe(Recipe* recipe, bool overwriteFlag = false) const;
 
     void setDirectoryPath(const QString &value);
     QString getDirectoryPath() const;

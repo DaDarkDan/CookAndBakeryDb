@@ -76,6 +76,9 @@ class Recipe {
         QString getId() const;
         void setId(QString value);
 
+        QList<QString> getImgFileDeleteList() const;
+        void setImgFileDeleteList(const QList<QString> &value);
+
 private:
         QString id;
         QString name;
@@ -90,6 +93,7 @@ private:
         QString notes;
         bool favourite;
         QList<PathPixmap> pixmapList;
+        QList<QString> imgFileDeleteList;
         int rating;
         float processTime;
 };

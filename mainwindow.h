@@ -26,10 +26,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QHBoxLayout* createStarEditorFrameLayout();
+    QHBoxLayout* createStarEditorFrameLayout(bool editable = false);
     QTextEdit* createCustomTextEdit(const QString &value, int minH, int maxH, int minW, int maxW);
     QFrame* createCustomFrame();
     QPushButton* createCustomDeleteButton();
+
+    void openFileWithStdProgramm(QString path);
 
     RecipeManager* getRm() const;
     void setRm(RecipeManager* rm);
@@ -65,8 +67,6 @@ private slots:
     void on_searchFavouriteComboBox_currentIndexChanged(int index);
 
     void on_searchIncludeRatingCheckBox_stateChanged(int arg1);
-
-    void openFileWithStdProgramm(QString path);
 
     void on_tabWidget_currentChanged(int index);
 

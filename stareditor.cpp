@@ -1,8 +1,7 @@
 #include "stareditor.h"
 #include "QMouseEvent"
 
-StarEditor::StarEditor(QWidget* parent) : QWidget(parent) {
-    editable = false;
+StarEditor::StarEditor(QWidget* parent, bool editable) : QWidget(parent), editable(editable){
     setMouseTracking(true);
     setAutoFillBackground(true);
 }
@@ -11,10 +10,15 @@ void StarEditor::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 
     QPalette* palette = new QPalette();
-    QColor hColor(244,217,66);
-    palette->setColor(QPalette::Highlight, hColor);
-    palette->setColor(QPalette::Foreground, Qt::black);
-
+    if (editable && this->isEnabled()){
+        palette->setColor(QPalette::Highlight, QColor(255, 145, 35)); //orange
+    } else if (!editable && this->isEnabled()){
+        palette->setColor(QPalette::Highlight, QColor(244,217,66)); //yellow
+    } else if (!editable && !this->isEnabled()){
+        palette->setColor(QPalette::Highlight, QColor(196, 194, 178)); //grey
+    } else if (editable && !this->isEnabled()){
+        palette->setColor(QPalette::Highlight, QColor(244,217,66)); //yellow
+    }
     myStarRating.paint(&painter, rect(), *palette, StarRating::Editable);
 }
 
@@ -39,6 +43,7 @@ QSize StarEditor::sizeHint() const{
 
 void StarEditor::mouseReleaseEvent(QMouseEvent * /* event */) {
     editable = !editable;
+    this->update();
     emit editingFinished();
 }
 
@@ -52,6 +57,7 @@ int StarEditor::starAtPosition(int x) {
 
 void StarEditor::setEditable(bool value){
     editable = value;
+    update();
 }
 
 void StarEditor::setStarPosition(int pos){

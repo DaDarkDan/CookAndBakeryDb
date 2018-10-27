@@ -185,3 +185,13 @@ QString Recipe::getId() const{
 void Recipe::setId(QString value){
     id = value;
 }
+
+QList<QString> Recipe::getImgFileDeleteList() const
+{
+    return imgFileDeleteList;
+}
+
+void Recipe::setImgFileDeleteList(const QList<QString> &value)
+{
+    imgFileDeleteList = value;
+}
