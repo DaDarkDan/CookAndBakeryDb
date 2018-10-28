@@ -44,6 +44,7 @@ private:
 
     QLabel* createIndex(int index);
     ClickableLabel* createInspectLabel();
+    ClickableLabel* createPrintLabel();
     QLabel* createTitle();
     QLabel* createFavouriteLabel();
     QLabel* createDate();

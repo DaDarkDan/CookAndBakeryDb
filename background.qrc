@@ -16,5 +16,6 @@
         <file>img/arrow_right.png</file>
         <file>img/arrow_left.png</file>
         <file>img/magn_glass.png</file>
+        <file>img/printer-24.ico</file>
     </qresource>
 </RCC>

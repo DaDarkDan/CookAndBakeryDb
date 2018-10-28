@@ -186,7 +186,7 @@ QString CreatePage::on_createAddIngredientBtn_clicked() {
         return "Die eingegebene Menge muss eine Zahl sein!";
     }
 
-    if (createIngredientNameTxtEdit->toPlainText() != "" && createIngredientAmountTxtEdit->toPlainText() != ""){
+    if (createIngredientNameTxtEdit->toPlainText() != ""){
         //create contents
         QTextEdit* name = mw->createCustomTextEdit(createIngredientNameTxtEdit->toPlainText(), 25, 25, 100, 150);
         createIngredientNameTxtEdit->clear();

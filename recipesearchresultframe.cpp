@@ -30,13 +30,14 @@ RecipeSearchResultFrame::RecipeSearchResultFrame(MainWindow* mw, Recipe* recipe,
     gridLayout->setMargin(0);
     gridLayout->setSpacing(5);
     gridLayout->addWidget(createIndex(index),0,0);
-    gridLayout->addWidget(createInspectLabel(),1,0);
+    gridLayout->addWidget(createInspectLabel(),1,2);
+    gridLayout->addWidget(createPrintLabel(),2,2);
     gridLayout->addWidget(createTitle(),0,1);
     gridLayout->addWidget(createFavouriteLabel(),0,2);
     gridLayout->addWidget(createDate(),1,1);
     gridLayout->addWidget(createCategoryIngredientAmountLabel(),2,1);
     gridLayout->addWidget(createStarRating(starLayout),3,1);
-    gridLayout->addWidget(createDeleteButton(),3,0);
+    gridLayout->addWidget(createDeleteButton(),3,2);
 
     horLayout->addLayout(gridLayout);
     horLayout->addWidget(createImage());
@@ -88,6 +89,19 @@ ClickableLabel *RecipeSearchResultFrame::createInspectLabel(){
     inspect->setRecipe(recipe);
     connect(inspect, &ClickableLabel::clicked, mw->getSp(), &SearchPage::openChangeDialog);
     return inspect;
+}
+
+ClickableLabel *RecipeSearchResultFrame::createPrintLabel(){
+    ClickableLabel* print = new ClickableLabel();
+    QPixmap pm(":/img/printer-24.ico");
+    print->setPixmap(pm);
+    print->setMaximumSize(20, 20);
+    print->setScaledContents(true);
+    print->setMouseTracking(true);
+    print->setStyleSheet("background: transparent");
+    print->setRecipe(recipe);
+    connect(print, &ClickableLabel::clicked, mw->getSp(), &SearchPage::openPrintDialog);
+    return print;
 }
 
 QLabel *RecipeSearchResultFrame::createTitle() {
@@ -175,8 +189,10 @@ ParameterButton* RecipeSearchResultFrame::createDeleteButton(){
     deleteButton->setMaximumSize(20,20);
     deleteButton->setMinimumSize(20,20);
     deleteButton->setText("X");
-    deleteButton->setStyleSheet("font: 12px bold red; background-color: qradialgradient(cx:0, cy:0, radius: 1.6, fx:0.5, fy:0.5, \
-                                    stop:0  rgb(255, 239, 229), stop:0.8 rgb(247, 188, 128), stop:1  rgb(247, 188, 128));}"
+    deleteButton->setStyleSheet("font: 12px bold red; \
+                                background-color: qradialgradient(cx:0, cy:0, radius: 1.6, fx:0.5, fy:0.5, \
+                                    stop:0  rgb(255, 239, 229), stop:0.8 rgb(247, 188, 128), stop:1  rgb(247, 188, 128)); \
+                                border: 1px solid grey;"
                                 );
     return deleteButton;
 }

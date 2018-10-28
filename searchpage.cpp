@@ -20,6 +20,9 @@
 #include "QCheckBox"
 #include "QMessageBox"
 #include "QSignalMapper"
+#include "QtPrintSupport/QPrinter"
+#include "QtPrintSupport/QPrintDialog"
+#include "QtPrintSupport/QPrintPreviewDialog"
 
 #include "QDebug"
 
@@ -402,4 +405,42 @@ void SearchPage::openChangeDialog(QString /*string*/, Recipe *recipe){
     dialog.exec();
     mw->setEnabled(true);
     updateFoundRecipes();
+}
+
+void SearchPage::openPrintDialog(QString /*string*/, Recipe* recipe){
+    //printer
+    QPrinter printer(QPrinter::PrinterResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(recipe->getName() + ".pdf");
+    printer.setPaperSize(QPrinter::A4);
+    printer.setFullPage(true);
+    printer.setResolution(300);
+    //output
+    QFont titleFont("Arial", 18, QFont::Bold);
+    QFont textBodyFont("Arial", 14, QFont::Normal);
+    QPainter painter;
+    painter.begin(&printer);
+    painter.setFont(titleFont);
+    QString title = recipe->getName() + " (" + recipe->getId() + ")\n\n";
+    painter.drawText(100, 100, 500, 20, Qt::AlignLeft|Qt::AlignTop, title);
+    painter.setFont(textBodyFont);
+    QString beneathTitle = "Dauer: " + QString::number(recipe->getProcessTime()) + " min\n\n";
+    painter.drawText(100, 100, 500, 100, Qt::AlignLeft|Qt::AlignTop, beneathTitle);
+    painter.setFont(titleFont);
+    QString ingTitle = QString::number(recipe->getIngredients().size()) + " Zutat(en)\n\n";
+    painter.drawText(100, 100, 500, 20, Qt::AlignLeft|Qt::AlignTop, ingTitle);
+    QString beneathIngTitle;
+    for (auto ing : recipe->getIngredients()){
+        beneathIngTitle.append(ing.getName() + " " + QString::number(ing.getAmount()) + ing.getWeightType()) + "\n";
+    }
+    beneathIngTitle.append("\n");
+    beneathIngTitle.append(recipe->getNotes() + "\n");
+    painter.setFont(textBodyFont);
+    painter.drawText(100, 100, 500, 1000, Qt::AlignLeft|Qt::AlignTop, beneathIngTitle);
+    painter.end();
+
+    //print dialog
+    QPrintDialog *dialog = new QPrintDialog(&printer);
+    dialog->setWindowTitle("Rezept drucken");
+    dialog->exec();
 }

@@ -60,6 +60,7 @@ public:
 public slots:
     void setFavourite(QString string, Recipe* recipe);
     void openChangeDialog(QString string, Recipe* recipe);
+    void openPrintDialog(QString string, Recipe* recipe);
 
 private slots:
     void displaySearchResultImage(Recipe* recipe);

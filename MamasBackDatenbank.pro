@@ -79,4 +79,6 @@ RESOURCES += \
 
 DISTFILES +=
 
+QT += printsupport
+
 win32:RC_ICONS += book_icon.ico
