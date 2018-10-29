@@ -19,6 +19,8 @@
 #include "QFileDialog"
 #include "QStandardPaths"
 #include "QMessageBox"
+#include "QLineEdit"
+#include "QCompleter"
 
 CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* createCategoryComboBox,
                        QComboBox* createAddIngredientWeightTypeComboBox, QWidget* createAddedIngredientsScrollViewContents,
@@ -26,7 +28,7 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
                        QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox,
                        QList<QWidget*> addedIngredientFrameList, QList<QWidget*> addedKeywordFrameList,
                        QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
-                       QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
+                       QLineEdit* createIngredientNameLineEdit, QTextEdit* createIngredientAmountTxtEdit,
                        QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
                        QLabel* createKeywordIconLabel, QLabel* createImgTitleLabel){
     this->mw = mw;
@@ -42,7 +44,7 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
     this->addedKeywordFrameList = addedKeywordFrameList;
     this->createNotesTxtEdit = createNotesTxtEdit;
     this->createImgInputLabel = createImgInputLabel;
-    this->createIngredientNameTxtEdit = createIngredientNameTxtEdit;
+    this->createIngredientNameLineEdit = createIngredientNameLineEdit;
     this->createIngredientAmountTxtEdit = createIngredientAmountTxtEdit;
     this->createAddedKeywordsTxtEdit = createAddedKeywordsTxtEdit;
     this-> createIngredientIconLabel = createIngredientIconLabel;
@@ -66,8 +68,10 @@ void CreatePage::setup(){
         createNameTxtEdit->setStyleSheet("background: rgb(202, 205, 209)");
         createNameTxtEdit->setDisabled(true);
     }
+    QCompleter* completer = new QCompleter(mw->getRm()->getIngredientList());
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    createIngredientNameLineEdit->setCompleter(completer);
 
-    createIngredientNameTxtEdit->setTabChangesFocus(true);
     createIngredientAmountTxtEdit->setTabChangesFocus(true);
     createAddedKeywordsTxtEdit->setTabChangesFocus(true);
     //combo boxes
@@ -186,10 +190,10 @@ QString CreatePage::on_createAddIngredientBtn_clicked() {
         return "Die eingegebene Menge muss eine Zahl sein!";
     }
 
-    if (createIngredientNameTxtEdit->toPlainText() != ""){
+    if (createIngredientNameLineEdit->text() != ""){
         //create contents
-        QTextEdit* name = mw->createCustomTextEdit(createIngredientNameTxtEdit->toPlainText(), 25, 25, 100, 150);
-        createIngredientNameTxtEdit->clear();
+        QTextEdit* name = mw->createCustomTextEdit(createIngredientNameLineEdit->text(), 25, 25, 100, 150);
+        createIngredientNameLineEdit->clear();
         QTextEdit* amount = mw->createCustomTextEdit(createIngredientAmountTxtEdit->toPlainText(), 25, 25, 50, 100);
         createIngredientAmountTxtEdit->clear();
         QComboBox* weightType = new QComboBox();

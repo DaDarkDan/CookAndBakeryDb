@@ -1701,13 +1701,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
                   </widget>
                  </item>
                  <item>
-                  <widget class="QTextEdit" name="createIngredientNameTxtEdit">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
+                  <widget class="QLineEdit" name="createIngredientNameLineEdit">
                    <property name="minimumSize">
                     <size>
                      <width>150</width>
@@ -1719,9 +1713,6 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
                      <width>150</width>
                      <height>23</height>
                     </size>
-                   </property>
-                   <property name="verticalScrollBarPolicy">
-                    <enum>Qt::ScrollBarAlwaysOff</enum>
                    </property>
                   </widget>
                  </item>

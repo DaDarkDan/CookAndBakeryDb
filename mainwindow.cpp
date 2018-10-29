@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->createAddedKeywordsScrollViewContents, ui->createRatingStarFrame,
                         ui->createFavouriteCheckBox, ui->createRatingCheckBox, addedIngredientFrameList,
                         addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel,
-                        ui->createIngredientNameTxtEdit, ui->createIngredientAmountTxtEdit,
+                        ui->createIngredientNameLineEdit, ui->createIngredientAmountTxtEdit,
                         ui->createAddedKeywordsTxtEdit, ui->createIngredientIconLabel,
                         ui->createKeywordIconLabel, ui->createImgTitleLabel);
 

@@ -21,6 +21,7 @@ class QPushButton;
 class MainWindow;
 class QCheckBox;
 class StarEditor;
+class QLineEdit;
 
 class CreatePage
 {
@@ -31,7 +32,7 @@ public:
                QCheckBox* createFavouriteCheckBox, QCheckBox* createRatingCheckBox,
                QList<QWidget*> addedIngredientFrameList, QList<QWidget*> addedKeywordFrameList,
                QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
-               QTextEdit* createIngredientNameTxtEdit, QTextEdit* createIngredientAmountTxtEdit,
+               QLineEdit* createIngredientNameLineEdit, QTextEdit* createIngredientAmountTxtEdit,
                QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
                QLabel* createKeywordIconLabel, QLabel* createImgTitleLabel);
 
@@ -75,7 +76,7 @@ private:
     QList<QWidget*> addedIngredientFrameList, addedKeywordFrameList;
     QTextEdit* createNotesTxtEdit;
     QLabel* createImgInputLabel;
-    QTextEdit* createIngredientNameTxtEdit;
+    QLineEdit* createIngredientNameLineEdit;
     QTextEdit* createIngredientAmountTxtEdit;
     QTextEdit* createAddedKeywordsTxtEdit;
     QLabel* createIngredientIconLabel, *createKeywordIconLabel, *createImgTitleLabel;
