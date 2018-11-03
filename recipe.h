@@ -78,6 +78,7 @@ class Recipe {
 
         QList<QString> getImgFileDeleteList() const;
         void setImgFileDeleteList(const QList<QString> &value);
+        void addToBeDeletedImgPath(const QString& path);
 
 private:
         QString id;

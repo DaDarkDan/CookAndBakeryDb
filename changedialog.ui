@@ -481,13 +481,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
              </widget>
             </item>
             <item>
-             <widget class="QTextEdit" name="createIngredientNameTxtEdit">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QLineEdit" name="createIngredientNameLineEdit">
               <property name="minimumSize">
                <size>
                 <width>150</width>
@@ -499,9 +493,6 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
                 <width>150</width>
                 <height>23</height>
                </size>
-              </property>
-              <property name="verticalScrollBarPolicy">
-               <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
              </widget>
             </item>
@@ -671,13 +662,7 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
              </widget>
             </item>
             <item>
-             <widget class="QTextEdit" name="createAddedKeywordsTxtEdit">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QLineEdit" name="createKeywordsLineEdit">
               <property name="minimumSize">
                <size>
                 <width>150</width>
@@ -689,9 +674,6 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
                 <width>150</width>
                 <height>23</height>
                </size>
-              </property>
-              <property name="verticalScrollBarPolicy">
-               <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
              </widget>
             </item>
@@ -971,34 +953,6 @@ QWidget#searchIngredientScrollAreaContents, QWidget#searchAddedIngredientScrollA
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
-          <widget class="QPushButton" name="createPrintRecipeBtn">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>110</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777214</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Rezept drucken</string>
-           </property>
-           <property name="autoRepeatDelay">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QPushButton" name="createChangeBtn">
            <property name="sizePolicy">

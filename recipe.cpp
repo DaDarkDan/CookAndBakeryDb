@@ -186,12 +186,14 @@ void Recipe::setId(QString value){
     id = value;
 }
 
-QList<QString> Recipe::getImgFileDeleteList() const
-{
+QList<QString> Recipe::getImgFileDeleteList() const{
     return imgFileDeleteList;
 }
 
-void Recipe::setImgFileDeleteList(const QList<QString> &value)
-{
+void Recipe::setImgFileDeleteList(const QList<QString> &value){
     imgFileDeleteList = value;
+}
+
+void Recipe::addToBeDeletedImgPath(const QString& path) {
+    imgFileDeleteList.push_back(path);
 }

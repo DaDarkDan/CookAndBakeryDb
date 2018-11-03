@@ -29,7 +29,7 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
                        QList<QWidget*> addedIngredientFrameList, QList<QWidget*> addedKeywordFrameList,
                        QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
                        QLineEdit* createIngredientNameLineEdit, QTextEdit* createIngredientAmountTxtEdit,
-                       QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
+                       QLineEdit* createAddedKeywordsLineEdit, QLabel* createIngredientIconLabel,
                        QLabel* createKeywordIconLabel, QLabel* createImgTitleLabel){
     this->mw = mw;
     this->createNameTxtEdit = createNameTxtEdit;
@@ -46,7 +46,7 @@ CreatePage::CreatePage(MainWindow* mw, QTextEdit* createNameTxtEdit, QComboBox* 
     this->createImgInputLabel = createImgInputLabel;
     this->createIngredientNameLineEdit = createIngredientNameLineEdit;
     this->createIngredientAmountTxtEdit = createIngredientAmountTxtEdit;
-    this->createAddedKeywordsTxtEdit = createAddedKeywordsTxtEdit;
+    this->createAddedKeywordsLineEdit = createAddedKeywordsLineEdit;
     this-> createIngredientIconLabel = createIngredientIconLabel;
     this->createKeywordIconLabel = createKeywordIconLabel;
     this->createImgTitleLabel = createImgTitleLabel;
@@ -68,12 +68,15 @@ void CreatePage::setup(){
         createNameTxtEdit->setStyleSheet("background: rgb(202, 205, 209)");
         createNameTxtEdit->setDisabled(true);
     }
-    QCompleter* completer = new QCompleter(mw->getRm()->getIngredientList());
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    createIngredientNameLineEdit->setCompleter(completer);
+    //lineEdits
+    QCompleter* completer1 = new QCompleter(mw->getRm()->getIngredientList());
+    completer1->setCaseSensitivity(Qt::CaseInsensitive);
+    createIngredientNameLineEdit->setCompleter(completer1);
 
-    createIngredientAmountTxtEdit->setTabChangesFocus(true);
-    createAddedKeywordsTxtEdit->setTabChangesFocus(true);
+    QCompleter* completer2 = new QCompleter(mw->getRm()->getKeywordList());
+    completer2->setCaseSensitivity(Qt::CaseInsensitive);
+    createAddedKeywordsLineEdit->setCompleter(completer2);
+
     //combo boxes
     createCategoryComboBox->addItems(Recipe::categoryList);
     createAddIngredientWeightTypeComboBox->addItems(Ingredient::weightTypeList);
@@ -233,10 +236,10 @@ QString CreatePage::on_createAddIngredientBtn_clicked() {
 
 QString CreatePage::on_createAddKeywordBtn_clicked() {
 
-    if (createAddedKeywordsTxtEdit->toPlainText() != ""){
+    if (createAddedKeywordsLineEdit->text() != ""){
         //create contents
-        QTextEdit* txtEdit = mw->createCustomTextEdit(createAddedKeywordsTxtEdit->toPlainText(), 25, 25, 100, 100);
-        createAddedKeywordsTxtEdit->clear();
+        QTextEdit* txtEdit = mw->createCustomTextEdit(createAddedKeywordsLineEdit->text(), 25, 25, 100, 100);
+        createAddedKeywordsLineEdit->clear();
         QPushButton* deleteButton = mw->createCustomDeleteButton();
         QFrame* frame = mw->createCustomFrame();
         txtEdit->setParent(frame);
@@ -259,13 +262,13 @@ QString CreatePage::on_createAddKeywordBtn_clicked() {
 void CreatePage::on_addedFrameDeleteButton_clicked(QPushButton* button) {
     QFrame* parentFrame = qobject_cast<QFrame*>(button->parent());
 
-    for (unsigned int i = 0; i < addedIngredientFrameList.size();i++){
+    for (int i = 0; i < addedIngredientFrameList.size();i++){
         if (addedIngredientFrameList.at(i) == parentFrame){
             addedIngredientFrameList.erase(addedIngredientFrameList.begin()+i);
             break;
         }
     }
-    for (unsigned int i = 0; i < addedKeywordFrameList.size();i++){
+    for (int i = 0; i < addedKeywordFrameList.size();i++){
         if (addedKeywordFrameList.at(i) == parentFrame){
             addedKeywordFrameList.erase(addedKeywordFrameList.begin()+i);
             break;

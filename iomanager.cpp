@@ -178,18 +178,43 @@ void IOManager::saveRecipe(Recipe* recipe, bool overwriteFlag) const{
     //save images
     if (!recipe->getPixmapList().empty()){
         if (overwriteFlag){
+            //delete marked images and rename remaining
+            if (recipe->getImgFileDeleteList().size() > 0){
+                for (auto img : recipe->getImgFileDeleteList()){
+                    QFile::remove(img);
+                }
+                for (int i = 0; i < recipe->getPixmapList().size(); i++){
+                    fileName = recipe->getPixmapList().at(i).getPath();
+                    QString newFileName = directoryPath + "/" + recipe->getId() + "_image" + QString::number(i) + ".png";
+                    recipe->getPixmapList().replace(i, PathPixmap(newFileName, recipe->getPixmapList().at(i).getPixmap()));
+                    if (QFile::exists(fileName)){
+                        QFile::rename(fileName, newFileName);
+                    } else {
+                        QFile imgFile(fileName);
+                        imgFile.open(QIODevice::WriteOnly);
+                        recipe->getPixmapList().at(i).getPixmap().save(&imgFile, "PNG");
+                        imgFile.close();
+                    }
+                }
+            } else {
+                //save all pictures
+                for (int i = 0; i < recipe->getPixmapList().size(); i++){
+                    fileName = recipe->getPixmapList().at(i).getPath();
+                    QFile imgFile(fileName);
+                    imgFile.open(QIODevice::WriteOnly);
+                    recipe->getPixmapList().at(i).getPixmap().save(&imgFile, "PNG");
+                    imgFile.close();
+                }
+            }
+        } else {
+            //save all pictures
             for (int i = 0; i < recipe->getPixmapList().size(); i++){
                 fileName = recipe->getPixmapList().at(i).getPath();
                 QFile imgFile(fileName);
-                imgFile.remove();
+                imgFile.open(QIODevice::WriteOnly);
+                recipe->getPixmapList().at(i).getPixmap().save(&imgFile, "PNG");
+                imgFile.close();
             }
-        }
-        for (int i = 0; i < recipe->getPixmapList().size(); i++){
-            fileName = recipe->getPixmapList().at(i).getPath();
-            QFile imgFile(fileName);
-            imgFile.open(QIODevice::WriteOnly);
-            recipe->getPixmapList().at(i).getPixmap().save(&imgFile, "PNG");
-            imgFile.close();
         }
     }
 }

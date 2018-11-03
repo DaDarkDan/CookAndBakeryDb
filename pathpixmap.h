@@ -12,6 +12,8 @@ public:
     QString getPath() const;
     QPixmap getPixmap() const;
 
+    void setPath(const QString &value);
+
 private:
     QString path;
     QPixmap pixmap;

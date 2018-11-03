@@ -33,7 +33,7 @@ public:
                QList<QWidget*> addedIngredientFrameList, QList<QWidget*> addedKeywordFrameList,
                QTextEdit* createNotesTxtEdit, QLabel* createImgInputLabel,
                QLineEdit* createIngredientNameLineEdit, QTextEdit* createIngredientAmountTxtEdit,
-               QTextEdit* createAddedKeywordsTxtEdit, QLabel* createIngredientIconLabel,
+               QLineEdit* createAddedKeywordsLineEdit, QLabel* createIngredientIconLabel,
                QLabel* createKeywordIconLabel, QLabel* createImgTitleLabel);
 
     void setup();
@@ -78,7 +78,7 @@ private:
     QLabel* createImgInputLabel;
     QLineEdit* createIngredientNameLineEdit;
     QTextEdit* createIngredientAmountTxtEdit;
-    QTextEdit* createAddedKeywordsTxtEdit;
+    QLineEdit* createAddedKeywordsLineEdit;
     QLabel* createIngredientIconLabel, *createKeywordIconLabel, *createImgTitleLabel;
 
     QList<QPixmap> currentPixmapList;

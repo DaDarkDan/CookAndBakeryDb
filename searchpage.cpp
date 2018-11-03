@@ -23,6 +23,7 @@
 #include "QtPrintSupport/QPrinter"
 #include "QtPrintSupport/QPrintDialog"
 #include "QtPrintSupport/QPrintPreviewDialog"
+#include "QStandardPaths"
 
 #include "QDebug"
 
@@ -411,36 +412,64 @@ void SearchPage::openPrintDialog(QString /*string*/, Recipe* recipe){
     //printer
     QPrinter printer(QPrinter::PrinterResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(recipe->getName() + ".pdf");
+    QString desktop = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QString path = desktop + "/" + recipe->getName() + ".pdf";
+    path.replace("ä", "ae");
+    path.replace("ß", "ss");
+    path.replace("ö","oe");
+    path.replace("ü","ue");
+    printer.setOutputFileName(path);
     printer.setPaperSize(QPrinter::A4);
     printer.setFullPage(true);
     printer.setResolution(300);
+
     //output
+    QFont upperTitleFont("Arial", 22, QFont::Bold);
     QFont titleFont("Arial", 18, QFont::Bold);
     QFont textBodyFont("Arial", 14, QFont::Normal);
     QPainter painter;
     painter.begin(&printer);
-    painter.setFont(titleFont);
-    QString title = recipe->getName() + " (" + recipe->getId() + ")\n\n";
-    painter.drawText(100, 100, 500, 20, Qt::AlignLeft|Qt::AlignTop, title);
+    painter.setFont(upperTitleFont);
+    QString title = recipe->getName() + " (ID:" + recipe->getId() + ")";
+    painter.drawText(100, 100, 2000, 200, Qt::AlignLeft|Qt::AlignTop, title);
     painter.setFont(textBodyFont);
-    QString beneathTitle = "Dauer: " + QString::number(recipe->getProcessTime()) + " min\n\n";
-    painter.drawText(100, 100, 500, 100, Qt::AlignLeft|Qt::AlignTop, beneathTitle);
-    painter.setFont(titleFont);
-    QString ingTitle = QString::number(recipe->getIngredients().size()) + " Zutat(en)\n\n";
-    painter.drawText(100, 100, 500, 20, Qt::AlignLeft|Qt::AlignTop, ingTitle);
-    QString beneathIngTitle;
-    for (auto ing : recipe->getIngredients()){
-        beneathIngTitle.append(ing.getName() + " " + QString::number(ing.getAmount()) + ing.getWeightType()) + "\n";
+    QString beneathTitle;
+    if (recipe->getProcessTime() < 0.01){
+        beneathTitle = "Dauer: nicht angegeben";
+    } else {
+        beneathTitle = "Dauer: " + QString::number(recipe->getProcessTime()) + " min";
     }
-    beneathIngTitle.append("\n");
-    beneathIngTitle.append(recipe->getNotes() + "\n");
+    painter.drawText(100, 300, 2000, 100, Qt::AlignLeft|Qt::AlignTop, beneathTitle);
+    //ingredients
+    painter.setFont(titleFont);
+    QString ingTitle = QString::number(recipe->getIngredients().size()) + " Zutat(en)";
+    painter.drawText(100, 450, 2000, 100, Qt::AlignLeft|Qt::AlignTop, ingTitle);
+    int yOffset;
     painter.setFont(textBodyFont);
-    painter.drawText(100, 100, 500, 1000, Qt::AlignLeft|Qt::AlignTop, beneathIngTitle);
+    for (unsigned int i = 0; i < recipe->getIngredients().size();i++){
+        Ingredient ing = recipe->getIngredients().at(i);
+        yOffset = 600 + i*80;
+        painter.drawText(100, yOffset, 2000, 100, Qt::AlignLeft|Qt::AlignTop, "- " + ing.getName());
+        painter.drawText(600, yOffset, 1000, 100, Qt::AlignLeft|Qt::AlignTop, QString::number(ing.getAmount()) + " " + ing.getWeightType());
+    }
+    painter.setFont(titleFont);
+    yOffset += 200;
+    painter.drawText(100, yOffset, 2000, 2000, Qt::AlignLeft|Qt::AlignTop, "Notizen");
+    yOffset += 100;
+    painter.setFont(textBodyFont);
+    int counter = 0;
+    int width = 65;
+    while(counter < recipe->getNotes().length()){
+        QString line = recipe->getNotes();
+        if (counter+width > recipe->getNotes().length()){
+            painter.drawText(100, yOffset, 2000, 2000, Qt::AlignLeft|Qt::AlignTop, QStringRef(&line, counter, recipe->getNotes().length()-counter).toString());
+        } else {
+            painter.drawText(100, yOffset, 2000, 2000, Qt::AlignLeft|Qt::AlignTop, QStringRef(&line, counter, width).toString());
+        }
+        yOffset += 100;
+        counter += width;
+    }
     painter.end();
 
-    //print dialog
-    QPrintDialog *dialog = new QPrintDialog(&printer);
-    dialog->setWindowTitle("Rezept drucken");
-    dialog->exec();
+    mw->openFileWithStdProgramm(path);
 }

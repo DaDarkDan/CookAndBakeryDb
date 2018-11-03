@@ -6,6 +6,7 @@
 class Recipe;
 class MainWindow;
 class ClickableLabel;
+class PathPixmap;
 
 namespace Ui {
 class ChangeDialog;
@@ -26,8 +27,6 @@ private slots:
 
     void on_createImgRight_clicked();
 
-    void on_createPrintRecipeBtn_clicked();
-
     void on_createRatingCheckBox_stateChanged(int arg1);
 
     void on_createAddIngredientBtn_clicked();
@@ -47,7 +46,7 @@ private:
     Recipe* recipe;
     MainWindow* mw;
     int currentRecipePixmapIndex;
-    QList<QPixmap> currentPixmapList;
+    QList<PathPixmap> currentPixmapList;
     ClickableLabel* createImgInputLabel;
 
     void setup();

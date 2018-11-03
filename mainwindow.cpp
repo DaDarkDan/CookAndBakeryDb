@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow){
     ui->setupUi(this);
 
-    this->setWindowTitle("Rezeptmanager v1.2");
+    this->setWindowTitle("Rezeptmanager v2.0");
 
     QCoreApplication::setOrganizationName("DaDarkSoftware");
     QCoreApplication::setApplicationName("Rezeptmanager");
@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
                         ui->createFavouriteCheckBox, ui->createRatingCheckBox, addedIngredientFrameList,
                         addedKeywordFrameList, ui->createNotesTxtEdit, ui->createImgInputLabel,
                         ui->createIngredientNameLineEdit, ui->createIngredientAmountTxtEdit,
-                        ui->createAddedKeywordsTxtEdit, ui->createIngredientIconLabel,
+                        ui->createAddedKeywordsLineEdit, ui->createIngredientIconLabel,
                         ui->createKeywordIconLabel, ui->createImgTitleLabel);
 
     ui->searchShownImageFrame->layout()->setAlignment(Qt::AlignHCenter);
