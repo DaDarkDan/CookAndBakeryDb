@@ -450,7 +450,7 @@ void SearchPage::openPrintDialog(QString /*string*/, Recipe* recipe){
         Ingredient ing = recipe->getIngredients().at(i);
         yOffset = 600 + i*80;
         painter.drawText(100, yOffset, 2000, 100, Qt::AlignLeft|Qt::AlignTop, "- " + ing.getName());
-        painter.drawText(600, yOffset, 1000, 100, Qt::AlignLeft|Qt::AlignTop, QString::number(ing.getAmount()) + " " + ing.getWeightType());
+        painter.drawText(1000, yOffset, 1000, 100, Qt::AlignLeft|Qt::AlignTop, QString::number(ing.getAmount()) + " " + ing.getWeightType());
     }
     painter.setFont(titleFont);
     yOffset += 200;
@@ -469,7 +469,15 @@ void SearchPage::openPrintDialog(QString /*string*/, Recipe* recipe){
         yOffset += 100;
         counter += width;
     }
+    yOffset += 200;
+    for (auto pixmap : recipe->getPixmapList()){
+        printer.newPage();
+        painter.drawImage(0, 0, pixmap.getPixmap().toImage().scaled(printer.paperRect().width(), printer.paperRect().height()));
+    }
     painter.end();
 
+    QMessageBox msgBox;
+
+    msgBox.setText("PDF des Rezeptes " + recipe->getName() + " wurde auf dem Desktop gespeichert!");
     mw->openFileWithStdProgramm(path);
 }
