@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow){
     ui->setupUi(this);
 
-    this->setWindowTitle("Rezeptmanager v2.0");
+    this->setWindowTitle("Rezeptmanager v2.1");
 
     QCoreApplication::setOrganizationName("DaDarkSoftware");
     QCoreApplication::setApplicationName("Rezeptmanager");
